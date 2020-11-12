@@ -9,15 +9,14 @@ public class Player extends Playable implements Pushable{
 	private final int delta = 48;
 	private int maxX;
 	private int maxY;
-
 	private int state;
+	private int[] dimensions;
 	private char orientation;
-	//private Timer animator;
 	private boolean beingCarried;
 	private Carrier carrier;
 	private Animator animator;
 	
-	public Player(int initialLives,int maxX, int maxY) {
+	public Player(int initialLives,int maxX, int maxY, int[] dimensions) {
 		lives = initialLives;
 		this.maxX = maxX;
 		this.maxY = maxY;
@@ -29,6 +28,7 @@ public class Player extends Playable implements Pushable{
 		sprite =  "Frog"+(state+1)+orientation;
 		beingCarried = false;
 		animator = new Animator();
+		this.dimensions = dimensions; 
 	}
 	
 	public void move() {
@@ -58,6 +58,7 @@ public class Player extends Playable implements Pushable{
 			state = 0;
 			sprite =  "Frog"+(state+1)+orientation;
 		}
+		System.out.println("" + "X: " + this.getX());
 	}
 	
 	
@@ -99,7 +100,7 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	private boolean canMove(int dx, int dy) {
-		return !(x+dx>maxX || x+dx<0 || y+dy>maxY || y+dy<0);
+		return !(x+dx > maxX || x+dx<0 || y+dy>maxY || y+dy<0);
 	}
 	
 	@Override
@@ -172,6 +173,10 @@ public class Player extends Playable implements Pushable{
 			else if(maxX-x>=48) push = 48;
 		}
 		return push;
+	}
+	
+	public int[] getDimensions() {
+		return dimensions;
 	}
 
 }

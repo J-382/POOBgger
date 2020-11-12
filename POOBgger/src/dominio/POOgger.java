@@ -22,8 +22,7 @@ public class POOgger {
 	
 	public POOgger(int width, int height, HashMap<String,int[]> sprites) {
 		screenWidth = width;
-		//screenHeight = height;
-		player = new Player(5,624,678);
+		player = new Player(5,624,678, sprites.get("Frog1W"));
 		elements = new ArrayList<Element>();
 		logsSpeed = new int[] {2,4,6};
 		carsSpeed = new int[] {6,4,3,8,2};
@@ -39,7 +38,6 @@ public class POOgger {
 	}
 	
 	public void updateClock() {
-		//clock.move((int)clock.getMinX() + 100, (int)clock.getY());
 		clock = new Rectangle(0, 0, clock.width - 3 , clock.height);
 		if (clock.width == 0) {
 			player.decreasePlayerLives(336, 678);
@@ -65,7 +63,8 @@ public class POOgger {
 		return player;
 	}
 	
-    public Rectangle getClock() {
+    @SuppressWarnings("exports")
+	public Rectangle getClock() {
 		return clock;
 	}
 
@@ -128,7 +127,8 @@ public class POOgger {
 	}
 	
 	public void addLizzard() {
-		elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
+		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
+		elements.add(new Lizzard(0, 500, lizzardSpeed));
 	}
 	
 	public void addLog() {
@@ -172,7 +172,8 @@ public class POOgger {
 	}
 	
     public void addTurtle() {
-		elements.add(new Turtle(-sprites.get("Turtle1")[0],0,-1*turtleSpeed, true));
+		//elements.add(new Turtle(-sprites.get("Turtle1")[0],6,-1*turtleSpeed, true));
+		elements.add(new Turtle(300, 200, -1*turtleSpeed, true));
 	}
 	
 	public ArrayList<Element> getElements(){
@@ -180,14 +181,23 @@ public class POOgger {
 		return elements;
 	}
 	
-	public boolean checkPlayerCollision(Player player, Element element) {
+	public boolean[] checkPlayerCollision(Player player, Element element) {
 		boolean isDead = false;
+		boolean areTouching = false;
 		if(player.getBounds(sprites.get(player.getSprite())).intersects(element.getBounds(sprites.get(element.getSprite())))) {
+			areTouching = true;
 			isDead = element.inCollision(player);
 		}
-		return isDead;
+		return new boolean[] {isDead, areTouching};
 	}
 	
+	public boolean checkTouch(Player player, Element element) {
+		boolean areTouching = false;
+		if (player.getBounds(sprites.get(player.getSprite())).intersects(element.getBounds(sprites.get(element.getSprite())))) {
+			areTouching = true;
+		}
+		return areTouching;
+	}
 	public void killPlayer(Player player) {
 		player.decreasePlayerLives(336,678);
 	}

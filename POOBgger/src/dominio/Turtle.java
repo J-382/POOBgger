@@ -33,7 +33,7 @@ public class Turtle extends Element{
 		x += speed;
 		if (!animator.isRunning()) {
 			animator.animate(400, times, new Runnable() {public void run() {updateSprite();}});
-		} 
+		}
 	}
 	
 	@Override

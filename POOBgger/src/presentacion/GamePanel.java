@@ -19,6 +19,9 @@ import dominio.POOgger;
 public class GamePanel extends JPanel{
 	private POOgger poogger;
 	private HashMap<String,Image> sprites;
+	private int width = 672;
+	private int height = 757;
+	
 	public GamePanel() {
 		prepareElementos();
 		prepareAcciones();
@@ -28,9 +31,9 @@ public class GamePanel extends JPanel{
 	}
 	private void prepareElementos() {
 		poogger = new POOgger(672,757, prepareArchivos());
-		poogger.addLog();
-		poogger.addTurtle();
-		poogger.addBike();
+		//poogger.addLog();
+		//poogger.addTurtle();
+		//poogger.addBike();
 		poogger.addLizzard();
 	}
 	
@@ -69,11 +72,19 @@ public class GamePanel extends JPanel{
 	}
 	
 	public void checkPlayersCollision() {
+		boolean touchingSomething = false;
 		for(Element element: poogger.getElements()) {
-			if(poogger.checkPlayerCollision(poogger.getPlayer(),element)) {
+			boolean[] checksCollision =  poogger.checkPlayerCollision(poogger.getPlayer(), element);
+			touchingSomething = touchingSomething || checksCollision[1];
+			if(checksCollision[0]) {
 				poogger.killPlayer(poogger.getPlayer());
 			}
 		}
+		if (!touchingSomething && poogger.getPlayer().getY() < 342) {
+			poogger.killPlayer(poogger.getPlayer());
+		}
+		
+		
 	}
 	
 	public void drawGrid(Graphics g) {

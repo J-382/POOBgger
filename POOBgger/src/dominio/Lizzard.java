@@ -8,18 +8,19 @@ public class Lizzard extends Element{
 	private Animator animator;
 	
 	public Lizzard(int x, int y, int speed) {
-		this.x = x;
+		this.x = 0;
 		this.y = y;
 		this.speed = speed;
 		isOpen = false;
 		state = 0;
-		sprite = "Lizzard1";
+		sprite = "Alligator1";
 		animator = new Animator();
 	}
 	
 	public void updateSprite() {
 		state =  (state + 1)%2;
 		if (state == 1) isOpen = true;
+		else isOpen = false;
 		sprite = "Alligator"+(state + 1);
 	}
 	
@@ -34,6 +35,12 @@ public class Lizzard extends Element{
 	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = false;
+		if (isOpen) {
+			int elementWidth = ((Player)e).getDimensions()[0];
+			if (this.getX() + 2*elementWidth <= e.getX()) {
+				isDead = true;
+			} 
+		}
 		e.move(speed, 0);
 		return isDead;
 	}
