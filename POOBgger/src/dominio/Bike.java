@@ -1,7 +1,5 @@
 package dominio;
 
-import javax.swing.ImageIcon;
-
 public class Bike extends Carrier{
 	
 	private Animator animator;
@@ -17,12 +15,12 @@ public class Bike extends Carrier{
 		orientation = flipped?"F":"";
 		frame = 0;
 		animator = new Animator();
-		sprite = new ImageIcon("./resources/sprites/Bike"+state+(frame+1)+orientation+".png");
+		sprite = "Bike"+state+(frame+1)+orientation;
 	}
 	
 	public void updateSprite() {
 		frame = (frame+1)%2;
-		sprite = new ImageIcon("./resources/sprites/Bike"+state+(frame+1)+orientation+".png");
+		sprite = "Bike"+state+(frame+1)+orientation;
 	}
 	
 	@Override

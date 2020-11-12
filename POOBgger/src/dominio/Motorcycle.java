@@ -3,7 +3,6 @@ package dominio;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 public class Motorcycle extends Element{
@@ -18,14 +17,17 @@ public class Motorcycle extends Element{
 		this.speed = speed;
 		orientation = flipped?"F":"";
 		frame = 0;
-		System.out.println("./resources/sprites/Motorcycle"+(frame+1)+orientation+".png");
-		sprite = new ImageIcon("./resources/sprites/Motorcycle"+(frame+1)+orientation+".png");
+		sprite = "Motorcycle"+(frame+1)+orientation;
 		animator = new Timer(150, new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				frame = (frame+1)%2;
-				sprite = new ImageIcon("./resources/sprites/Motorcycle"+(frame+1)+orientation+".png");
+				
 			}
 		});
+	}
+	
+	public void updateFrame() {
+		frame = (frame+1)%2;
+		sprite = "Motorcycle"+(frame+1)+orientation;
 	}
 	
 	@Override

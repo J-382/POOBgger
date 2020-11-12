@@ -1,10 +1,8 @@
 package dominio;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 public class Player extends Playable implements Pushable{
@@ -28,7 +26,7 @@ public class Player extends Playable implements Pushable{
 		y = 6;//678;
 		orientation = 'W';
 		state = 0;
-		sprite =  new ImageIcon("./resources/sprites/Frog1W.png");
+		sprite =  "Frog"+(state+1)+orientation;
 		beingCarried = false;
 		animator = new Animator();
 	}
@@ -52,13 +50,13 @@ public class Player extends Playable implements Pushable{
 		if(canMove(dx,dy)) {
 			super.move(dx, dy);
 			state = (state+1)%3;
-			sprite =  new ImageIcon("./resources/sprites/Frog"+(state+1)+"W.png");
+			sprite =  "Frog"+(state+1)+"W";
 			if(!animator.isRunning()) {
 				animator.animate(25,3,new Runnable() {public void run() {move();}});
 			}
 		}else {
 			state = 0;
-			sprite =  new ImageIcon("./resources/sprites/Frog"+(state+1)+"W.png");
+			sprite =  "Frog"+(state+1)+orientation;
 		}
 	}
 	
@@ -137,10 +135,10 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	@Override 
-	public Image getSprite() {
-		Image returnImage = sprite.getImage();
+	public String getSprite() {
+		String returnImage = sprite;
 		if(beingCarried) {
-			returnImage = null;
+			returnImage = "";
 		}
 		return returnImage;
 	}

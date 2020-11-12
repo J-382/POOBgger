@@ -1,12 +1,10 @@
 package dominio;
 
-import javax.swing.ImageIcon;
-
 public class Log extends Element {
 	
 	protected int speed;
 	
-	public Log(int x, int y, int speed, ImageIcon sprite) {
+	public Log(int x, int y, int speed, String sprite) {
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
@@ -23,7 +21,4 @@ public class Log extends Element {
 		return false;
 	}
 	
-	public void setSprite(String path) {
-		sprite = new ImageIcon(path);
-	}
 }

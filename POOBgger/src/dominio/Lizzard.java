@@ -1,27 +1,26 @@
 package dominio;
 
-import javax.swing.ImageIcon;
-
 public class Lizzard extends Element{
 
 	private int speed;
 	private boolean isOpen;
 	private int state;
 	private Animator animator;
-	public Lizzard(int x, int y, int speed, ImageIcon bodyImage) {
+	
+	public Lizzard(int x, int y, int speed) {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
 		isOpen = false;
-		sprite = bodyImage;
 		state = 0;
+		sprite = "Lizzard1";
 		animator = new Animator();
 	}
 	
 	public void updateSprite() {
 		state =  (state + 1)%2;
 		if (state == 1) isOpen = true;
-		sprite = new ImageIcon("./resources/sprites/Alligator"+ (state + 1) + ".png");
+		sprite = "Alligator"+(state + 1);
 	}
 	
 	@Override

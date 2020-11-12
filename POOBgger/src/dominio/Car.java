@@ -1,12 +1,10 @@
 package dominio;
 
-import javax.swing.ImageIcon;
-
 public class Car extends Element{
 	
 	private int speed;
 	
-	public Car(int x, int y, int speed, ImageIcon sprite){
+	public Car(int x, int y, int speed, String sprite){
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;

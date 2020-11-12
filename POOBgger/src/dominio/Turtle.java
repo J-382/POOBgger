@@ -1,8 +1,5 @@
 package dominio;
 
-import javax.swing.ImageIcon;
-
-
 public class Turtle extends Element{
 	
 	private int speed;
@@ -12,13 +9,13 @@ public class Turtle extends Element{
 	//private Timer animator;
 	private Animator animator;
 	
-	public Turtle(int x, int y, int speed, ImageIcon image, boolean doesSubmerge) {
-		sprite = image;
+	public Turtle(int x, int y, int speed, boolean doesSubmerge) {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
 		state = 0;
 		isSubmerge = false;
+		sprite = "Turtle1";
 		times = 3;
 		if (doesSubmerge) times = 6;
 		animator = new Animator();
@@ -29,7 +26,7 @@ public class Turtle extends Element{
 		state = (state+1)%times;
 		if (state == 5) isSubmerge =  true;
 		else {isSubmerge = false;}
-		sprite = new ImageIcon("./resources/sprites/Turtle"+(state+1) + ".png");
+		sprite = "Turtle"+(state+1);
 	}
 	
 	public void move() {

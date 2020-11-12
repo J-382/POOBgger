@@ -1,17 +1,13 @@
 package dominio;
-
-import java.awt.Image;
 import java.awt.Rectangle;
-
-import javax.swing.ImageIcon;
 
 public abstract class Element {
 	protected int x;
 	protected int y;
-	protected ImageIcon sprite;
+	protected String sprite;
 	abstract void move();
-	public Image getSprite() {
-		return sprite.getImage();
+	public String getSprite() {
+		return sprite;
 	}
 	public int getX() {
 		return x;
@@ -27,8 +23,9 @@ public abstract class Element {
 		return false;
 	};
 	
-	public Rectangle getBounds() {
-		return new Rectangle(x,y,sprite.getIconWidth(),sprite.getIconHeight());
+	public Rectangle getBounds(int[] size) {
+		if(size==null) size = new int[] {0,0};
+		return new Rectangle(x,y,size[0],size[1]);
 	}
 	
 	public boolean isPushable() {
@@ -42,7 +39,5 @@ public abstract class Element {
 	public boolean isPlayable() {
 		return false;
 	}
-	
-	public void kill() {}
 	
 }

@@ -1,7 +1,5 @@
 package dominio;
 
-import javax.swing.ImageIcon;
-
 public class Snake extends Element{
 	
 	private int speed;
@@ -9,8 +7,8 @@ public class Snake extends Element{
 	private String orientation;
 	private Animator animator;
 	
-	public Snake(int xPos, int yPos, int speed, ImageIcon image, boolean flipped){
-		sprite = image;
+	public Snake(int xPos, int yPos, int speed, boolean flipped){
+		sprite = "Snake1";
 		x = xPos;
 		y = yPos;
 		this.speed = speed;
@@ -24,7 +22,7 @@ public class Snake extends Element{
 		state = (state+1)%4;
 		if(state==2) y+=20;
 		else if(state==3) y-=20;
-		sprite = new ImageIcon("./resources/sprites/Snake"+(state+1)+orientation+".png");
+		sprite = "Snake"+(state+1)+orientation;
 	}
 	
 	public void move() {
@@ -39,7 +37,7 @@ public class Snake extends Element{
 	public void flip() {
 		speed *= -1;
 		orientation = orientation.equals("F")?"":"F";
-		sprite = new ImageIcon("./resources/sprites/Snake"+(state+1)+orientation+".png");
+		sprite = "Snake"+(state+1)+orientation;
 	}
 	
 	@Override

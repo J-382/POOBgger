@@ -1,10 +1,14 @@
 package presentacion;
 
-import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -14,6 +18,7 @@ import dominio.POOgger;
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel{
 	private POOgger poogger;
+	private HashMap<String,Image> sprites;
 	public GamePanel() {
 		prepareElementos();
 		prepareAcciones();
@@ -22,11 +27,24 @@ public class GamePanel extends JPanel{
 		return poogger.isPlayerAlive();
 	}
 	private void prepareElementos() {
-		poogger = new POOgger(672,757);
-		//poogger.addLog();
+		poogger = new POOgger(672,757, prepareArchivos());
+		poogger.addLog();
 		poogger.addTurtle();
-		//poogger.addBike();
-		//poogger.addLizzard();
+		poogger.addBike();
+		poogger.addLizzard();
+	}
+	
+	private HashMap<String,int[]> prepareArchivos() {
+		sprites = new HashMap<String,Image>();
+		HashMap<String,int[]> spritesSize = new HashMap<String,int[]>();
+		File[] files = new File("./resources/sprites/").listFiles();
+		for(File file: files) {
+			ImageIcon image = new ImageIcon(file.getPath());
+			String key = file.getName().replaceFirst(".png", "");
+			sprites.put(key, image.getImage());
+			spritesSize.put(key,new int[] {image.getIconWidth(),image.getIconHeight()});
+		}
+		return spritesSize;
 	}
 	
 	private void prepareAcciones() {
@@ -42,13 +60,12 @@ public class GamePanel extends JPanel{
 	public void paint(Graphics g) {
 		super.paint(g);
 		for(Element i: poogger.update()) {
-			g.drawImage(i.getSprite(),i.getX(),i.getY(),null);
+			g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
 		}
 		drawGrid(g);
-		g.drawString("TIME", 500, 500);
 		g.setColor(Color.BLUE);
 		g.fillRect(poogger.getClock().x, poogger.getClock().y, poogger.getClock().width, poogger.getClock().height);
-		g.drawImage(poogger.getPlayer().getSprite(),poogger.getPlayer().getX(),poogger.getPlayer().getY(),null);
+		g.drawImage(sprites.get(poogger.getPlayer().getSprite()),poogger.getPlayer().getX(),poogger.getPlayer().getY(),null);
 	}
 	
 	public void checkPlayersCollision() {
