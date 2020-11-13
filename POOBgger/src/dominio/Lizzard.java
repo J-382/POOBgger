@@ -1,5 +1,10 @@
 package dominio;
 
+/**
+ * Pretends be a Frogger's lizzard
+ * @version 1.2
+ * @author Angie Medina - Jose Perez
+ * */
 public class Lizzard extends Element{
 
 	private int speed;
@@ -7,6 +12,13 @@ public class Lizzard extends Element{
 	private int state;
 	private Animator animator;
 	
+	
+	/**
+	 * Lizzard class constructor
+	 * @param x Lizzard's x position
+	 * @param y Lizzard's y position
+	 * @param speed Lizzard's speed
+	 * */
 	public Lizzard(int x, int y, int speed) {
 		this.x = x;
 		this.y = y;
@@ -17,6 +29,9 @@ public class Lizzard extends Element{
 		animator = new Animator();
 	}
 	
+	/**
+	 * Plays Lizzard's move animation
+	 * */
 	public void updateSprite() {
 		state =  (state + 1)%2;
 		y+=state==0?15:-15;

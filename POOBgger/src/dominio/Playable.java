@@ -5,6 +5,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+/** POOgger Playable element behavior
+ * @version 1.1
+ * @author Angie Medina - Jose Perez
+ * */
 public abstract class Playable extends Element{
 	protected boolean isToxic;
 	protected boolean isArmored;

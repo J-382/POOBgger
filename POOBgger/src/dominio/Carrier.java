@@ -1,5 +1,9 @@
 package dominio;
 
+/** Emulates a Carrier's behavior
+ * @version 1.3
+ * @author Angie Medina - Jose Perez
+ * */
 public abstract class Carrier extends Element {
 	
 	protected int speed;
@@ -7,6 +11,7 @@ public abstract class Carrier extends Element {
 	protected boolean carrying;
 	protected String state;
 
+	@Override
 	public void move() {
 		x += speed;
 		if (carrying) {
@@ -14,6 +19,10 @@ public abstract class Carrier extends Element {
 		}
 	}
 	
+	/**
+	 * Entangles Pushable's movements with this Carrier
+	 * @param c the Pushable element to entagle
+	 * */
 	private void startCarrying(Pushable c) {
 		if(c.setPosition(x, y)) {
 			state = "C";
@@ -23,6 +32,10 @@ public abstract class Carrier extends Element {
 		}
 	}
 	
+	/**
+	 * Destangles Pushable's movements with this Carrier
+	 * @param c the Pushable element to destangle
+	 * */
 	public void stopCarrying(Pushable c) {
 		if(c==carried) {
 			state = "";

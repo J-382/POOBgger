@@ -39,7 +39,7 @@ public class POOgger {
 		prepareBeaverLane();
 	}
 	
-	public void updateClock() {
+	private void updateClock() {
 		clock = new Rectangle(0, 0, clock.width - 3 , clock.height);
 		if (clock.width == 0) {
 			player.decreasePlayerLives(336, 678);
@@ -98,7 +98,7 @@ public class POOgger {
 	 * Poner privados
 	 */
 	
-	public void addBike() {
+	private void addBike() {
 		elements.add(new Bike(screenWidth,48*11+8,-carsSpeed[2],false));
 		/*Random r = new Random();
 		if(r.nextBoolean()) {
@@ -106,7 +106,7 @@ public class POOgger {
 		}*/		
 	}
 	
-	public void addCar(int lane) {
+	private void addCar(int lane) {
 		String[] types = new String[] {"Red","Green","Blue","Pink","Purple"};
 		switch (lane) {
 			case 0:
@@ -127,12 +127,12 @@ public class POOgger {
 		}
 	}
 	
-	public void addLizzard() {
+	private void addLizzard() {
 		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
 		elements.add(new Lizzard(-sprites.get("Alligator2")[0], 48*3+4, lizzardSpeed));
 	}
 	
-	public void addLog(int lane) {
+	private void addLog(int lane) {
 		String[] types = new String[] {"Small","Medium","Large"};
 		switch (lane) {
 			case 0:
@@ -147,7 +147,7 @@ public class POOgger {
 		}
 	}
 	
-	public void addMotorcycle() {
+	private void addMotorcycle() {
 		elements.add(new Motorcycle(0,48*10+6,carsSpeed[3],true));
 		/*
 		Random r = new Random();
@@ -157,7 +157,7 @@ public class POOgger {
 		*/
 	}
 	
-	public void addSnake() {
+	private void addSnake() {
 		Random r = new Random();
 		boolean flipped = r.nextBoolean();
 		if(flipped) {
@@ -165,7 +165,7 @@ public class POOgger {
 		}else elements.add(new Snake(0,0,-1*snakeSpeed,true));
 	}
 	
-	public void addTruck() {
+	private void addTruck() {
 		Random r = new Random();
 		if(r.nextBoolean()) {
 			elements.add(new Truck(0,8,1,true));
@@ -173,7 +173,7 @@ public class POOgger {
 		
 	}
 	
-    public void addTurtle(int lane) {
+    private void addTurtle(int lane) {
     	if(lane==0) {
 			elements.add(new Turtle(screenWidth,336,-2*turtleSpeed, false));
 			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],336,-2*turtleSpeed, false));
@@ -209,10 +209,10 @@ public class POOgger {
 	}
 	
 	public void killPlayer(Player player) {
-		player.decreasePlayerLives(336,678);
+		isPlayerAlive = player.decreasePlayerLives(336,678);
 	}
 	
-	public void addLane(int lane) {
+	private void addLane(int lane) {
 		Random r = new Random();
 		switch (lane) {
 			case 0:
@@ -237,7 +237,8 @@ public class POOgger {
 		}
 	}
 		
-	public void prepareLane(){
+	private void prepareLane(){
+		for(int i=0;i<5;i++) addLane(i);
 		Animator lane1 = new Animator() {};
 		Animator lane2 = new Animator() {};
 		Animator lane3 = new Animator() {};
@@ -250,7 +251,12 @@ public class POOgger {
 		lane5.animate(7000, 2, new Runnable() {public void run() {addLane(4);}}, false);
 	}
 	
-	public void prepareBeaverLane(){
+	private void prepareBeaverLane(){
+		addTurtle(0);
+		addLog(0);
+		addLog(1);
+		addTurtle(1);
+		addLizzard();
 		Animator lane1 = new Animator() {};
 		Animator lane2 = new Animator() {};
 		Animator lane3 = new Animator() {};

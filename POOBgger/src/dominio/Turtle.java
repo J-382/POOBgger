@@ -1,5 +1,11 @@
 package dominio;
 
+
+/**
+ * Pretends be a Frogger's turtle
+ * @version 1.2
+ * @author Angie Medina - Jose Perez
+ * */
 public class Turtle extends Element{
 	
 	private int speed;
@@ -9,6 +15,13 @@ public class Turtle extends Element{
 	//private Timer animator;
 	private Animator animator;
 	
+	/**
+	 * Turtle class constructor
+	 * @param x Turtle's x position
+	 * @param y Turtle's y position
+	 * @param speed Turtle's speed
+	 * @param doesSubmerge if the turtle can submerge
+	 * */
 	public Turtle(int x, int y, int speed, boolean doesSubmerge) {
 		this.x = x;
 		this.y = y;
@@ -20,12 +33,18 @@ public class Turtle extends Element{
 		animator = new Animator();
 	}
 	
+	/**
+	 * Plays turtle's submerge animation
+	 * */
 	public void submerge() {
 		frame = (frame+1)%7;
 		isSubmerge = frame>=3 && frame<5;
 		sprite = "Turtle"+"S"+(frame+1);
 	}
 	
+	/**
+	 * Plays turtle's move animation
+	 * */
 	public void updateSprite() {
 		frame = (frame+1)%2;
 		sprite = "Turtle"+(frame+1);
@@ -50,7 +69,5 @@ public class Turtle extends Element{
 		}
 		else{e.move(speed, 0);}
 		return isDead;
-	}
-	
-	
+	}	
 }

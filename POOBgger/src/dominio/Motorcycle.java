@@ -5,12 +5,24 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+/**
+ * POOgger's motorcycle implementation
+ * @version 1.3
+ * @author Angie Medina - Jose Perez
+ * */
 public class Motorcycle extends Element{
 	private Timer animator;
 	private int frame;
 	private String orientation;
 	private int speed;
 	
+	/**
+	 * Motorcycle class constructor
+	 * @param x Motorcycle's x position
+	 * @param y Motorcycle's y position
+	 * @param speed Motorcycle's speed
+	 * @param flipped if the Motorcycle are flipped horizontally
+	 * */
 	public Motorcycle(int x, int y, int speed,boolean flipped){
 		this.x = x;
 		this.y = y;
@@ -25,6 +37,9 @@ public class Motorcycle extends Element{
 		});
 	}
 	
+	/**
+	 * Plays Motorcycle's move animation
+	 * */
 	public void updateFrame() {
 		frame = (frame+1)%2;
 		sprite = "Motorcycle"+(frame+1)+orientation;

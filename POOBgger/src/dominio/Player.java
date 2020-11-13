@@ -5,6 +5,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+/**
+ * POOgger's player implementation
+ * @version 1.9
+ * @author Angie Medina - Jose Perez
+ * */
 public class Player extends Playable implements Pushable{
 	private final int delta = 48;
 	private int maxX;
@@ -176,5 +181,9 @@ public class Player extends Playable implements Pushable{
 	
 	public int[] getDimensions() {
 		return dimensions;
+	}
+
+	public int getLives() {
+		return lives;
 	}
 }

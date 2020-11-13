@@ -1,12 +1,24 @@
 package dominio;
 
+/**
+ * Pretends be a Frogger's snake
+ * @version 1.2
+ * @author Angie Medina - Jose Perez
+ * */
 public class Snake extends Element{
 	
 	private int speed;
 	private int state;
 	private String orientation;
 	private Animator animator;
-	
+
+	/**
+	 * Snake class constructor
+	 * @param x Snake's x position
+	 * @param y Snake's y position
+	 * @param speed Snake's speed
+	 * @param flipped if the Snake can submerge
+	 * */
 	public Snake(int xPos, int yPos, int speed, boolean flipped){
 		sprite = "Snake1";
 		x = xPos;
@@ -18,6 +30,9 @@ public class Snake extends Element{
 		if(flipped) flip();
 	}
 	
+	/**
+	 * Plays snake's move animation;
+	 * */
 	public void updateSprite(){
 		state = (state+1)%4;
 		if(state==2) y+=20;
@@ -34,6 +49,9 @@ public class Snake extends Element{
 		
 	}
 	
+	/**
+	 * Flip horizontally the snake's sprite
+	 * */
 	public void flip() {
 		speed *= -1;
 		orientation = orientation.equals("F")?"":"F";

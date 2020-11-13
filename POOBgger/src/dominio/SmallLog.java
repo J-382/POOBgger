@@ -1,5 +1,10 @@
 package dominio;
 
+/**
+ * POOgger's small log implementation
+ * @version 1.3
+ * @author Angie Medina - Jose Perez
+ * */
 public class SmallLog extends Log{
 
 	private boolean isSubmerged;
@@ -12,6 +17,9 @@ public class SmallLog extends Log{
 		animator = new Animator();
 	}
 	
+	/**
+	 * Plays small log's plunge animation
+	 * */
 	public void updateSprite() {
 		state = (state+1);
 		sprite = "SmallLog"+(state+1);
