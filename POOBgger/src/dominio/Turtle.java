@@ -3,9 +3,9 @@ package dominio;
 public class Turtle extends Element{
 	
 	private int speed;
-	private int state;
 	private boolean isSubmerge;
-	private int times;
+	private boolean doesSubmerge;
+	private int frame;
 	//private Timer animator;
 	private Animator animator;
 	
@@ -13,26 +13,32 @@ public class Turtle extends Element{
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
-		state = 0;
+		frame = 0;
 		isSubmerge = false;
+		this.doesSubmerge = doesSubmerge;
 		sprite = "Turtle1";
-		times = 3;
-		if (doesSubmerge) times = 6;
 		animator = new Animator();
 	}
 	
+	public void submerge() {
+		frame = (frame+1)%7;
+		isSubmerge = frame>=3 && frame<5;
+		sprite = "Turtle"+"S"+(frame+1);
+	}
 	
 	public void updateSprite() {
-		state = (state+1)%times;
-		if (state == 5) isSubmerge =  true;
-		else {isSubmerge = false;}
-		sprite = "Turtle"+(state+1);
+		frame = (frame+1)%2;
+		sprite = "Turtle"+(frame+1);
+		if(frame==0 && doesSubmerge) {
+			animator.stop();
+			animator.animate(100*(4-speed), 8, new Runnable() {public void run() {submerge();}});
+		}
 	}
 	
 	public void move() {
 		x += speed;
 		if (!animator.isRunning()) {
-			animator.animate(400, times, new Runnable() {public void run() {updateSprite();}});
+			animator.animate(100*(4-speed), 3, new Runnable() {public void run() {updateSprite();}});
 		}
 	}
 	

@@ -31,10 +31,6 @@ public class GamePanel extends JPanel{
 	}
 	private void prepareElementos() {
 		poogger = new POOgger(672,757, prepareArchivos());
-		//poogger.addLog();
-		//poogger.addTurtle();
-		//poogger.addBike();
-		poogger.addLizzard();
 	}
 	
 	private HashMap<String,int[]> prepareArchivos() {
@@ -62,10 +58,11 @@ public class GamePanel extends JPanel{
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		g.drawImage(new ImageIcon("./resources/Fondo.png").getImage(),0,0,null);
 		for(Element i: poogger.update()) {
 			g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
 		}
-		drawGrid(g);
+		//drawGrid(g);
 		g.setColor(Color.BLUE);
 		g.fillRect(poogger.getClock().x, poogger.getClock().y, poogger.getClock().width, poogger.getClock().height);
 		g.drawImage(sprites.get(poogger.getPlayer().getSprite()),poogger.getPlayer().getX(),poogger.getPlayer().getY(),null);
@@ -73,18 +70,18 @@ public class GamePanel extends JPanel{
 	
 	public void checkPlayersCollision() {
 		boolean touchingSomething = false;
-		for(Element element: poogger.getElements()) {
-			boolean[] checksCollision =  poogger.checkPlayerCollision(poogger.getPlayer(), element);
-			touchingSomething = touchingSomething || checksCollision[1];
-			if(checksCollision[0]) {
+		try {
+			for(Element element: poogger.getElements()) {
+				boolean[] checksCollision =  poogger.checkPlayerCollision(poogger.getPlayer(), element);
+				touchingSomething = touchingSomething || checksCollision[1];
+				if(checksCollision[0]) {
+					poogger.killPlayer(poogger.getPlayer());
+				}
+			}
+			if (!touchingSomething && poogger.getPlayer().getY() < 343) {
 				poogger.killPlayer(poogger.getPlayer());
 			}
-		}
-		if (!touchingSomething && poogger.getPlayer().getY() < 342) {
-			poogger.killPlayer(poogger.getPlayer());
-		}
-		
-		
+		}catch(Exception e) {}
 	}
 	
 	public void drawGrid(Graphics g) {

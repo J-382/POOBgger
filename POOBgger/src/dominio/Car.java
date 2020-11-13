@@ -5,7 +5,7 @@ public class Car extends Element{
 	private int speed;
 	
 	public Car(int x, int y, int speed, String sprite){
-		this.sprite = sprite;
+		this.sprite = sprite+"Car";
 		this.x = x;
 		this.y = y;
 		this.speed = speed;

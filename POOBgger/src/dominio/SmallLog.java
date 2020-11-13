@@ -14,8 +14,10 @@ public class SmallLog extends Log{
 	
 	public void updateSprite() {
 		state = (state+1);
-		if (state == 3) isSubmerged = true;
 		sprite = "SmallLog"+(state+1);
+		if (state == 4) {
+			isSubmerged = true;
+		}
 	}
 	
 	@Override
@@ -25,12 +27,15 @@ public class SmallLog extends Log{
 		if (isSubmerged) {
 			isDead = true;
 			animator.stop();
-		}else animator.animate(400,4,new Runnable() {public void run() {updateSprite();}});
+		}else {
+			if(!animator.isRunning()) {
+				animator.animate(400,5,new Runnable() {public void run() {updateSprite();}});
+			}
+		}
 		return isDead;
 	}
 	
 	public void drown() {
-		
 	}
 
 }

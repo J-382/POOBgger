@@ -8,7 +8,7 @@ public class Lizzard extends Element{
 	private Animator animator;
 	
 	public Lizzard(int x, int y, int speed) {
-		this.x = 0;
+		this.x = x;
 		this.y = y;
 		this.speed = speed;
 		isOpen = false;
@@ -19,6 +19,7 @@ public class Lizzard extends Element{
 	
 	public void updateSprite() {
 		state =  (state + 1)%2;
+		y+=state==0?15:-15;
 		if (state == 1) isOpen = true;
 		else isOpen = false;
 		sprite = "Alligator"+(state + 1);

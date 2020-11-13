@@ -24,17 +24,19 @@ public class POOgger {
 		screenWidth = width;
 		player = new Player(5,624,678, sprites.get("Frog1W"));
 		elements = new ArrayList<Element>();
-		logsSpeed = new int[] {2,4,6};
-		carsSpeed = new int[] {6,4,3,8,2};
+		logsSpeed = new int[] {1,2,3};
+		carsSpeed = new int[] {4,3,2,5,1};
 		snakeSpeed = 1;
 		turtleSpeed = 1;
-		lizzardSpeed = 1;
+		lizzardSpeed = 2;
 		clock = new Rectangle(0,0, 300, 20);
 		playerKeys = new char[] {'A','W','S','D'};
 		isPlayerAlive = true;
 		animator = new Animator();
 		this.sprites = sprites; 
 		animator.animate(100, 101, new Runnable() {public void run() {updateClock();}}, false);
+		prepareLane();
+		prepareBeaverLane();
 	}
 	
 	public void updateClock() {
@@ -76,7 +78,7 @@ public class POOgger {
 		boolean needsClear = false;
 		for(int i=0; i<elements.size(); i++) {
 			Element element = elements.get(i);
-			if(element.getX()>screenWidth || element.getX()<-300) {
+			if(element.getX()>screenWidth+200 || element.getX()<-500) {
 				elements.set(i, null);
 				needsClear = true;
 				}
@@ -97,28 +99,27 @@ public class POOgger {
 	 */
 	
 	public void addBike() {
-		Random r = new Random();
+		elements.add(new Bike(screenWidth,48*11+8,-carsSpeed[2],false));
+		/*Random r = new Random();
 		if(r.nextBoolean()) {
 			elements.add(new Bike(0,8,1,true));
-		}else elements.add(new Bike(600,8,-1,false));
-		
+		}*/		
 	}
 	
-	public void addCar() {
+	public void addCar(int lane) {
 		String[] types = new String[] {"Red","Green","Blue","Pink","Purple"};
-		Random r = new Random();
-		switch (r.nextInt(5)) {
+		switch (lane) {
 			case 0:
-				elements.add(new Car(screenWidth,48*13+2,-carsSpeed[0],types[0]));
+				elements.add(new Car(screenWidth,48*12+2,-carsSpeed[0],types[0]));
 				break;
 			case 1:
-				elements.add(new Car(-sprites.get(types[1]+"car")[0],48*12+2,carsSpeed[1],types[1]));
+				elements.add(new Car(-sprites.get(types[1]+"Car")[0],48*13+2,carsSpeed[1],types[1]));
 				break;
 			case 2:
 				elements.add(new Car(screenWidth,48*11+2,-carsSpeed[2],types[2]));
 				break;
 			case 3:
-				elements.add(new Car(-sprites.get(types[3]+"car")[0],48*10+2,carsSpeed[3],types[3]));
+				elements.add(new Car(-sprites.get(types[3]+"Car")[0],48*10+2,carsSpeed[3],types[3]));
 				break;
 			case 4:
 				elements.add(new Car(screenWidth,48*9+2,-carsSpeed[4],types[4]));
@@ -128,31 +129,32 @@ public class POOgger {
 	
 	public void addLizzard() {
 		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
-		elements.add(new Lizzard(0, 500, lizzardSpeed));
+		elements.add(new Lizzard(-sprites.get("Alligator2")[0], 48*3+4, lizzardSpeed));
 	}
 	
-	public void addLog() {
+	public void addLog(int lane) {
 		String[] types = new String[] {"Small","Medium","Large"};
-		Random r = new Random();
-		switch (r.nextInt(3)) {
+		switch (lane) {
 			case 0:
 				elements.add(new SmallLog(-sprites.get(types[0]+"Log1")[0],48*6+4,logsSpeed[0],types[0]+"Log1"));
 				break;
-			case 1:
+			case 2:
 				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3+4,logsSpeed[1],types[1]+"Log"));
 				break;
-			case 2:
+			case 1:
 				elements.add(new Log(-sprites.get(types[2]+"Log")[0],48*5+4,logsSpeed[2],types[2]+"Log"));
 				break;
 		}
 	}
 	
 	public void addMotorcycle() {
+		elements.add(new Motorcycle(0,48*10+6,carsSpeed[3],true));
+		/*
 		Random r = new Random();
 		if(r.nextBoolean()) {
-			elements.add(new Motorcycle(0,6,2,true));
+			
 		}else elements.add(new Motorcycle(350,6,-2	,false));
-		
+		*/
 	}
 	
 	public void addSnake() {
@@ -171,9 +173,16 @@ public class POOgger {
 		
 	}
 	
-    public void addTurtle() {
-		//elements.add(new Turtle(-sprites.get("Turtle1")[0],6,-1*turtleSpeed, true));
-		elements.add(new Turtle(300, 200, -1*turtleSpeed, true));
+    public void addTurtle(int lane) {
+    	if(lane==0) {
+			elements.add(new Turtle(screenWidth,336,-2*turtleSpeed, false));
+			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],336,-2*turtleSpeed, false));
+			elements.add(new Turtle(screenWidth+40+2*sprites.get("Turtle1")[0],336,-2*turtleSpeed, false));
+		}else {
+			elements.add(new Turtle(screenWidth, 194, -1*turtleSpeed, true));
+			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0], 194, -1*turtleSpeed, true));
+		}
+		
 	}
 	
 	public ArrayList<Element> getElements(){
@@ -198,7 +207,66 @@ public class POOgger {
 		}
 		return areTouching;
 	}
+	
 	public void killPlayer(Player player) {
 		player.decreasePlayerLives(336,678);
+	}
+	
+	public void addLane(int lane) {
+		Random r = new Random();
+		switch (lane) {
+			case 0:
+				addCar(0);
+				break;
+			case 1:
+				addCar(1);
+				break;
+			case 2:
+				if(r.nextBoolean()) {
+					addCar(2);
+				}else addBike();
+				break;
+			case 3:
+				if(r.nextBoolean()) {
+					addCar(3);
+				}else addMotorcycle();
+				break;
+			case 4:
+				addCar(4);
+				break;
+		}
+	}
+		
+	public void prepareLane(){
+		Animator lane1 = new Animator() {};
+		Animator lane2 = new Animator() {};
+		Animator lane3 = new Animator() {};
+		Animator lane4 = new Animator() {};
+		Animator lane5 = new Animator() {};
+		lane1.animate(1000, 2, new Runnable() {public void run() {addLane(0);}}, false);
+		lane2.animate(2000, 2, new Runnable() {public void run() {addLane(1);}}, false);
+		lane3.animate(3000, 2, new Runnable() {public void run() {addLane(2);}}, false);
+		lane4.animate(1500, 2, new Runnable() {public void run() {addLane(3);}}, false);
+		lane5.animate(7000, 2, new Runnable() {public void run() {addLane(4);}}, false);
+	}
+	
+	public void prepareBeaverLane(){
+		Animator lane1 = new Animator() {};
+		Animator lane2 = new Animator() {};
+		Animator lane3 = new Animator() {};
+		Animator lane4 = new Animator() {};
+		Animator lane5 = new Animator() {};
+		lane1.animate(4000, 2, new Runnable() {public void run() {addTurtle(0);}}, false);
+		lane2.animate(6000, 2, new Runnable() {public void run() {addLog(0);}}, false);
+		lane3.animate(3000, 2, new Runnable() {public void run() {addLog(1);}}, false);
+		lane4.animate(5000, 2, new Runnable() {public void run() {addTurtle(3);}}, false);
+		lane5.animate(2000, 2, new Runnable() {public void run() {
+			Random r = new Random();
+			if(r.nextBoolean()) {
+				addLog(2);
+			}
+			else addLizzard();
+			}
+		}, false);
 	}
 }

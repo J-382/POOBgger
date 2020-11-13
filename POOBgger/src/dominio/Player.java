@@ -56,9 +56,8 @@ public class Player extends Playable implements Pushable{
 			}
 		}else {
 			state = 0;
-			sprite =  "Frog"+(state+1)+orientation;
+			sprite =  "Frog"+(state+1)+"W";//+orientation;
 		}
-		System.out.println("" + "X: " + this.getX());
 	}
 	
 	
@@ -178,5 +177,4 @@ public class Player extends Playable implements Pushable{
 	public int[] getDimensions() {
 		return dimensions;
 	}
-
 }
