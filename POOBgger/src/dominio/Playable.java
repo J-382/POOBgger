@@ -18,11 +18,17 @@ public abstract class Playable extends Element{
 	protected int points;
 	protected int bonus;
 	
-	
+	/**
+	 * Add bonus to the playable element
+	 * @param bonus integer with the bonus
+	 * */
 	public void addBonus(int bonus) {
 		this.bonus += bonus;
 	}
 	
+	/**
+	 * Make the playable element toxic
+	 * */
 	public void makeToxic() {
 		if(isToxic) {
 			isToxic = true;

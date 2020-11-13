@@ -21,6 +21,13 @@ public class Player extends Playable implements Pushable{
 	private Carrier carrier;
 	private Animator animator;
 	
+	/**
+	 * Player class constructor
+	 * @param initialLives Player's initialLives
+	 * @param maxX Player's POOgger width
+	 * @param maxY Player's POOgger height
+	 * @param dimensions Player's size
+	 */
 	public Player(int initialLives,int maxX, int maxY, int[] dimensions) {
 		lives = initialLives;
 		this.maxX = maxX;
@@ -65,7 +72,10 @@ public class Player extends Playable implements Pushable{
 		}
 	}
 	
-	
+	/**
+	 * Changes, if possible, the player orientation
+	 * @param orientation new orientation
+	 * */
 	public void setOrientation(char orientation) {
 		if(!animator.isRunning()) {
 			this.orientation = orientation;
@@ -90,6 +100,11 @@ public class Player extends Playable implements Pushable{
 		doWhenAnimationStop.start();
 	}
 	
+	/**
+	 * Decrease the player lives and reset his position
+	 * @param initx x inital position
+	 * @param initx y inital position
+	 * */
 	public boolean decreasePlayerLives(int initx,int inity) {
 		boolean revives = false;
 		lives--;
@@ -103,6 +118,27 @@ public class Player extends Playable implements Pushable{
 		return revives;
 	}
 	
+	/**
+	 * Returns player's size
+	 * @return player's size
+	 * */
+	public int[] getDimensions() {
+		return dimensions;
+	}
+	
+	/**
+	 * Returns player's lives
+	 * @return player's lives
+	 * */
+	public int getLives() {
+		return lives;
+	}
+	
+	/**
+	 * Returns if Player can move in the given params
+	 * @param dx delta x
+	 * @param dy delta y 
+	 * */
 	private boolean canMove(int dx, int dy) {
 		return !(x+dx > maxX || x+dx<0 || y+dy>maxY || y+dy<0);
 	}
@@ -177,13 +213,5 @@ public class Player extends Playable implements Pushable{
 			else if(maxX-x>=48) push = 48;
 		}
 		return push;
-	}
-	
-	public int[] getDimensions() {
-		return dimensions;
-	}
-
-	public int getLives() {
-		return lives;
 	}
 }
