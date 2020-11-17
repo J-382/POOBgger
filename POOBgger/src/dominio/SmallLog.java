@@ -20,7 +20,7 @@ public class SmallLog extends Log{
 	/**
 	 * Plays small log's plunge animation
 	 * */
-	public void updateSprite() {
+	private void updateSprite() {
 		state = (state+1);
 		sprite = "SmallLog"+(state+1);
 		if (state == 4) {
@@ -30,20 +30,14 @@ public class SmallLog extends Log{
 	
 	@Override
 	public boolean inCollision(Element e) {
-		boolean isDead = false;
-		e.move(speed,0);
+		super.inCollision(e);
 		if (isSubmerged) {
-			isDead = true;
 			animator.stop();
 		}else {
 			if(!animator.isRunning()) {
 				animator.animate(400,5,new Runnable() {public void run() {updateSprite();}});
 			}
 		}
-		return isDead;
+		return false;
 	}
-	
-	public void drown() {
-	}
-
 }

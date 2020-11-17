@@ -1,16 +1,18 @@
 package dominio;
 
+import java.util.ArrayList;
+
 /**
  * Pretends be a Frogger's lizzard
- * @version 1.2
+ * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public class Lizzard extends Element{
+public class Lizzard extends Carrier{
 
-	private int speed;
 	private boolean isOpen;
 	private int state;
 	private Animator animator;
+	private int length;
 	
 	
 	/**
@@ -19,11 +21,14 @@ public class Lizzard extends Element{
 	 * @param y Lizzard's y position
 	 * @param speed Lizzard's speed
 	 * */
-	public Lizzard(int x, int y, int speed) {
+	public Lizzard(int x, int y, int length,int speed) {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
-		isOpen = false;
+		this.length = length;
+		this.carried = new ArrayList<Pushable>();
+		this.maxCarryNumber = Integer.MAX_VALUE;
+		isOpen = true;
 		state = 0;
 		sprite = "Alligator1";
 		animator = new Animator();
@@ -32,17 +37,16 @@ public class Lizzard extends Element{
 	/**
 	 * Plays Lizzard's move animation
 	 * */
-	public void updateSprite() {
+	private void updateSprite() {
 		state =  (state + 1)%2;
 		y+=state==0?15:-15;
-		if (state == 1) isOpen = true;
-		else isOpen = false;
+		isOpen = state == 1;
 		sprite = "Alligator"+(state + 1);
 	}
 	
 	@Override
-	void move() {
-		x += speed;
+	public void move() {
+		super.move();
 		if (!animator.isRunning()) {
 			animator.animate(1000, 2, new Runnable() {public void run() {updateSprite();}});
 		}
@@ -50,14 +54,14 @@ public class Lizzard extends Element{
 	
 	@Override
 	public boolean inCollision(Element e) {
+		super.inCollision(e);
 		boolean isDead = false;
 		if (isOpen) {
-			int elementWidth = ((Player)e).getDimensions()[0];
-			if (this.getX() + 2*elementWidth <= e.getX()) {
+			if (x+2*length/3 <= e.getX()) {
+				System.out.println("Dead by alligator");
 				isDead = true;
 			} 
 		}
-		e.move(speed, 0);
 		return isDead;
 	}
 }

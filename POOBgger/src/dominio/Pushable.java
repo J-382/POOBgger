@@ -11,7 +11,7 @@ public interface Pushable {
 	 * @param c the Carrier Element
 	 * */
 	public void beingCarried(Carrier c);
-	
+
 	/**
 	 * Sets, if possible, the Pushables's position to the given coordinates
 	 * @return true if sets the position, false otherwise
@@ -31,4 +31,6 @@ public interface Pushable {
 	 * @return maximum push magnitude
 	 * */
 	public int calculateMaxPush(String dir);
+	
+	public void setVisible(boolean visible);
 }

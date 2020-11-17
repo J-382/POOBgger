@@ -7,7 +7,7 @@ import javax.swing.Timer;
 
 /**
  * POOgger's player implementation
- * @version 1.9
+ * @version 2.2
  * @author Angie Medina - Jose Perez
  * */
 public class Player extends Playable implements Pushable{
@@ -20,6 +20,7 @@ public class Player extends Playable implements Pushable{
 	private boolean beingCarried;
 	private Carrier carrier;
 	private Animator animator;
+	private boolean isVisible;
 	
 	/**
 	 * Player class constructor
@@ -41,6 +42,7 @@ public class Player extends Playable implements Pushable{
 		beingCarried = false;
 		animator = new Animator();
 		this.dimensions = dimensions; 
+		this.isVisible = true;
 	}
 	
 	public void move() {
@@ -61,8 +63,7 @@ public class Player extends Playable implements Pushable{
 		}
 		if(canMove(dx,dy)) {
 			super.move(dx, dy);
-			state = (state+1)%3;
-			sprite =  "Frog"+(state+1)+"W";
+			updateSprite();
 			if(!animator.isRunning()) {
 				animator.animate(25,3,new Runnable() {public void run() {move();}});
 			}
@@ -70,6 +71,12 @@ public class Player extends Playable implements Pushable{
 			state = 0;
 			sprite =  "Frog"+(state+1)+"W";//+orientation;
 		}
+	}
+	
+	private void updateSprite() {
+		state = (state+1)%3;
+		sprite =  "Frog"+(state+1)+"W";
+		
 	}
 	
 	/**
@@ -86,9 +93,10 @@ public class Player extends Playable implements Pushable{
 		}
 	}
 	
-	public void stopBeignCarried() {
+	private void stopBeignCarried() {
 		carrier.stopCarrying(this);
 		carrier = null;
+		setVisible(true);
 		Timer doWhenAnimationStop = new Timer(1,new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!animator.isRunning()) {
@@ -107,6 +115,7 @@ public class Player extends Playable implements Pushable{
 	 * */
 	public boolean decreasePlayerLives(int initx,int inity) {
 		boolean revives = false;
+		System.out.println("dead");
 		lives--;
 		if(lives>0) {
 			revives = true;
@@ -115,6 +124,7 @@ public class Player extends Playable implements Pushable{
 			x = initx;
 			y = inity;
 		}
+		stopBeignCarried(); 
 		return revives;
 	}
 	
@@ -156,8 +166,7 @@ public class Player extends Playable implements Pushable{
 	@Override
 	public void beingCarried(Carrier c) {
 		beingCarried = true;
-		state = 0;
-		animator.stop();
+		//animator.stop();
 		carrier = c;
 	}
 	
@@ -177,22 +186,17 @@ public class Player extends Playable implements Pushable{
 	
 	@Override 
 	public String getSprite() {
-		String returnImage = sprite;
-		if(beingCarried) {
-			returnImage = "";
-		}
+		String returnImage = isVisible?sprite:"";
 		return returnImage;
 	}
 	
 	@Override
 	public boolean setPosition(int x, int y) {
-		boolean canMove = false;
-		if(x>=0 && x<=maxX && y>=0 && y<=maxY) {
-			this.x = x;
-			this.y = y;
-			canMove = true;
-		}
-		return canMove;
+		animator.stop();
+		state = 0;
+		this.x = x;
+		this.y = y;
+		return true;
 		
 	}
 
@@ -213,5 +217,10 @@ public class Player extends Playable implements Pushable{
 			else if(maxX-x>=48) push = 48;
 		}
 		return push;
+	}
+	
+	@Override 
+	public void setVisible(boolean visible) {
+		isVisible = visible;
 	}
 }

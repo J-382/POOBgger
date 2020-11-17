@@ -2,7 +2,7 @@ package dominio;
 
 /**
  * Pretends be a Frogger's snake
- * @version 1.2
+ * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
 public class Snake extends Element{
@@ -33,7 +33,7 @@ public class Snake extends Element{
 	/**
 	 * Plays snake's move animation;
 	 * */
-	public void updateSprite(){
+	private void updateSprite(){
 		state = (state+1)%4;
 		if(state==2) y+=20;
 		else if(state==3) y-=20;

@@ -101,6 +101,7 @@ public class GamePanel extends JPanel{
 		frame.add(game);
 		frame.setSize(687,757);
 		frame.setVisible(true);
+		frame.setBackground(Color.BLACK);
 		frame.setLocationRelativeTo(null);
 		while(true) {
 			game.checkPlayersCollision();

@@ -1,14 +1,13 @@
 package dominio;
 
+import java.util.ArrayList;
+
 /**
  * Pretends be a Frogger's log
- * @version 1.1
+ * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public class Log extends Element {
-	
-	protected int speed;
-	
+public class Log extends Carrier {
 	/**
 	 * Log class constructor
 	 * @param x Log's x position
@@ -21,16 +20,17 @@ public class Log extends Element {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
+		this.carried = new ArrayList<Pushable>();
+		this.maxCarryNumber = Integer.MAX_VALUE;
 	}
 	
 	public void move() {
-		x+=speed;
+		super.move();
 	}
 	
 	@Override
 	public boolean inCollision(Element e) {
-		e.move(speed,0);
-		return false;
+		return super.inCollision(e);
 	}
 	
 }

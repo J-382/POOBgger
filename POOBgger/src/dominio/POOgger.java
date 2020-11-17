@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * POOgger's player implementation
+ * @version 2.1
+ * @author Angie Medina - Jose Perez
+ * */
 public class POOgger {
 	private int screenWidth;
 	private int[] logsSpeed;
@@ -35,14 +40,12 @@ public class POOgger {
 		snakeSpeed = 1;
 		turtleSpeed = 1;
 		lizzardSpeed = 2;
-		clock = new Rectangle(0,0, 300, 20);
+		clock = new Rectangle(0,0, 450, 20);
 		playerKeys = new char[] {'A','W','S','D'};
 		isPlayerAlive = true;
 		animator = new Animator();
 		this.sprites = sprites; 
 		animator.animate(100, 101, new Runnable() {public void run() {updateClock();}}, false);
-		prepareLane();
-		prepareBeaverLane();
 	}
 	
 	/**Updates clock size
@@ -153,7 +156,7 @@ public class POOgger {
 	 * */
 	private void addLizzard() {
 		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
-		elements.add(new Lizzard(-sprites.get("Alligator2")[0], 48*3+4, lizzardSpeed));
+		elements.add(new Lizzard(-sprites.get("Alligator2")[0],48*3+4, 138, lizzardSpeed));
 	}
 	
 	/** Add a new log to POOgger's elements in the given lane
@@ -199,10 +202,11 @@ public class POOgger {
 	/** Add a new Truck to POOgger's elements
 	 * */
 	private void addTruck() {
-		Random r = new Random();
+		/**Random r = new Random();
 		if(r.nextBoolean()) {
 			elements.add(new Truck(0,8,1,true));
-		}else elements.add(new Truck(600,8,-1,false));
+		}else*/
+		elements.add(new Truck(screenWidth,48*9+2,-1,false));
 		
 	}
 	
@@ -278,46 +282,35 @@ public class POOgger {
 	}
 		
 	/**
-	 * Creates the animators for the firsts lanes
+	 * Adds a new element to the given lane
+	 * @param lane the new element's lane
 	 * */
-	private void prepareLane(){
-		for(int i=0;i<5;i++) addLane(i);
-		Animator lane1 = new Animator() {};
-		Animator lane2 = new Animator() {};
-		Animator lane3 = new Animator() {};
-		Animator lane4 = new Animator() {};
-		Animator lane5 = new Animator() {};
-		lane1.animate(1000, 2, new Runnable() {public void run() {addLane(0);}}, false);
-		lane2.animate(2000, 2, new Runnable() {public void run() {addLane(1);}}, false);
-		lane3.animate(3000, 2, new Runnable() {public void run() {addLane(2);}}, false);
-		lane4.animate(1500, 2, new Runnable() {public void run() {addLane(3);}}, false);
-		lane5.animate(7000, 2, new Runnable() {public void run() {addLane(4);}}, false);
+	private void addLaneBeaver(int lane) {
+		Random r = new Random();
+		switch (lane) {
+			case 0:
+				addTurtle(0);
+				break;
+			case 1:
+				addLog(0);
+				break;
+			case 2:
+				addLog(1);
+				break;
+			case 3:
+				addTurtle(3);
+				break;
+			case 4:
+				if(r.nextBoolean()) {
+					addLog(2);
+				} else addLizzard();
+				break;
+		}
 	}
 	
-	/**Creates the animators for the beaver's lanes
-	 * */
-	private void prepareBeaverLane(){
-		addTurtle(0);
-		addLog(0);
-		addLog(1);
-		addTurtle(1);
-		addLizzard();
-		Animator lane1 = new Animator() {};
-		Animator lane2 = new Animator() {};
-		Animator lane3 = new Animator() {};
-		Animator lane4 = new Animator() {};
-		Animator lane5 = new Animator() {};
-		lane1.animate(4000, 2, new Runnable() {public void run() {addTurtle(0);}}, false);
-		lane2.animate(6000, 2, new Runnable() {public void run() {addLog(0);}}, false);
-		lane3.animate(3000, 2, new Runnable() {public void run() {addLog(1);}}, false);
-		lane4.animate(5000, 2, new Runnable() {public void run() {addTurtle(3);}}, false);
-		lane5.animate(2000, 2, new Runnable() {public void run() {
-			Random r = new Random();
-			if(r.nextBoolean()) {
-				addLog(2);
-			}
-			else addLizzard();
-			}
-		}, false);
+	public void gameLoop(int time) {
+		addLaneBeaver(time);
+		addLane(time);
+		update();
 	}
 }

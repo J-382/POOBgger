@@ -1,8 +1,10 @@
 package dominio;
 
+import java.util.ArrayList;
+
 /**
  * POOgger's truck implementation
- * @version 1.3
+ * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
 public class Truck extends Carrier{
@@ -22,17 +24,19 @@ public class Truck extends Carrier{
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
-		state = "";
+		this.maxCarryNumber = 1;
+		this.carried = new ArrayList<Pushable>();
 		orientation = flipped?"F":"";
 		frame = 0;
 		animator = new Animator();
-		sprite = "Truck"+state+(frame+1)+orientation;
+		sprite = "Truck"+(frame+1)+orientation;
 	}
 	
 	/**
 	 * Plays truck's move animation
 	 * */
-	public void updateSprite() {
+	private void updateSprite() {
+		String state = carrying?"C":"";
 		frame = (frame+1)%2;
 		sprite = "Truck"+state+(frame+1)+orientation;
 	}
@@ -47,10 +51,14 @@ public class Truck extends Carrier{
 	
 	@Override
 	public boolean inCollision(Element e) {
+		boolean isDead = false;
 		if(e.isPlayable()) {
 			((Playable) e).makeToxic();
 		}
-		return super.inCollision(e);
+		if(e.getX()<x) {
+			isDead = true;
+		}else isDead = super.inCollision(e);
+		return isDead;
 	}
 	
 }

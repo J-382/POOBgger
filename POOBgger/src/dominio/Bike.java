@@ -1,8 +1,10 @@
 package dominio;
 
+import java.util.ArrayList;
+
 /**
  * POOgger's bike implementation
- * @version 1.3
+ * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
 public class Bike extends Carrier{
@@ -22,17 +24,19 @@ public class Bike extends Carrier{
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
-		state = "";
+		this.maxCarryNumber = 1;
+		this.carried = new ArrayList<Pushable>();
 		orientation = flipped?"F":"";
 		frame = 0;
 		animator = new Animator();
-		sprite = "Bike"+state+(frame+1)+orientation;
+		sprite = "Bike"+(frame+1)+orientation;
 	}
 	
 	/**
 	 * Plays Bike's move animation
 	 * */
-	public void updateSprite() {
+	private void updateSprite() {
+		String state = carrying?"C":"";
 		frame = (frame+1)%2;
 		sprite = "Bike"+state+(frame+1)+orientation;
 	}
@@ -42,6 +46,15 @@ public class Bike extends Carrier{
 		super.move();
 		if(!animator.isRunning()) {
 			animator.animate(200,2,new Runnable() {public void run() {updateSprite();}});
+		}
+	}
+	
+	@Override
+	protected void startCarrying(Pushable c) {
+		System.out.println(x+" "+y);
+		if(c.setPosition(x, y)) {
+			c.setVisible(false);
+			super.startCarrying(c);
 		}
 	}
 	

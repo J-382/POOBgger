@@ -1,14 +1,14 @@
 package dominio;
 
+import java.util.ArrayList;
 
 /**
  * Pretends be a Frogger's turtle
- * @version 1.2
+ * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public class Turtle extends Element{
+public class Turtle extends Carrier{
 	
-	private int speed;
 	private boolean isSubmerge;
 	private boolean doesSubmerge;
 	private int frame;
@@ -26,6 +26,8 @@ public class Turtle extends Element{
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
+		this.carried = new ArrayList<Pushable>();
+		this.maxCarryNumber = 1;
 		frame = 0;
 		isSubmerge = false;
 		this.doesSubmerge = doesSubmerge;
@@ -36,7 +38,7 @@ public class Turtle extends Element{
 	/**
 	 * Plays turtle's submerge animation
 	 * */
-	public void submerge() {
+	private void submerge() {
 		frame = (frame+1)%7;
 		isSubmerge = frame>=3 && frame<5;
 		sprite = "Turtle"+"S"+(frame+1);
@@ -45,7 +47,7 @@ public class Turtle extends Element{
 	/**
 	 * Plays turtle's move animation
 	 * */
-	public void updateSprite() {
+	private void updateSprite() {
 		frame = (frame+1)%2;
 		sprite = "Turtle"+(frame+1);
 		if(frame==0 && doesSubmerge) {
@@ -55,7 +57,7 @@ public class Turtle extends Element{
 	}
 	
 	public void move() {
-		x += speed;
+		super.move();
 		if (!animator.isRunning()) {
 			animator.animate(100*(4-speed), 3, new Runnable() {public void run() {updateSprite();}});
 		}
@@ -63,11 +65,6 @@ public class Turtle extends Element{
 	
 	@Override
 	public boolean inCollision(Element e) {
-		boolean isDead = false;
-		if (isSubmerge) {
-			isDead = true;
-		}
-		else{e.move(speed, 0);}
-		return isDead;
+		return super.inCollision(e);
 	}	
 }

@@ -7,7 +7,7 @@ import javax.swing.Timer;
 
 /**
  * POOgger's motorcycle implementation
- * @version 1.3
+ * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
 public class Motorcycle extends Element{
@@ -40,7 +40,7 @@ public class Motorcycle extends Element{
 	/**
 	 * Plays Motorcycle's move animation
 	 * */
-	public void updateFrame() {
+	private void updateSprite() {
 		frame = (frame+1)%2;
 		sprite = "Motorcycle"+(frame+1)+orientation;
 	}
