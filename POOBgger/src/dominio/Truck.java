@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * POOgger's truck implementation
- * @version 2.1
+ * @version 2.2
  * @author Angie Medina - Jose Perez
  * */
 public class Truck extends Carrier{
@@ -39,6 +39,12 @@ public class Truck extends Carrier{
 		String state = carrying?"C":"";
 		frame = (frame+1)%2;
 		sprite = "Truck"+state+(frame+1)+orientation;
+	}
+	
+	@Override
+	public void stopCarrying(Pushable c) {
+		sprite = "Truck"+(frame+1)+orientation;
+		super.stopCarrying(c);
 	}
 	
 	@Override

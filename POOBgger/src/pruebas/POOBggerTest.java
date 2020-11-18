@@ -87,46 +87,4 @@ public class POOBggerTest {
 		for (int i = 0; i < 6; i++) poogger.killPlayer(poogger.getPlayer());
 		assertFalse(poogger.isPlayerAlive());
 	}
-	
-	@Test
-	public void deberiaTenerVehiculos() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
-		ArrayList<Element> elements = (ArrayList<Element>) poogger.getElements();
-		boolean isACar = false; 
-		for(Element i: elements) {
-			if(i instanceof Car) {
-				isACar = true;
-				break;
-			}
-		}
-		assertTrue(isACar);
-	}
-	
-	@Test
-	public void deberiaTenerTortugas() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
-		ArrayList<Element> elements = (ArrayList<Element>) poogger.getElements();
-		boolean isATurtle = false; 
-		for(Element i: elements) {
-			if(i instanceof Turtle) {
-				isATurtle = true;
-				break;
-			}
-		}
-		assertTrue(isATurtle);
-	}
-	
-	@Test
-	public void deberiaTenerMaderos() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
-		ArrayList<Element> elements = (ArrayList<Element>) poogger.getElements();
-		boolean isALog = false; 
-		for(Element i: elements) {
-			if(i instanceof Log) {
-				isALog = true;
-				break;
-			}
-		}
-		assertTrue(isALog);
-	}
 }

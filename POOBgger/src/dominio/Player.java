@@ -7,7 +7,7 @@ import javax.swing.Timer;
 
 /**
  * POOgger's player implementation
- * @version 2.2
+ * @version 2.4
  * @author Angie Medina - Jose Perez
  * */
 public class Player extends Playable implements Pushable{
@@ -16,7 +16,7 @@ public class Player extends Playable implements Pushable{
 	private int maxY;
 	private int state;
 	private int[] dimensions;
-	private char orientation;
+	
 	private boolean beingCarried;
 	private Carrier carrier;
 	private Animator animator;
@@ -30,19 +30,21 @@ public class Player extends Playable implements Pushable{
 	 * @param dimensions Player's size
 	 */
 	public Player(int initialLives,int maxX, int maxY, int[] dimensions) {
-		lives = initialLives;
+		this.dimensions = dimensions; 
+		this.isVisible = true;
+		this.lives = initialLives;
+		this.isInAir = false;
 		this.maxX = maxX;
 		this.maxY = maxY;
 		points = 0;
 		x = 336;
-		y = 6;//678;
+		y = 678;
 		orientation = 'W';
 		state = 0;
 		sprite =  "Frog"+(state+1)+orientation;
 		beingCarried = false;
 		animator = new Animator();
-		this.dimensions = dimensions; 
-		this.isVisible = true;
+		carrier = null;
 	}
 	
 	public void move() {
@@ -61,15 +63,10 @@ public class Player extends Playable implements Pushable{
 				dx-=delta/3;
 				break;
 		}
-		if(canMove(dx,dy)) {
-			super.move(dx, dy);
-			updateSprite();
-			if(!animator.isRunning()) {
-				animator.animate(25,3,new Runnable() {public void run() {move();}});
-			}
-		}else {
-			state = 0;
-			sprite =  "Frog"+(state+1)+"W";//+orientation;
+		super.move(dx, dy);
+		updateSprite();
+		if(!animator.isRunning()) {
+			animator.animate(25,3,new Runnable() {public void run() {move();}});
 		}
 	}
 	
@@ -115,7 +112,6 @@ public class Player extends Playable implements Pushable{
 	 * */
 	public boolean decreasePlayerLives(int initx,int inity) {
 		boolean revives = false;
-		System.out.println("dead");
 		lives--;
 		if(lives>0) {
 			revives = true;
@@ -124,7 +120,7 @@ public class Player extends Playable implements Pushable{
 			x = initx;
 			y = inity;
 		}
-		stopBeignCarried(); 
+		if(beingCarried) stopBeignCarried(); 
 		return revives;
 	}
 	
@@ -172,16 +168,7 @@ public class Player extends Playable implements Pushable{
 	
 	@Override
 	public void move(int dx,int dy) {
-		if(canMove(dx,dy)) {
-			super.move(dx, dy);
-		}
-		else {
-			if(beingCarried) {
-				if(x+dx<0) {
-					setOrientation('D');
-				}else setOrientation('A'); 
-			}
-		}
+		super.move(dx, dy);
 	}
 	
 	@Override 

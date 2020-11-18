@@ -9,7 +9,7 @@ import java.util.Random;
  * POOgger's player implementation
  * @version 2.1
  * @author Angie Medina - Jose Perez
- * */
+ */
 public class POOgger {
 	private int screenWidth;
 	private int[] logsSpeed;
@@ -23,20 +23,20 @@ public class POOgger {
 	private boolean isPlayerAlive;
 	private ArrayList<Element> elements;
 	private char[] playerKeys;
-	private HashMap<String,int[]> sprites; 
+	private HashMap<String,int[]> sprites;
 	
 	/**
 	 * POOgger class constructor
 	 * @param width POOgger's windows width
 	 * @param height POOgger's windows height
 	 * @param sprites HashMap with all sprites's sizes
-	 * */
+	 */
 	public POOgger(int width, int height, HashMap<String,int[]> sprites) {
 		screenWidth = width;
 		player = new Player(5,624,678, sprites.get("Frog1W"));
 		elements = new ArrayList<Element>();
 		logsSpeed = new int[] {1,2,3};
-		carsSpeed = new int[] {4,3,2,5,1};
+		carsSpeed = new int[] {4,3,2,5,2};
 		snakeSpeed = 1;
 		turtleSpeed = 1;
 		lizzardSpeed = 2;
@@ -44,12 +44,14 @@ public class POOgger {
 		playerKeys = new char[] {'A','W','S','D'};
 		isPlayerAlive = true;
 		animator = new Animator();
-		this.sprites = sprites; 
+		this.sprites = sprites;
+		elements.add(new Beaver(0,48*3,screenWidth,240));
 		animator.animate(100, 101, new Runnable() {public void run() {updateClock();}}, false);
 	}
 	
-	/**Updates clock size
-	 * */
+	/**
+	 * Updates clock size
+	 */
 	private void updateClock() {
 		clock = new Rectangle(0, 0, clock.width - 3 , clock.height);
 		if (clock.width == 0) {
@@ -59,9 +61,10 @@ public class POOgger {
 		
 	}
 	
-	/**Move the player, if possible, in the given direction
+	/**
+	 * Move the player, if possible, in the given direction
 	 * @param dir direction
-	 * */
+	 */
 	public void movePlayer(char dir) {
 		boolean isValid = false;
 		for(char i: playerKeys) {
@@ -75,30 +78,34 @@ public class POOgger {
 		}
 	}
 	
-	/**Returns the POOgger's actual player
-	 * */
+	/**
+	 * Returns the POOgger's actual player
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 	
-	/**Returns the clock sprite
+	/**
+	 * Returns the clock sprite
 	 * @return clock's sprite
-	 * */
+	 */
 	public Rectangle getClock() {
 		return clock;
 	}
 
-	/**Returns if player is alive
+	/**
+	 * Returns if player is alive
 	 * @return true if player is alive, false otherwise
-	 * */
+	 */
 	public boolean isPlayerAlive() {
 		return isPlayerAlive;
 	}
 	
-	/**Move all POOgger's elements
+	/**
+	 * Move all POOgger's elements
 	 * @return An ArrayList with the moved elements
-	 * */
-	public ArrayList<Element> update() {
+	 */
+	private ArrayList<Element> update() {
 		boolean needsClear = false;
 		for(int i=0; i<elements.size(); i++) {
 			Element element = elements.get(i);
@@ -112,14 +119,16 @@ public class POOgger {
 		return elements;
 	}
 	
-	/**Eliminates null elements
-	 * */
-	public void clearElements() {
+	/**
+	 * Eliminates null elements
+	 */
+	private void clearElements() {
 		while(elements.remove(null)) {}
 	}
 	
-	/** Add a new bike to POOgger's elements
-	 * */
+	/**
+	 * Add a new bike to POOgger's elements
+	 */
 	private void addBike() {
 		elements.add(new Bike(screenWidth,48*11+8,-carsSpeed[2],false));
 		/*Random r = new Random();
@@ -128,9 +137,10 @@ public class POOgger {
 		}*/		
 	}
 	
-	/** Add a new car to POOgger's elements in the given lane
+	/** 
+	 * Add a new car to POOgger's elements in the given lane
 	 * @param lane the new car's lane
-	 * */
+	 */
 	private void addCar(int lane) {
 		String[] types = new String[] {"Red","Green","Blue","Pink","Purple"};
 		switch (lane) {
@@ -153,15 +163,16 @@ public class POOgger {
 	}
 	
 	/** Add a new Lizzard to POOgger's elements
-	 * */
+	 */
 	private void addLizzard() {
 		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
 		elements.add(new Lizzard(-sprites.get("Alligator2")[0],48*3+4, 138, lizzardSpeed));
 	}
 	
-	/** Add a new log to POOgger's elements in the given lane
+	/** 
+	 * Add a new log to POOgger's elements in the given lane
 	 * @param lane the new log's lane
-	 * */
+	 */
 	private void addLog(int lane) {
 		String[] types = new String[] {"Small","Medium","Large"};
 		switch (lane) {
@@ -177,8 +188,9 @@ public class POOgger {
 		}
 	}
 	
-	/** Add a new motorcycle to POOgger's elements
-	 * */
+	/** 
+	 * Add a new motorcycle to POOgger's elements
+	 */
 	private void addMotorcycle() {
 		elements.add(new Motorcycle(0,48*10+6,carsSpeed[3],true));
 		/*
@@ -189,8 +201,9 @@ public class POOgger {
 		*/
 	}
 
-	/** Add a new snake to POOgger's elements
-	 * */
+	/** 
+	 * Add a new snake to POOgger's elements
+	 */
 	private void addSnake() {
 		Random r = new Random();
 		boolean flipped = r.nextBoolean();
@@ -199,52 +212,54 @@ public class POOgger {
 		}else elements.add(new Snake(0,0,-1*snakeSpeed,true));
 	}
 	
-	/** Add a new Truck to POOgger's elements
-	 * */
+	/** 
+	 * Add a new Truck to POOgger's elements
+	 */
 	private void addTruck() {
 		/**Random r = new Random();
 		if(r.nextBoolean()) {
 			elements.add(new Truck(0,8,1,true));
 		}else*/
-		elements.add(new Truck(screenWidth,48*9+2,-1,false));
+		elements.add(new Truck(screenWidth,48*9+2,carsSpeed[4],false));
 		
 	}
 	
 	/** Add a new turtle to POOgger's elements in the given lane
 	 * @param lane the new turtle's lane
-	 * */
+	 */
     private void addTurtle(int lane) {
+    	Random r = new Random();
+    	boolean doesSubmerge = r.nextBoolean();
     	if(lane==0) {
-			elements.add(new Turtle(screenWidth,336,-2*turtleSpeed, false));
-			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],336,-2*turtleSpeed, false));
-			elements.add(new Turtle(screenWidth+40+2*sprites.get("Turtle1")[0],336,-2*turtleSpeed, false));
+			elements.add(new Turtle(screenWidth,336,-3*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],336,-3*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth+40+2*sprites.get("Turtle1")[0],336,-3*turtleSpeed, doesSubmerge));
 		}else {
-			elements.add(new Turtle(screenWidth, 194, -1*turtleSpeed, true));
-			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0], 194, -1*turtleSpeed, true));
+			elements.add(new Turtle(screenWidth, 194, -2*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0], 194, -2*turtleSpeed, doesSubmerge));
 		}
 		
-	}
-	
-    /**Return an ArrayList with all POOgger's elements
-     * @return an ArrayList with all POOgger's elements
-     * */
-	public ArrayList<Element> getElements(){
-		clearElements();
-		return elements;
-	}
+    }
 	
 	/**
-	 * Checks if player is collisioning with the given element
+	 * Checks if player is collisioning with some level's elements
 	 * @param element desired element to check
-	 * */
-	public boolean[] checkPlayerCollision(Player player, Element element) {
+	 */
+	private boolean checkPlayerCollisions(Player player) {
 		boolean isDead = false;
-		boolean areTouching = false;
-		if(player.getBounds(sprites.get(player.getSprite())).intersects(element.getBounds(sprites.get(element.getSprite())))) {
-			areTouching = true;
-			isDead = element.inCollision(player);
+		boolean touchingWater = true;
+		for(int i=1; i<elements.size(); i++) {
+			Element e = elements.get(i);
+			if(player.getBounds(sprites.get(player.getSprite())).intersects(e.getBounds(sprites.get(e.getSprite())))) {
+				isDead = e.inCollision(player);
+				touchingWater = false;
+			}
+			if(isDead) break;
 		}
-		return new boolean[] {isDead, areTouching};
+		if(player.getBounds(sprites.get(player.getSprite())).intersects(((Fixed) elements.get(0)).getBounds())) {
+			touchingWater = touchingWater && elements.get(0).inCollision(player);
+		}else touchingWater = false;
+		return isDead || touchingWater;
 	}
 	
 	/***/
@@ -255,62 +270,64 @@ public class POOgger {
 	/**
 	 * Adds a new element to the given lane
 	 * @param lane the new element's lane
-	 * */
-	private void addLane(int lane) {
+	 */
+	private void addLane(int time) {
 		Random r = new Random();
-		switch (lane) {
-			case 0:
-				addCar(0);
-				break;
-			case 1:
-				addCar(1);
-				break;
-			case 2:
-				if(r.nextBoolean()) {
-					addCar(2);
-				}else addBike();
-				break;
-			case 3:
-				if(r.nextBoolean()) {
-					addCar(3);
-				}else addMotorcycle();
-				break;
-			case 4:
+		if(time%250==0) {
+			addCar(0);
+		}
+		if(time%500==0) {
+			addCar(1);
+		}
+		if(time%300==0) {
+			if(r.nextBoolean()) {
+				addCar(2);
+			}else addBike();
+		}
+		if(time%250==0) {
+			if(r.nextBoolean()) {
+				addCar(3);
+			}else addMotorcycle();
+		}
+		if(time%500==0) {
+			addCar(4);
+			if(r.nextBoolean()) {
 				addCar(4);
-				break;
+			}else addTruck();
 		}
 	}
 		
 	/**
 	 * Adds a new element to the given lane
 	 * @param lane the new element's lane
-	 * */
-	private void addLaneBeaver(int lane) {
+	 */
+	private void addLaneBeaver(int time) {
 		Random r = new Random();
-		switch (lane) {
-			case 0:
-				addTurtle(0);
-				break;
-			case 1:
-				addLog(0);
-				break;
-			case 2:
-				addLog(1);
-				break;
-			case 3:
-				addTurtle(3);
-				break;
-			case 4:
-				if(r.nextBoolean()) {
-					addLog(2);
-				} else addLizzard();
-				break;
+		if(time%200==0) {
+			addTurtle(0);
+		}
+		if(time%500==0) {
+			addLog(0);
+		}
+		if(time%400==0) {
+			addLog(1);
+		}
+		if(time%200==0) {
+			addTurtle(3);
+		}
+		if(time%300==0) {
+			if(r.nextBoolean()) {
+				addLog(2);
+			} else addLizzard();
 		}
 	}
 	
-	public void gameLoop(int time) {
+	public ArrayList<Element> gameLoop(int time) {
 		addLaneBeaver(time);
 		addLane(time);
-		update();
+		checkPlayerCollisions(player);
+		if(time%2==0) update();
+		if(checkPlayerCollisions(player)) killPlayer(player);
+		return elements;
 	}
 }

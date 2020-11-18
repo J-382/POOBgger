@@ -6,17 +6,18 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 /** POOgger Playable element behavior
- * @version 1.1
+ * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
 public abstract class Playable extends Element{
 	protected boolean isToxic;
 	protected boolean isArmored;
 	protected boolean isFast;
-	protected boolean canFly;
+	protected boolean isInAir;
 	protected int lives;
 	protected int points;
 	protected int bonus;
+	protected char orientation;
 	
 	/**
 	 * Add bonus to the playable element
@@ -44,5 +45,13 @@ public abstract class Playable extends Element{
 	@Override
 	public boolean isPlayable() {
 		return true;
+	}
+	
+	public char getOrientation() {
+		return orientation;
+	}
+	
+	public boolean isInAir() {
+		return isInAir;
 	}
 }

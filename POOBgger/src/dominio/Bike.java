@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * POOgger's bike implementation
- * @version 2.1
+ * @version 2.2
  * @author Angie Medina - Jose Perez
  * */
 public class Bike extends Carrier{
@@ -30,6 +30,12 @@ public class Bike extends Carrier{
 		frame = 0;
 		animator = new Animator();
 		sprite = "Bike"+(frame+1)+orientation;
+	}
+	
+	@Override
+	public void stopCarrying(Pushable c) {
+		sprite = "Bike"+(frame+1)+orientation;
+		super.stopCarrying(c);
 	}
 	
 	/**

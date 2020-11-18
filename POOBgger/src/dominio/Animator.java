@@ -42,7 +42,8 @@ public class Animator {
 		animate(delay,frames,run,true);
 	}
 	
-	/**Starts a loop with the given params, if stopAtEnd is false, the animator restarts itself
+	/**
+	 * Starts a loop with the given params, if stopAtEnd is false, the animator restarts itself
 	 * @param delay time between each iteration
 	 * @param frames numbers of iteration, if stopAtEnd is false, frames must be at lease 2
 	 * @param run code to run in each iteration
