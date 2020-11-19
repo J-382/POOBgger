@@ -16,6 +16,8 @@ public class Player extends Playable implements Pushable{
 	private int maxY;
 	private int state;
 	private int[] dimensions;
+	private int minReachY;
+	private int lastMove;
 	
 	private boolean beingCarried;
 	private Carrier carrier;
@@ -39,6 +41,7 @@ public class Player extends Playable implements Pushable{
 		points = 0;
 		x = 336;
 		y = 678;
+		lastMove = 0;
 		orientation = 'W';
 		state = 0;
 		sprite =  "Frog"+(state+1)+orientation;
@@ -62,6 +65,13 @@ public class Player extends Playable implements Pushable{
 			case "A" :
 				dx-=delta/3;
 				break;
+		}
+		if (("" + orientation).equals("W")) {
+			lastMove = (lastMove + 1) % 3;
+			if (lastMove == 0 && getY() < minReachY) {
+				minReachY = getY();
+				increasePoints(10);
+			}
 		}
 		super.move(dx, dy);
 		updateSprite();
@@ -125,6 +135,14 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	/**
+	 * Increase the player point by some amount
+	 * @param value, the amount to add to the player's pointz
+	 */
+	public void increasePoints(int value) {
+		points += value;
+	} 
+	
+	/**
 	 * Returns player's size
 	 * @return player's size
 	 * */
@@ -138,6 +156,13 @@ public class Player extends Playable implements Pushable{
 	 * */
 	public int getLives() {
 		return lives;
+	}
+	
+	/**
+	 * Returns the player's points
+	 **/
+	public int getPoints() {
+		return points;
 	}
 	
 	/**

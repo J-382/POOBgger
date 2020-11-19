@@ -17,6 +17,7 @@ public class POOgger {
 	private int snakeSpeed;
 	private int turtleSpeed;
 	private int lizzardSpeed;
+	private boolean exist;
 	private Player player;
 	private Rectangle clock;
     private Animator animator;
@@ -40,7 +41,8 @@ public class POOgger {
 		snakeSpeed = 1;
 		turtleSpeed = 1;
 		lizzardSpeed = 2;
-		clock = new Rectangle(0,0, 450, 20);
+		exist = false;
+		clock = new Rectangle(0,0, 0, 20);
 		playerKeys = new char[] {'A','W','S','D'};
 		isPlayerAlive = true;
 		animator = new Animator();
@@ -51,12 +53,12 @@ public class POOgger {
 	
 	/**
 	 * Updates clock size
-	 */
+	 **/
 	private void updateClock() {
-		clock = new Rectangle(0, 0, clock.width - 3 , clock.height);
-		if (clock.width == 0) {
+		clock = new Rectangle(0, 0, clock.width + 1 , clock.height);
+		if (clock.width == 306) {
 			player.decreasePlayerLives(336, 678);
-			clock = new Rectangle(0, 0, 300, 20);
+			clock = new Rectangle(0, 0, 0, 20);
 		}
 		
 	}
@@ -83,6 +85,20 @@ public class POOgger {
 	 */
 	public Player getPlayer() {
 		return player;
+	}
+	
+	/**
+	 * Returns the player's points
+	 */
+	public int getPoints() {
+		return player.getPoints();
+	}
+	
+	/**
+	 * Returns the highest score saved
+	 */
+	public int getHighScore() {
+		return 0;
 	}
 	
 	/**
@@ -126,6 +142,10 @@ public class POOgger {
 		while(elements.remove(null)) {}
 	}
 	
+	
+	private void addEagle() {
+		elements.add(new Eagle(1, player));
+	}
 	/**
 	 * Add a new bike to POOgger's elements
 	 */
@@ -273,6 +293,10 @@ public class POOgger {
 	 */
 	private void addLane(int time) {
 		Random r = new Random();
+		if (!exist) {
+			addEagle();
+			exist = true;
+		}
 		if(time%250==0) {
 			addCar(0);
 		}
