@@ -7,7 +7,7 @@ import javax.swing.Timer;
 
 /**
  * POOgger's player implementation
- * @version 2.4
+ * @version 2.6
  * @author Angie Medina - Jose Perez
  * */
 public class Player extends Playable implements Pushable{
@@ -40,7 +40,7 @@ public class Player extends Playable implements Pushable{
 		this.maxY = maxY;
 		points = 0;
 		x = 336;
-		y = 678;
+		y = 672;
 		lastMove = 0;
 		orientation = 'W';
 		state = 0;
@@ -78,12 +78,12 @@ public class Player extends Playable implements Pushable{
 		if(!animator.isRunning()) {
 			animator.animate(25,3,new Runnable() {public void run() {move();}});
 		}
+		isInAir = !(state==0);
 	}
 	
 	private void updateSprite() {
 		state = (state+1)%3;
-		sprite =  "Frog"+(state+1)+"W";
-		
+		sprite =  "Frog"+(state+1)+orientation;	
 	}
 	
 	/**
@@ -125,13 +125,17 @@ public class Player extends Playable implements Pushable{
 		lives--;
 		if(lives>0) {
 			revives = true;
-			animator.stop();
-			state = 0;
-			x = initx;
-			y = inity;
+			resetPlayer(initx, inity);
 		}
-		if(beingCarried) stopBeignCarried(); 
 		return revives;
+	}
+	
+	public void resetPlayer(int initx,int inity) {
+		animator.stop();
+		state = 0;
+		x = initx;
+		y = inity;
+		if(beingCarried) stopBeignCarried(); 
 	}
 	
 	/**
@@ -163,15 +167,6 @@ public class Player extends Playable implements Pushable{
 	 **/
 	public int getPoints() {
 		return points;
-	}
-	
-	/**
-	 * Returns if Player can move in the given params
-	 * @param dx delta x
-	 * @param dy delta y 
-	 * */
-	private boolean canMove(int dx, int dy) {
-		return !(x+dx > maxX || x+dx<0 || y+dy>maxY || y+dy<0);
 	}
 	
 	@Override
@@ -214,7 +209,8 @@ public class Player extends Playable implements Pushable{
 
 	@Override
 	public void addPush(int push, String dir) {
-		super.move(push, 0);
+		if(dir.equals("W") || dir.equals("S")) super.move(0, push);
+		else super.move(push, 0);
 	}
 
 	@Override
@@ -234,5 +230,15 @@ public class Player extends Playable implements Pushable{
 	@Override 
 	public void setVisible(boolean visible) {
 		isVisible = visible;
+	}
+
+	@Override
+	public char getDir() {
+		return orientation;	
+	}
+	
+	@Override
+	public boolean isBeingCarried() {
+		return beingCarried;
 	}
 }

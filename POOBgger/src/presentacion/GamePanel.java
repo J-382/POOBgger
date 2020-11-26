@@ -1,6 +1,7 @@
 package presentacion;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
@@ -18,14 +19,13 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import dominio.Element;
+import dominio.Fixed;
 import dominio.POOgger;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel{
 	private POOgger poogger;
 	private HashMap<String,Image> sprites;
-	private int width = 672;
-	private int height = 757;
 	private int lapsus = 0;
 	private boolean paused;
 	private final File font = new File("resources/8-BIT.TTF");
@@ -39,7 +39,7 @@ public class GamePanel extends JPanel{
 	}
 	private void prepareElementos() {
 		addFont();
-		poogger = new POOgger(672,757, prepareArchivos());
+		poogger = new POOgger(720,768, prepareArchivos(),new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		lapsus = 0;
 		setUIFont(new javax.swing.plaf.FontUIResource("8-bit Operator+ SC",Font.BOLD,12));
 	}
@@ -79,8 +79,10 @@ public class GamePanel extends JPanel{
 			g.setFont(new Font("8-bit Operator+ SC", Font.BOLD, 18));
 			g.drawImage(new ImageIcon("./resources/Fondo.png").getImage(),0,0,null);
 			for(Element i: poogger.gameLoop(lapsus)) {
-				g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
+				if("Rectangle".equals(i.getSprite())) g.fillRect(i.getX(), i.getY(), ((Fixed) i).getWidth(), ((Fixed) i).getHeight());
+				else g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
 			}
+			drawGrid(g);
 			g.setColor(Color.WHITE);
 			g.drawString("1-UP    HI-SCORE",40,23);
 			g.setColor(Color.RED.darker());
@@ -103,10 +105,10 @@ public class GamePanel extends JPanel{
 	
 	public void drawGrid(Graphics g) {
 		int spc = 48;
-		for(int i=0;i<16;i++) {
+		for(int i=0;i<17;i++) {
 			g.drawLine(0,i*spc,800,i*spc);
 		}
-		for(int i=0;i<16;i++) {
+		for(int i=0;i<17;i++) {
 			g.drawLine(i*spc,0,i*spc,800);
 		}
 	}
@@ -140,7 +142,8 @@ public class GamePanel extends JPanel{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GamePanel game = new GamePanel();
 		frame.add(game);
-		frame.setSize(687,757);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		frame.setSize(735,dim.height);
 		frame.setVisible(true);
 		frame.setBackground(Color.BLACK);
 		frame.setLocationRelativeTo(null);

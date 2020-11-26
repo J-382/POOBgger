@@ -16,4 +16,12 @@ public abstract class Fixed extends Element {
 	public Rectangle getBounds() {
 		return new Rectangle(x,y,width,height);
 	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
 }

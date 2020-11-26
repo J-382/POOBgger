@@ -54,4 +54,7 @@ public abstract class Playable extends Element{
 	public boolean isInAir() {
 		return isInAir;
 	}
+	
+	public void changeSprite() {
+	}
 }

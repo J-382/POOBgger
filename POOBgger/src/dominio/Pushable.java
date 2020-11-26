@@ -1,7 +1,7 @@
 package dominio;
 
 /** POOgger Pushable element behavior
- * @version 1.2
+ * @version 1.3
  * @author Angie Medina - Jose Perez
  * */
 public interface Pushable {
@@ -33,4 +33,8 @@ public interface Pushable {
 	public int calculateMaxPush(String dir);
 	
 	public void setVisible(boolean visible);
+	
+	public char getDir();
+	
+	public boolean isBeingCarried();
 }

@@ -36,9 +36,9 @@ public class Eagle extends Element{
 		state = 0;
 		onAir = true;
 		try {
-			sound = AudioSystem.getClip();
-			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/eagleSound.wav")));
-			sound.loop(0);
+			//sound = AudioSystem.getClip();
+			//sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/eagleSound.wav")));
+			//sound.loop(0);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -70,9 +70,8 @@ public class Eagle extends Element{
 	}
 	
 	private void updateFlySprite() {
-		state =  (state + 1)%2;
-		y+=state==0?15:-15;
-		sprite = "Alligator"+(state + 1);
+		state =  (state + 1)%30;
+		sprite = "Eagle"+((state>4?0:state) + 1);
 	}
 
 	@Override
@@ -81,13 +80,13 @@ public class Eagle extends Element{
 		if(y <= 100) {
 			super.move(dx, dy);
 			if (!animator.isRunning()) {
-				animator.animate(1000, 2, new Runnable() {public void run() {updateFlySprite();}});
+				animator.animate(100, 2, new Runnable() {public void run() {updateFlySprite();}});
 			}
 		}
 		else {
 			if (!timerToChase.isRunning() && !chaseMood) timerToChase.start();
 			if (chaseMood) {
-				dy = 1;
+				dy = 3;
 				dx = 0;
 				if (x + dx == chasePoint[0] && y + dy == chasePoint[1]) {
 					onAir = false;
@@ -102,7 +101,7 @@ public class Eagle extends Element{
 			}
 			super.move(dx, dy);
 			if (!animator.isRunning()) {
-				animator.animate(1000, 2, new Runnable() {public void run() {updateFlySprite();}});
+				animator.animate(50, 2, new Runnable() {public void run() {updateFlySprite();}});
 			}
 		}
 	}

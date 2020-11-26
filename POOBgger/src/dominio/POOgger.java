@@ -12,6 +12,7 @@ import java.util.Random;
  */
 public class POOgger {
 	private int screenWidth;
+	private int screenHeight;
 	private int[] logsSpeed;
 	private int[] carsSpeed;
 	private int snakeSpeed;
@@ -23,7 +24,9 @@ public class POOgger {
     private Animator animator;
 	private boolean isPlayerAlive;
 	private ArrayList<Element> elements;
-	private char[] playerKeys;
+	private ArrayList<Element> fixeds;
+	private char[] player1Keys;
+	private char[] player2Keys;
 	private HashMap<String,int[]> sprites;
 	
 	/**
@@ -32,22 +35,30 @@ public class POOgger {
 	 * @param height POOgger's windows height
 	 * @param sprites HashMap with all sprites's sizes
 	 */
-	public POOgger(int width, int height, HashMap<String,int[]> sprites) {
+	public POOgger(int width, int height, HashMap<String,int[]> sprites, char[] player1Keys, char[] player2Keys) {
 		screenWidth = width;
-		player = new Player(5,624,678, sprites.get("Frog1W"));
-		elements = new ArrayList<Element>();
-		logsSpeed = new int[] {1,2,3};
-		carsSpeed = new int[] {4,3,2,5,2};
+		screenHeight = height;
+		this.sprites = sprites;
+		this.player1Keys = player1Keys;
+		this.player2Keys = player2Keys;
+		exist = false;
+		isPlayerAlive = true;
 		snakeSpeed = 1;
 		turtleSpeed = 1;
 		lizzardSpeed = 2;
-		exist = false;
+		logsSpeed = new int[] {1,2,3};
+		carsSpeed = new int[] {4,3,2,5,2};
+		player = new Player(5,624,678, sprites.get("Frog1W"));
+		elements = new ArrayList<Element>();
+		fixeds = new ArrayList<Element>();
+		addFixedElements();
+		prepareClock();
+		
+	}
+	
+	private void prepareClock() {
 		clock = new Rectangle(0,0, 0, 20);
-		playerKeys = new char[] {'A','W','S','D'};
-		isPlayerAlive = true;
 		animator = new Animator();
-		this.sprites = sprites;
-		elements.add(new Beaver(0,48*3,screenWidth,240));
 		animator.animate(100, 101, new Runnable() {public void run() {updateClock();}}, false);
 	}
 	
@@ -69,7 +80,7 @@ public class POOgger {
 	 */
 	public void movePlayer(char dir) {
 		boolean isValid = false;
-		for(char i: playerKeys) {
+		for(char i: player1Keys) {
 			if(i==dir) {
 				isValid = true;
 				break;
@@ -150,7 +161,7 @@ public class POOgger {
 	 * Add a new bike to POOgger's elements
 	 */
 	private void addBike() {
-		elements.add(new Bike(screenWidth,48*11+8,-carsSpeed[2],false));
+		elements.add(new Bike(screenWidth,48*11,-carsSpeed[2],false));
 		/*Random r = new Random();
 		if(r.nextBoolean()) {
 			elements.add(new Bike(0,8,1,true));
@@ -165,19 +176,19 @@ public class POOgger {
 		String[] types = new String[] {"Red","Green","Blue","Pink","Purple"};
 		switch (lane) {
 			case 0:
-				elements.add(new Car(screenWidth,48*12+2,-carsSpeed[0],types[0]));
+				elements.add(new Car(screenWidth,48*12,-carsSpeed[0],types[0]));
 				break;
 			case 1:
-				elements.add(new Car(-sprites.get(types[1]+"Car")[0],48*13+2,carsSpeed[1],types[1]));
+				elements.add(new Car(-sprites.get(types[1]+"Car")[0],48*13,carsSpeed[1],types[1]));
 				break;
 			case 2:
-				elements.add(new Car(screenWidth,48*11+2,-carsSpeed[2],types[2]));
+				elements.add(new Car(screenWidth,48*11,-carsSpeed[2],types[2]));
 				break;
 			case 3:
-				elements.add(new Car(-sprites.get(types[3]+"Car")[0],48*10+2,carsSpeed[3],types[3]));
+				elements.add(new Car(-sprites.get(types[3]+"Car")[0],48*10,carsSpeed[3],types[3]));
 				break;
 			case 4:
-				elements.add(new Car(screenWidth,48*9+2,-carsSpeed[4],types[4]));
+				elements.add(new Car(screenWidth,48*9,-carsSpeed[4],types[4]));
 				break;
 		}
 	}
@@ -186,7 +197,7 @@ public class POOgger {
 	 */
 	private void addLizzard() {
 		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
-		elements.add(new Lizzard(-sprites.get("Alligator2")[0],48*3+4, 138, lizzardSpeed));
+		elements.add(new Lizard(-sprites.get("Alligator2")[0],48*3, 138, lizzardSpeed));
 	}
 	
 	/** 
@@ -197,13 +208,13 @@ public class POOgger {
 		String[] types = new String[] {"Small","Medium","Large"};
 		switch (lane) {
 			case 0:
-				elements.add(new SmallLog(-sprites.get(types[0]+"Log1")[0],48*6+4,logsSpeed[0],types[0]+"Log1"));
+				elements.add(new SmallLog(-sprites.get(types[0]+"Log1")[0],48*6,logsSpeed[0],types[0]+"Log1"));
 				break;
 			case 2:
-				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3+4,logsSpeed[1],types[1]+"Log"));
+				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3,logsSpeed[1],types[1]+"Log"));
 				break;
 			case 1:
-				elements.add(new Log(-sprites.get(types[2]+"Log")[0],48*5+4,logsSpeed[2],types[2]+"Log"));
+				elements.add(new Log(-sprites.get(types[2]+"Log")[0],48*5,logsSpeed[2],types[2]+"Log"));
 				break;
 		}
 	}
@@ -212,7 +223,7 @@ public class POOgger {
 	 * Add a new motorcycle to POOgger's elements
 	 */
 	private void addMotorcycle() {
-		elements.add(new Motorcycle(0,48*10+6,carsSpeed[3],true));
+		elements.add(new Motorcycle(-sprites.get("Motorcycle1")[0],48*10,carsSpeed[3],true));
 		/*
 		Random r = new Random();
 		if(r.nextBoolean()) {
@@ -240,7 +251,7 @@ public class POOgger {
 		if(r.nextBoolean()) {
 			elements.add(new Truck(0,8,1,true));
 		}else*/
-		elements.add(new Truck(screenWidth,48*9+2,carsSpeed[4],false));
+		elements.add(new Truck(screenWidth,48*9,carsSpeed[4],false));
 		
 	}
 	
@@ -251,12 +262,12 @@ public class POOgger {
     	Random r = new Random();
     	boolean doesSubmerge = r.nextBoolean();
     	if(lane==0) {
-			elements.add(new Turtle(screenWidth,336,-3*turtleSpeed, doesSubmerge));
-			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],336,-3*turtleSpeed, doesSubmerge));
-			elements.add(new Turtle(screenWidth+40+2*sprites.get("Turtle1")[0],336,-3*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth,48*7,-3*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],48*7,-3*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth+40+2*sprites.get("Turtle1")[0],48*7,-3*turtleSpeed, doesSubmerge));
 		}else {
-			elements.add(new Turtle(screenWidth, 194, -2*turtleSpeed, doesSubmerge));
-			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0], 194, -2*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth, 48*4, -2*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0], 48*4, -2*turtleSpeed, doesSubmerge));
 		}
 		
     }
@@ -266,27 +277,57 @@ public class POOgger {
 	 * @param element desired element to check
 	 */
 	private boolean checkPlayerCollisions(Player player) {
+		boolean[] mobileCollisions = checkMobileElements(player);
+		return mobileCollisions[0] || checkFixedElements(player,mobileCollisions[1]);
+		
+	}
+	
+	private boolean[] checkMobileElements(Player player) {
 		boolean isDead = false;
 		boolean touchingWater = true;
-		for(int i=1; i<elements.size(); i++) {
-			Element e = elements.get(i);
-			if(player.getBounds(sprites.get(player.getSprite())).intersects(e.getBounds(sprites.get(e.getSprite())))) {
+		for(Element e: elements) {
+			if(player.getBounds(sprites.get("Frog1W")).intersects(e.getBounds(sprites.get(e.getSprite())))) {
 				isDead = e.inCollision(player);
 				touchingWater = false;
 			}
 			if(isDead) break;
 		}
-		if(player.getBounds(sprites.get(player.getSprite())).intersects(((Fixed) elements.get(0)).getBounds())) {
-			touchingWater = touchingWater && elements.get(0).inCollision(player);
+		
+		return new boolean[] {isDead,touchingWater};
+	}
+	
+	private boolean checkFixedElements(Player player, boolean touchingWater) {
+		boolean isDead = false;
+		if(player.getBounds(sprites.get("Frog1W")).intersects(((Fixed) fixeds.get(0)).getBounds())) {
+			touchingWater = touchingWater && fixeds.get(0).inCollision(player);
 		}else touchingWater = false;
+		for(int i=6; i<fixeds.size(); i++) {
+			Cave e = (Cave) fixeds.get(i);
+			if(player.getBounds(sprites.get("Frog1W")).intersects(e.getBounds())) {
+				isDead = e.inCollision(player);
+				if(!isDead && e.isOccupied()) resetPlayer(player);
+			}
+		}
+		if(!isDead) {
+			for(int i=1; i<6; i++) {
+				Fixed e = (Fixed) fixeds.get(i);
+				if(player.getBounds(sprites.get("Frog1W")).intersects(e.getBounds())) {
+					isDead = e.inCollision(player);
+					if(isDead) break;
+				}
+			}
+		}
 		return isDead || touchingWater;
 	}
 	
 	/***/
 	public void killPlayer(Player player) {
-		isPlayerAlive = player.decreasePlayerLives(336,678);
+		isPlayerAlive = player.decreasePlayerLives(48*7,48*14);
 	}
 	
+	public void resetPlayer(Player player) {
+		player.resetPlayer(48*7,48*14);
+	}
 	/**
 	 * Adds a new element to the given lane
 	 * @param lane the new element's lane
@@ -352,6 +393,23 @@ public class POOgger {
 		checkPlayerCollisions(player);
 		if(time%2==0) update();
 		if(checkPlayerCollisions(player)) killPlayer(player);
-		return elements;
+		ArrayList<Element> allElements = new ArrayList<Element>();
+		allElements.addAll(fixeds);
+		allElements.addAll(elements);
+		return allElements;
+	}
+	
+	private void addFixedElements() {
+		fixeds.add(new Beaver(0,48*3,screenWidth,240));
+		fixeds.add(new Barrier(-48,48*8,48,48*7,48,false));
+		fixeds.add(new Barrier(screenWidth,48*8,48,48*7,48,false));
+		fixeds.add(new Barrier(0,48*15,48*16,48,48,false));
+		fixeds.add(new Barrier(-48,48,48,48*7,48,true));
+		fixeds.add(new Barrier(screenWidth,48,48,48*7,48,true));
+		fixeds.add(new Cave(48,48*2,48,48));
+		fixeds.add(new Cave(48*4,48*2,48,48));
+		fixeds.add(new Cave(48*7,48*2,48,48));
+		fixeds.add(new Cave(48*10,48*2,48,48));
+		fixeds.add(new Cave(48*13,48*2,48,48));
 	}
 }

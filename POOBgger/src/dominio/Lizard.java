@@ -3,11 +3,11 @@ package dominio;
 import java.util.ArrayList;
 
 /**
- * Pretends be a Frogger's lizzard
+ * Pretends be a Frogger's lizard
  * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public class Lizzard extends Carrier{
+public class Lizard extends Carrier{
 
 	private boolean isOpen;
 	private int state;
@@ -16,12 +16,12 @@ public class Lizzard extends Carrier{
 	
 	
 	/**
-	 * Lizzard class constructor
-	 * @param x Lizzard's x position
-	 * @param y Lizzard's y position
+	 * Lizard class constructor
+	 * @param x Lizard's x position
+	 * @param y Lizard's y position
 	 * @param speed Lizzard's speed
 	 * */
-	public Lizzard(int x, int y, int length,int speed) {
+	public Lizard(int x, int y, int length,int speed) {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
@@ -35,11 +35,11 @@ public class Lizzard extends Carrier{
 	}
 	
 	/**
-	 * Plays Lizzard's move animation
+	 * Plays Lizard's move animation
 	 * */
 	private void updateSprite() {
 		state =  (state + 1)%2;
-		y+=state==0?15:-15;
+		y+=state==0?8:-8;
 		isOpen = state == 1;
 		sprite = "Alligator"+(state + 1);
 	}

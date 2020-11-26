@@ -40,7 +40,7 @@ public class POOBggerTest {
 	
 	@Test
 	public void deberiaMoverseHaciaArriba() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
+		POOgger poogger = new POOgger(672, 757, spritesSize,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		int[] beforePosition = new int[] {poogger.getPlayer().getX(), poogger.getPlayer().getY()};
 		poogger.movePlayer('S');
 		int[] afterPosition = new int[] {poogger.getPlayer().getX(), poogger.getPlayer().getY()};
@@ -49,7 +49,7 @@ public class POOBggerTest {
 	
 	@Test
 	public void noDeberiaMoverseHaciaAbajo() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
+		POOgger poogger = new POOgger(672, 757, spritesSize,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		int[] beforePosition = new int[] {poogger.getPlayer().getX(), poogger.getPlayer().getY()};
 		poogger.movePlayer('W');
 		int[] afterPosition = new int[] {poogger.getPlayer().getX(), poogger.getPlayer().getY()};
@@ -59,7 +59,7 @@ public class POOBggerTest {
 	
 	@Test
 	public void deberiaMoverseHaciaLaDerecha() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
+		POOgger poogger = new POOgger(672, 757, spritesSize,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		int[] beforePosition = new int[] {poogger.getPlayer().getX(), poogger.getPlayer().getY()};
 		poogger.movePlayer('D');
 		int[] afterPosition = new int[] {poogger.getPlayer().getX(), poogger.getPlayer().getY()};
@@ -68,7 +68,7 @@ public class POOBggerTest {
 	
 	@Test
 	public void deberiaMoverseHaciaLaIzquierda() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
+		POOgger poogger = new POOgger(672, 757, spritesSize,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		int[] beforePosition = new int[] {poogger.getPlayer().getX(), poogger.getPlayer().getY()};
 		poogger.movePlayer('A');
 		int[] afterPosition = new int[] {poogger.getPlayer().getX(), poogger.getPlayer().getY()};
@@ -77,13 +77,13 @@ public class POOBggerTest {
 	
 	@Test
 	public void deberiaIniciarConCincoVidas() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
+		POOgger poogger = new POOgger(672, 757, spritesSize,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		assertEquals(5, poogger.getPlayer().getLives());
 	}
 	
 	@Test
 	public void noDeberiaEstarVivo() {
-		POOgger poogger = new POOgger(672, 757, spritesSize);
+		POOgger poogger = new POOgger(672, 757, spritesSize,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		for (int i = 0; i < 6; i++) poogger.killPlayer(poogger.getPlayer());
 		assertFalse(poogger.isPlayerAlive());
 	}
