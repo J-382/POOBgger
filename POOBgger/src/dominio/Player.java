@@ -41,6 +41,7 @@ public class Player extends Playable implements Pushable{
 		points = 0;
 		x = 336;
 		y = 672;
+		minReachY = y;
 		lastMove = 0;
 		orientation = 'W';
 		state = 0;
@@ -66,6 +67,7 @@ public class Player extends Playable implements Pushable{
 				dx-=delta/3;
 				break;
 		}
+		
 		if (("" + orientation).equals("W")) {
 			lastMove = (lastMove + 1) % 3;
 			if (lastMove == 0 && getY() < minReachY) {

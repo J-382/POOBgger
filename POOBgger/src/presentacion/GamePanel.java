@@ -1,31 +1,39 @@
 package presentacion;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dominio.Element;
-import dominio.Fixed;
+
 import dominio.POOgger;
+import dominio.POOggerException;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel{
-	private POOgger poogger;
 	private HashMap<String,Image> sprites;
+	private int width = 672;
+	private int height = 757;
 	private int lapsus = 0;
 	private boolean paused;
 	private final File font = new File("resources/8-BIT.TTF");
@@ -34,12 +42,14 @@ public class GamePanel extends JPanel{
 		prepareElementos();
 		prepareAcciones();
 	}
+	
 	public boolean refresh() {
-		return poogger.isPlayerAlive();
+		return POOgger.demePOOgger(prepareArchivos()).isPlayerAlive();
 	}
+	
 	private void prepareElementos() {
 		addFont();
-		poogger = new POOgger(720,768, prepareArchivos(),new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
+		POOgger.demePOOgger(prepareArchivos());
 		lapsus = 0;
 		setUIFont(new javax.swing.plaf.FontUIResource("8-bit Operator+ SC",Font.BOLD,12));
 	}
@@ -64,12 +74,44 @@ public class GamePanel extends JPanel{
 					paused = !paused;
 				}
 				else {
-					poogger.movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0));
+					POOgger.demePOOgger(prepareArchivos()).movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0));
 				}
 			}
 		});
 		
 		setFocusable(true);
+	}
+	
+	public void abra() {
+		JFileChooser fileChooser = new JFileChooser();
+    	fileChooser.setCurrentDirectory(new File("."));
+    	try {
+    		int selection = fileChooser.showOpenDialog(this);
+    		File file = new File("");
+    		if(selection == JFileChooser.APPROVE_OPTION) {
+    			file = fileChooser.getSelectedFile();
+    		}
+    		POOgger.demePOOgger(prepareArchivos()).abra(file);
+    	} catch(POOggerException e) {
+    		raiseError(e.getMessage());
+    	}
+		
+	}
+	
+	public void guarde() {
+		JFileChooser fileChooser = new JFileChooser();
+    	fileChooser.setCurrentDirectory(new File("."));
+    	fileChooser.setFileFilter(new FileNameExtensionFilter("DAT File","dat"));
+    	try {
+        	int seleccion = fileChooser.showSaveDialog(this);
+        	File file = new File("");
+        	if(seleccion == JFileChooser.APPROVE_OPTION) {
+        		file = fileChooser.getSelectedFile();
+        	}
+        	POOgger.demePOOgger(prepareArchivos()).guarde(file);
+    	}catch (POOggerException e) {
+    		raiseError(e.getMessage());
+    	}
 	}
 	
 	@Override
@@ -78,37 +120,49 @@ public class GamePanel extends JPanel{
 			super.paint(g);
 			g.setFont(new Font("8-bit Operator+ SC", Font.BOLD, 18));
 			g.drawImage(new ImageIcon("./resources/Fondo.png").getImage(),0,0,null);
-			for(Element i: poogger.gameLoop(lapsus)) {
-				if("Rectangle".equals(i.getSprite())) g.fillRect(i.getX(), i.getY(), ((Fixed) i).getWidth(), ((Fixed) i).getHeight());
-				else g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
+			for(Element i: POOgger.demePOOgger(prepareArchivos()).gameLoop(lapsus)) {
+				g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
 			}
-			drawGrid(g);
 			g.setColor(Color.WHITE);
 			g.drawString("1-UP    HI-SCORE",40,23);
 			g.setColor(Color.RED.darker());
-			g.drawString(""+poogger.getPoints(),52,45);
-			g.drawString(""+poogger.getHighScore(),195,45);
+			g.drawString(""+POOgger.demePOOgger(prepareArchivos()).getPoints(),52,45);
+			g.drawString(""+POOgger.demePOOgger(prepareArchivos()).getHighScore(),195,45);
 			g.setColor(Color.YELLOW);
 			g.drawString("TIME",585,33);
 			g.setColor(Color.GREEN.darker());
 			g.fillRect(270, 16, 306, 20);
 			g.setColor(Color.BLACK);
 			
-			for (int i = 0; i < poogger.getPlayer().getLives(); i++) {
+			for (int i = 0; i < POOgger.demePOOgger(prepareArchivos()).getPlayer().getLives(); i++) {
 				g.drawImage(sprites.get("Icon"),525 + 25*i,49,null);
 			}
-			g.fillRect(270, 16, poogger.getClock().width, poogger.getClock().height);
-			g.drawImage(sprites.get(poogger.getPlayer().getSprite()),poogger.getPlayer().getX(),poogger.getPlayer().getY(),null);
+			g.fillRect(270, 16, POOgger.demePOOgger(prepareArchivos()).getClock().width, POOgger.demePOOgger(prepareArchivos()).getClock().height);
+			g.drawImage(sprites.get(POOgger.demePOOgger(prepareArchivos()).getPlayer().getSprite()),POOgger.demePOOgger(prepareArchivos()).getPlayer().getX(),POOgger.demePOOgger(prepareArchivos()).getPlayer().getY(),null);
 			lapsus+=1;
+		}
+		else {
+			float alpha = 0.5f;
+			try {
+				BufferedImage img = ImageIO.read(new File("./resources/pauseTest.jpg"));
+				Graphics2D g2d = (Graphics2D) g.create();
+	            g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
+				//g.drawImage(new ImageIcon("./resources/pauseTest.jpg").getImage(),0,0,null);
+	            g.drawImage(img,0,0,this);
+	            g2d.dispose();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void drawGrid(Graphics g) {
 		int spc = 48;
-		for(int i=0;i<17;i++) {
+		for(int i=0;i<16;i++) {
 			g.drawLine(0,i*spc,800,i*spc);
 		}
-		for(int i=0;i<17;i++) {
+		for(int i=0;i<16;i++) {
 			g.drawLine(i*spc,0,i*spc,800);
 		}
 	}
@@ -123,6 +177,7 @@ public class GamePanel extends JPanel{
         	  UIManager.put (key, f);
           }
         } 
+	
     public void addFont() {
     	try {
     	     GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -131,19 +186,19 @@ public class GamePanel extends JPanel{
     	     raiseError(e.getMessage());
     	}
     }
+    
 	
     private void raiseError(String message) {
     	Toolkit.getDefaultToolkit().beep();
     	JOptionPane.showMessageDialog(null, message,"Error",JOptionPane.ERROR_MESSAGE);
     }
     
-	public static void main(String args[]) throws InterruptedException {
+	public static void main(String args[])  throws InterruptedException {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GamePanel game = new GamePanel();
 		frame.add(game);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setSize(735,dim.height);
+		frame.setSize(687,757);
 		frame.setVisible(true);
 		frame.setBackground(Color.BLACK);
 		frame.setLocationRelativeTo(null);

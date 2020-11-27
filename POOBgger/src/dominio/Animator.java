@@ -6,10 +6,11 @@ package dominio;
  * */
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
 import javax.swing.Timer;
 
-public class Animator {
+public class Animator implements Serializable{
 	private Timer timer;
 	private int frame;
 	

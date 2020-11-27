@@ -12,7 +12,6 @@ public class Turtle extends Carrier{
 	private boolean isSubmerge;
 	private boolean doesSubmerge;
 	private int frame;
-	//private Timer animator;
 	private Animator animator;
 	
 	/**

@@ -1,6 +1,13 @@
 package dominio;
 
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -10,7 +17,20 @@ import java.util.Random;
  * @version 2.1
  * @author Angie Medina - Jose Perez
  */
-public class POOgger {
+public class POOgger implements Serializable{
+	private static POOgger poogger = null;
+	
+	public static POOgger demePOOgger(HashMap<String, int[]> archivo) {
+		if (poogger == null) {
+			poogger = new POOgger(720,768, archivo,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
+		}
+		return poogger;
+	}
+	
+	public static void cambiePOOgger(POOgger p) {
+		poogger = p;
+	}
+	
 	private int screenWidth;
 	private int screenHeight;
 	private int[] logsSpeed;
@@ -35,7 +55,7 @@ public class POOgger {
 	 * @param height POOgger's windows height
 	 * @param sprites HashMap with all sprites's sizes
 	 */
-	public POOgger(int width, int height, HashMap<String,int[]> sprites, char[] player1Keys, char[] player2Keys) {
+	private POOgger(int width, int height, HashMap<String,int[]> sprites, char[] player1Keys, char[] player2Keys) {
 		screenWidth = width;
 		screenHeight = height;
 		this.sprites = sprites;
@@ -366,7 +386,7 @@ public class POOgger {
 	 * Adds a new element to the given lane
 	 * @param lane the new element's lane
 	 */
-	private void addLaneBeaver(int time) {
+	private void addBeaverLane(int time) {
 		Random r = new Random();
 		if(time%200==0) {
 			addTurtle(0);
@@ -388,7 +408,7 @@ public class POOgger {
 	}
 	
 	public ArrayList<Element> gameLoop(int time) {
-		addLaneBeaver(time);
+		addBeaverLane(time);
 		addLane(time);
 		checkPlayerCollisions(player);
 		if(time%2==0) update();
@@ -411,5 +431,48 @@ public class POOgger {
 		fixeds.add(new Cave(48*7,48*2,48,48));
 		fixeds.add(new Cave(48*10,48*2,48,48));
 		fixeds.add(new Cave(48*13,48*2,48,48));
+	}
+	
+	/**
+	 * Abre si es posible, el archivo especificado
+	 * @param file el archivo que se desea abrir
+	 * @throws POOggerException     - TIPO_ERRONEO Cuando el archivo que se quiere abrir no es .dat
+	 * 								- ERROR_ABRIR Cuando se tuvo problema al intentar abrir el archivo
+	 * 								- CLASE_NO_ENCONTRADA Cuando se guardo en el archivo una objeto de una clase que no se tiene en la aplicacion 
+	 */
+	public void abra(File file) throws POOggerException{
+		try {
+			if (!file.getCanonicalPath().endsWith(".dat")) {
+				throw new POOggerException(POOggerException.TIPO_ERRONEO_DAT);
+			}
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+			poogger = (POOgger) in.readObject();
+			in.close();
+		} catch(IOException e) {		
+			System.out.println("can you explain me that shit?");
+			throw new POOggerException(POOggerException.ERROR_ABRIR);
+		} catch(ClassNotFoundException e) {
+			throw new POOggerException(POOggerException.CLASE_NO_ENCONTRADA);
+		}
+	}
+	
+	/**
+	 * Guarda, si es posible, en el archivo especificado
+	 * @param file el archivo a guardar
+	 * @throws POOggerException     - TIPO_ERRONEO Cuando el archivo en el que se quiere guardar no es .dat
+	 * 								- ERROR_SALVAR Cuando se tuvo problema al intentar salvar el archivo 
+	 */
+	public void guarde(File file) throws POOggerException{
+		try {
+			if (!file.getCanonicalPath().endsWith(".dat")) {
+				throw new POOggerException(POOggerException.TIPO_ERRONEO_DAT);
+			}
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+			out.writeObject(poogger);
+			out.close();
+		} catch(IOException e) {
+			System.out.println(e.getMessage());
+			throw new POOggerException(POOggerException.ERROR_SALVAR);
+		}
 	}
 }

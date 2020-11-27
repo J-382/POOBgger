@@ -6,7 +6,8 @@ import java.util.ArrayList;
  * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public abstract class Carrier extends Element {
+
+public class Carrier extends Element {
 	
 	protected int speed;
 	protected ArrayList<Pushable> carried;

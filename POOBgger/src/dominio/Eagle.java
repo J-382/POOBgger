@@ -76,7 +76,6 @@ public class Eagle extends Element{
 
 	@Override
 	void move() {
-		System.out.println(timerStill.isRunning());
 		if(y <= 100) {
 			super.move(dx, dy);
 			if (!animator.isRunning()) {

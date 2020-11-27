@@ -1,11 +1,12 @@
 package dominio;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 /** POOgger basic element behavior
  * @version 1.5
  * @author Angie Medina - Jose Perez
  * */
-public abstract class Element {
+public abstract class Element implements Serializable{
 	protected int x;
 	protected int y;
 	protected String sprite;
