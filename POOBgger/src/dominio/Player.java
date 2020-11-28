@@ -16,10 +16,13 @@ public class Player extends Playable implements Pushable{
 	private int state;
 	private int minReachY;
 	private int lastMove;
-	
+
 	private boolean beingCarried;
 	private Carrier carrier;
 	private Animator animator;
+
+	private String hat;
+	
 	
 	/**
 	 * Player class constructor
@@ -35,6 +38,7 @@ public class Player extends Playable implements Pushable{
 		this.lives = initialLives;
 		this.initX = initX;
 		this.initY = initY;
+		hat = "Egg";
 		animator = new Animator();
 		resetPlayer();
 	}
@@ -63,7 +67,7 @@ public class Player extends Playable implements Pushable{
 			if (lastMove == 0 && getY() < minReachY) {
 				System.out.println("2");
 				minReachY = getY();
-				increasePoints(10);
+				changePoints(10);
 			}
 		}
 		super.move(dx, dy);
@@ -95,18 +99,20 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	private void stopBeignCarried() {
-		carrier.stopCarrying(this);
-		carrier = null;
-		setVisible(true);
-		Timer doWhenAnimationStop = new Timer(1,new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(!animator.isRunning()) {
-					beingCarried = false;
-					((Timer) e.getSource()).stop();
+		if (carrier != null) {
+			carrier.stopCarrying(this);
+			carrier = null;
+			setVisible(true);
+			Timer doWhenAnimationStop = new Timer(1,new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(!animator.isRunning()) {
+						beingCarried = false;
+						((Timer) e.getSource()).stop();
+					}
 				}
-			}
-		});
-		doWhenAnimationStop.start();
+			});
+			doWhenAnimationStop.start();
+		}
 	}
 	
 	/**
@@ -143,10 +149,10 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	/**
-	 * Increase the player point by some amount
+	 * Change the player point by some amount
 	 * @param value, the amount to add to the player's pointz
 	 */
-	public void increasePoints(int value) {
+	public void changePoints(int value) {
 		points += value;
 		System.out.println(points);
 	} 
@@ -194,6 +200,11 @@ public class Player extends Playable implements Pushable{
 	@Override 
 	public String getSprite() {
 		String returnImage = isVisible?sprite:"";
+		return returnImage;
+	}
+	 
+	public String getHat() {
+		String returnImage = isVisible?hat:"";
 		return returnImage;
 	}
 	

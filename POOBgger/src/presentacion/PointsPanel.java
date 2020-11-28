@@ -166,6 +166,4 @@ public class PointsPanel extends JBackground{
     	boton.setFocusPainted(false);
 		return boton;
 	}
-	
-
 }

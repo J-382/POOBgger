@@ -88,9 +88,9 @@ public class Eagle extends Mobile{
 		else {
 			if (!timerToChase.isRunning() && !chaseMood) timerToChase.start();
 			if (chaseMood) {
-				dy = 5;
+				dy = 1;
 				dx = 0;
-				if (y + dy == chasePoint[1]) {
+				if (y + dy == chasePoint[1] || y == chasePoint[1]) {
 					onAir = false;
 					dx = 0;
 					dy = 0;

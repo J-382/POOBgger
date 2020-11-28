@@ -15,7 +15,7 @@ public class Bug extends Fixed{
 	@Override
 	public boolean inCollision(Element e) {
 		if(e.isPlayable()) {
-			((Player)e).increasePoints(points);
+			((Player)e).changePoints(points);
 		}
 		return false;
 	}

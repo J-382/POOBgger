@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 public class Cave extends Fixed{
 	boolean occupied;
+	final int points = 50;
 	public Cave(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
@@ -34,6 +35,11 @@ public class Cave extends Fixed{
 		return occupied;
 	}
 	
+	public int getPoints() {
+		return points;
+	}
+	
+	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = occupied;
 		if(e.isPlayable() && e.isPushable() && !occupied) {
@@ -44,5 +50,9 @@ public class Cave extends Fixed{
 			}
 		}
 		return isDead;
+	}
+	@Override
+	public boolean canBeOccupied() {
+		return true;
 	}
 }

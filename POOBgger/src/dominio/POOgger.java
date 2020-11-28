@@ -45,9 +45,11 @@ public class POOgger implements Serializable{
 	private boolean isPlayerAlive;
 	private ArrayList<Element> elements;
 	private ArrayList<Element> fixeds;
+	//private ArrayList<Fixed> fixeds;
 	private char[] player1Keys;
 	private char[] player2Keys;
 	private HashMap<String,int[]> sprites;
+	private final int deadPenalization = -100;
 	
 	/**
 	 * POOgger class constructor
@@ -71,29 +73,26 @@ public class POOgger implements Serializable{
 		player = new Player(5,48*7,48*14, sprites.get("Frog1W"));
 		elements = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
+		clock = new Rectangle(0,0, 0, 20);
 		addFixedElements();
-		prepareClock();
 		//addSnake();
-		
 	}
 	
-	private void prepareClock() {
-		clock = new Rectangle(0,0, 0, 20);
-		animator = new Animator();
-		animator.animate(100, 101, new Runnable() {public void run() {updateClock();}}, false);
+	private void restoreClock() {
+		clock = new Rectangle(0, 0, 0, clock.height);
 	}
 	
 	/**
 	 * Updates clock size
 	 **/
-	private void updateClock() {
-		clock = new Rectangle(0, 0, clock.width + 1 , clock.height);
+	public void updateClock() {
+		clock = new Rectangle(0, 0, clock.width + 1, clock.height);
 		if (clock.width == 306) {
 			player.decreasePlayerLives();
-			clock = new Rectangle(0, 0, 0, 20);
+			restoreClock();
 		}
-		
 	}
+	
 	
 	/**
 	 * Move the player, if possible, in the given direction
@@ -178,6 +177,10 @@ public class POOgger implements Serializable{
 	private void addEagle() {
 		elements.add(new Eagle(1, sprites.get("Eagle1"), "Eagle1", player));
 	}
+	
+	private void addThunder() {
+		elements.add(new Thunder(player));
+	}
 	/**
 	 * Add a new bike to POOgger's elements
 	 */
@@ -216,7 +219,7 @@ public class POOgger implements Serializable{
 	
 	/** Add a new Lizzard to POOgger's elements
 	 */
-	private void addLizzard() {
+	private void addLizard() {
 		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
 		elements.add(new Lizard(-sprites.get("Lizard1")[0],48*3, sprites.get("Lizard1"), "Lizard1", lizzardSpeed));
 	}
@@ -313,7 +316,10 @@ public class POOgger implements Serializable{
 			}
 			if(isDead) break;
 		}
-		
+		if (isDead) {
+			player.changePoints(deadPenalization);
+			restoreClock();
+		}
 		return new boolean[] {isDead,touchingWater};
 	}
 	
@@ -322,30 +328,31 @@ public class POOgger implements Serializable{
 		if(player.getBounds().intersects(fixeds.get(0).getBounds())) {
 			touchingWater = touchingWater && fixeds.get(0).inCollision(player);
 		}else touchingWater = false;
-		for(int i=11; i<fixeds.size();i++){
-			Fixed e = (Fixed) fixeds.get(i);
-			if(player.getBounds().intersects(e.getBounds())) {
-				e.inCollision(player);
-				if(!e.isVisible()) fixeds.set(i, null);
-			}
-		}
-		for(int i=6; i<11; i++) {
-			Cave e = (Cave) fixeds.get(i);
-			if(player.getBounds().intersects(e.getBounds())) {
-				isDead = e.inCollision(player);
-				if(!isDead && e.isOccupied()) resetPlayer(player);
-			}
-		}
-		if(!isDead) {
-			for(int i=1; i<6; i++) {
-				Fixed e = (Fixed) fixeds.get(i);
+		for (int i = 1; i < fixeds.size(); i++) {
+			Fixed f = (Fixed)fixeds.get(i);
+			if (f.canBeOccupied()) {
+				Cave e = (Cave) f;
 				if(player.getBounds().intersects(e.getBounds())) {
 					isDead = e.inCollision(player);
+					if(!isDead && e.isOccupied()) {
+						player.changePoints(e.getPoints());
+						restoreClock();
+						resetPlayer(player);
+					}
+				}
+			}
+			else {
+				if(player.getBounds().intersects()) {
+					isDead = f.inCollision(player);
 					if(isDead) break;
 				}
 			}
 		}
-		clearElements();
+		clearElements();	
+		if (isDead) {
+			player.changePoints(deadPenalization);
+			restoreClock();
+		}
 		return isDead || touchingWater;
 	}
 	
@@ -365,6 +372,7 @@ public class POOgger implements Serializable{
 		Random r = new Random();
 		if (!exist) {
 			addEagle();
+			//addThunder();
 			exist = true;
 		}
 		if(time%250==0) {
@@ -413,7 +421,7 @@ public class POOgger implements Serializable{
 		if(time%300==0) {
 			if(r.nextBoolean()) {
 				addLog(2);
-			} else addLizzard();
+			} else addLizard();
 		}
 	}
 	
@@ -465,7 +473,6 @@ public class POOgger implements Serializable{
 			poogger = (POOgger) in.readObject();
 			in.close();
 		} catch(IOException e) {		
-			System.out.println("can you explain me that shit?");
 			throw new POOggerException(POOggerException.ERROR_ABRIR);
 		} catch(ClassNotFoundException e) {
 			throw new POOggerException(POOggerException.CLASE_NO_ENCONTRADA);
