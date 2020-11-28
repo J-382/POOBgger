@@ -10,7 +10,7 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public class Eagle extends Element{
+public class Eagle extends Mobile{
 
 	private int speed;
 	private int state;
@@ -25,9 +25,12 @@ public class Eagle extends Element{
 	private boolean onAir;
 	private transient Clip sound;
 	
-	public Eagle(int speed, Player player) {
-		this.sprite = "Alligator1";
+	public Eagle(int speed,int[] size, String sprite, Player player) {
+		this.sprite = sprite;
 		this.speed = speed;
+		this.isVisible = true;
+		this.width = size[0];
+		this.height = size[1];
 		toChase = player;
 		x = 336;
 		y = 4;
@@ -75,7 +78,7 @@ public class Eagle extends Element{
 	}
 
 	@Override
-	void move() {
+	public void move() {
 		if(y <= 100) {
 			super.move(dx, dy);
 			if (!animator.isRunning()) {
@@ -85,9 +88,9 @@ public class Eagle extends Element{
 		else {
 			if (!timerToChase.isRunning() && !chaseMood) timerToChase.start();
 			if (chaseMood) {
-				dy = 3;
+				dy = 5;
 				dx = 0;
-				if (x + dx == chasePoint[0] && y + dy == chasePoint[1]) {
+				if (y + dy == chasePoint[1]) {
 					onAir = false;
 					dx = 0;
 					dy = 0;
@@ -104,9 +107,14 @@ public class Eagle extends Element{
 			}
 		}
 	}
-	@Override
+	
 	public boolean inCollision(Element e) {
-		return true;
+		boolean isDead = true;
+		if(e.isPlayable()) {
+			isDead = !((Playable) e).isToxic();
+			if(!isDead) isVisible = false;
+		}
+		return isDead;
 	}
 
 }

@@ -7,13 +7,15 @@ public class Puddle extends Fixed{
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.isVisible = true;
+		sprite = "Puddle";
 	}
 	
-	@Override
 	public boolean inCollision(Element e) {
 		if(e.isPushable()) {
 			((Pushable) e).addPush(96, "D");
 		}
 		return false;
 	}
+
 }

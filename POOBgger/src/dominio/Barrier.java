@@ -11,6 +11,7 @@ public class Barrier extends Fixed{
 		this.gridSize = gridSize;
 		this.killer = killer;
 		this.sprite = "Rectangle";
+		this.isVisible = true;
 	}
 	
 	private int calculatePush(char dir, Element e) {
@@ -33,7 +34,6 @@ public class Barrier extends Fixed{
 		return push;
 	}
 	
-	@Override
 	public boolean inCollision(Element e) {
 		Boolean isDead = killer;
 		if(!killer) {

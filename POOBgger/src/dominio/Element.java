@@ -9,12 +9,11 @@ import java.io.Serializable;
 public abstract class Element implements Serializable{
 	protected int x;
 	protected int y;
+	protected int width;
+	protected int height;
 	protected String sprite;
+	protected boolean isVisible;
 	
-	/**
-	 * Element automatic move
-	 * */
-	abstract void move();
 	
 	/**
 	 * Returns a string with the Element's sprite name
@@ -41,32 +40,19 @@ public abstract class Element implements Serializable{
 	}
 	
 	/**
-	 * Moves the element 
-	 * @param dx delta x
-	 * @param dy delta y
-	 * */
-	public void move(int dx, int dy) {
-		x += dx;
-		y += dy;
-	}
-	
-	/**
 	 * returns if the given element can be destroyed upon collision
 	 * @param e desired element to check
 	 * @Returns true if the elements are collisioning false otherwise
 	 * */
-	public boolean inCollision(Element e) {
-		return false;
-	};
+	abstract public boolean inCollision(Element e);
 	
 	/**
 	 * Returns the collision box for the element
 	 * @param size Element's size
 	 * @return A Rectangle for the element's collision box 
 	 * */
-	public Rectangle getBounds(int[] size) {
-		if(size==null) size = new int[] {0,0};
-		return new Rectangle(x,y,size[0],size[1]);
+	public Rectangle getBounds() {
+		return new Rectangle(x,y,width,height);
 	}
 	
 	/**
@@ -91,6 +77,10 @@ public abstract class Element implements Serializable{
 	 * */
 	public boolean isPlayable() {
 		return false;
+	}
+	
+	public boolean isVisible() {
+		return isVisible;
 	}
 	
 }

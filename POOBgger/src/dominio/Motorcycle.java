@@ -10,7 +10,7 @@ import javax.swing.Timer;
  * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public class Motorcycle extends Element{
+public class Motorcycle extends Mobile{
 	private Timer animator;
 	private int frame;
 	private String orientation;
@@ -23,16 +23,19 @@ public class Motorcycle extends Element{
 	 * @param speed Motorcycle's speed
 	 * @param flipped if the Motorcycle are flipped horizontally
 	 * */
-	public Motorcycle(int x, int y, int speed,boolean flipped){
+	public Motorcycle(int x, int y, int speed, int[] size, String sprite, boolean flipped){
 		this.x = x;
 		this.y = y;
+		this.width = size[0];
+		this.height = size[1];
 		this.speed = speed;
+		this.isVisible = true;
 		orientation = flipped?"F":"";
 		frame = 0;
-		sprite = "Motorcycle"+(frame+1)+orientation;
+		this.sprite = sprite+orientation;
 		animator = new Timer(150, new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				
+				updateSprite();
 			}
 		});
 	}
@@ -57,13 +60,8 @@ public class Motorcycle extends Element{
 	public boolean inCollision(Element e) {
 		boolean isDead = true;
 		if(e.isPushable()) {
-			String dir = e.getX()<x?"A":"D";
-			int maxPush = ((Pushable) e).calculateMaxPush(dir);
-			if(maxPush!=0) {
-				((Pushable) e).addPush(maxPush,dir);
-				isDead = false;
-			}
-			System.out.println(maxPush);
+			((Pushable) e).addPush(-96,"W");
+			isDead = false;
 		}
 		return isDead;
 	}

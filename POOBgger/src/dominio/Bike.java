@@ -20,16 +20,19 @@ public class Bike extends Carrier{
 	 * @param speed Bike's speed
 	 * @param flipped if the bike are flipped horizontally
 	 * */
-	public Bike(int x, int y, int speed,boolean flipped){
+	public Bike(int x, int y, int speed, int[] size, String sprite, boolean flipped){
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
+		this.width = size[0];
+		this.height = size[1];
 		this.maxCarryNumber = 1;
 		this.carried = new ArrayList<Pushable>();
+		this.isVisible = true;
 		orientation = flipped?"F":"";
+		this.sprite = sprite+orientation;
 		frame = 0;
 		animator = new Animator();
-		sprite = "Bike"+(frame+1)+orientation;
 	}
 	
 	@Override
@@ -57,11 +60,9 @@ public class Bike extends Carrier{
 	
 	@Override
 	protected void startCarrying(Pushable c) {
-		System.out.println(x+" "+y);
 		if(c.setPosition(x, y)) {
 			c.setVisible(false);
 			super.startCarrying(c);
 		}
 	}
-	
 }

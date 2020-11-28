@@ -5,7 +5,7 @@ package dominio;
  * @author Angie Medina - Jose Perez
  * @version 1.0
  * */
-public class Beaver extends Fixed {
+public class Beaver extends Fixed{
 	/**
 	 * */
 	public Beaver(int x, int y, int width, int height) {
@@ -13,15 +13,18 @@ public class Beaver extends Fixed {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.isVisible = true;
 	}
 	
-	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = false;
 		if(e.isPlayable()) {
+			if(((Playable) e).canFly()) {
+				System.out.println("Pito");
+				((Playable) e).makeFly();
+			}
 			isDead = !((Playable) e).isInAir();
 		}
 		return isDead;
 	}
-	
 }

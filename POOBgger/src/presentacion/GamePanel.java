@@ -2,6 +2,7 @@ package presentacion;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,6 +20,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLayer;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -140,20 +142,6 @@ public class GamePanel extends JPanel{
 			g.fillRect(270, 16, POOgger.demePOOgger(prepareArchivos()).getClock().width, POOgger.demePOOgger(prepareArchivos()).getClock().height);
 			g.drawImage(sprites.get(POOgger.demePOOgger(prepareArchivos()).getPlayer().getSprite()),POOgger.demePOOgger(prepareArchivos()).getPlayer().getX(),POOgger.demePOOgger(prepareArchivos()).getPlayer().getY(),null);
 			lapsus+=1;
-		}
-		else {
-			float alpha = 0.5f;
-			try {
-				BufferedImage img = ImageIO.read(new File("./resources/pauseTest.jpg"));
-				Graphics2D g2d = (Graphics2D) g.create();
-	            g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
-				//g.drawImage(new ImageIcon("./resources/pauseTest.jpg").getImage(),0,0,null);
-	            g.drawImage(img,0,0,this);
-	            g2d.dispose();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 	

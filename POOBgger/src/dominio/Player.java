@@ -11,18 +11,15 @@ import javax.swing.Timer;
  * @author Angie Medina - Jose Perez
  * */
 public class Player extends Playable implements Pushable{
+	
 	private final int delta = 48;
-	private int maxX;
-	private int maxY;
 	private int state;
-	private int[] dimensions;
 	private int minReachY;
 	private int lastMove;
 	
 	private boolean beingCarried;
 	private Carrier carrier;
 	private Animator animator;
-	private boolean isVisible;
 	
 	/**
 	 * Player class constructor
@@ -31,27 +28,19 @@ public class Player extends Playable implements Pushable{
 	 * @param maxY Player's POOgger height
 	 * @param dimensions Player's size
 	 */
-	public Player(int initialLives,int maxX, int maxY, int[] dimensions) {
-		this.dimensions = dimensions; 
+	public Player(int initialLives,int initX, int initY, int[] size) {
+		this.width = size[0];
+		this.height = size[1]; 
 		this.isVisible = true;
 		this.lives = initialLives;
-		this.isInAir = false;
-		this.maxX = maxX;
-		this.maxY = maxY;
-		points = 0;
-		x = 336;
-		y = 672;
-		minReachY = y;
-		lastMove = 0;
-		orientation = 'W';
-		state = 0;
-		sprite =  "Frog"+(state+1)+orientation;
-		beingCarried = false;
+		this.initX = initX;
+		this.initY = initY;
 		animator = new Animator();
-		carrier = null;
+		resetPlayer();
 	}
 	
 	public void move() {
+		int delay = isFast?25:50;
 		int dx = 0, dy = 0;
 		switch (""+orientation) {
 			case "W" :
@@ -70,7 +59,9 @@ public class Player extends Playable implements Pushable{
 		
 		if (("" + orientation).equals("W")) {
 			lastMove = (lastMove + 1) % 3;
+			System.out.println("1");
 			if (lastMove == 0 && getY() < minReachY) {
+				System.out.println("2");
 				minReachY = getY();
 				increasePoints(10);
 			}
@@ -78,9 +69,9 @@ public class Player extends Playable implements Pushable{
 		super.move(dx, dy);
 		updateSprite();
 		if(!animator.isRunning()) {
-			animator.animate(25,3,new Runnable() {public void run() {move();}});
+			animator.animate(delay,3,new Runnable() {public void run() {move();}});
 		}
-		isInAir = !(state==0);
+		isInAir();
 	}
 	
 	private void updateSprite() {
@@ -96,6 +87,7 @@ public class Player extends Playable implements Pushable{
 		if(!animator.isRunning()) {
 			this.orientation = orientation;
 			move();
+			isFlying = false;
 			if(beingCarried) {
 				stopBeignCarried();
 			}
@@ -122,22 +114,32 @@ public class Player extends Playable implements Pushable{
 	 * @param initx x inital position
 	 * @param initx y inital position
 	 * */
-	public boolean decreasePlayerLives(int initx,int inity) {
+	public boolean decreasePlayerLives() {
 		boolean revives = false;
 		lives--;
 		if(lives>0) {
 			revives = true;
-			resetPlayer(initx, inity);
+			resetPlayer();
 		}
 		return revives;
 	}
 	
-	public void resetPlayer(int initx,int inity) {
+	public void resetPlayer() {
+		orientation = 'W';
+		carrier = null;
+		sprite =  "Frog"+(state+1)+orientation;
 		animator.stop();
 		state = 0;
-		x = initx;
-		y = inity;
-		if(beingCarried) stopBeignCarried(); 
+		x = initX;
+		y = initY;
+		minReachY = y;
+		lastMove = 0;
+		isToxic = false;
+		isArmored = false;
+		isFast = false;
+		canFly = false;
+		isFlying = false;
+		if(carrier!=null) stopBeignCarried(); 
 	}
 	
 	/**
@@ -146,6 +148,7 @@ public class Player extends Playable implements Pushable{
 	 */
 	public void increasePoints(int value) {
 		points += value;
+		System.out.println(points);
 	} 
 	
 	/**
@@ -153,7 +156,7 @@ public class Player extends Playable implements Pushable{
 	 * @return player's size
 	 * */
 	public int[] getDimensions() {
-		return dimensions;
+		return new int[] {width,height};
 	}
 	
 	/**
@@ -188,11 +191,6 @@ public class Player extends Playable implements Pushable{
 		carrier = c;
 	}
 	
-	@Override
-	public void move(int dx,int dy) {
-		super.move(dx, dy);
-	}
-	
 	@Override 
 	public String getSprite() {
 		String returnImage = isVisible?sprite:"";
@@ -214,20 +212,6 @@ public class Player extends Playable implements Pushable{
 		if(dir.equals("W") || dir.equals("S")) super.move(0, push);
 		else super.move(push, 0);
 	}
-
-	@Override
-	public int calculateMaxPush(String dir) {
-		int push = 0;
-		if(dir.equals("A")) {
-			if(x>=96) push = -96;
-			else if(x>=48) push = -48;
-		}
-		if(dir.equals("D")) {
-			if(maxX-x>=96) push = 96;
-			else if(maxX-x>=48) push = 48;
-		}
-		return push;
-	}
 	
 	@Override 
 	public void setVisible(boolean visible) {
@@ -242,5 +226,11 @@ public class Player extends Playable implements Pushable{
 	@Override
 	public boolean isBeingCarried() {
 		return beingCarried;
+	}
+	
+	@Override
+	public boolean isInAir() {
+		isInAir = !(state==0) || isFlying;
+		return isInAir;
 	}
 }

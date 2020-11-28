@@ -1,5 +1,4 @@
 package dominio;
-
 import java.awt.Rectangle;
 
 /**
@@ -8,10 +7,9 @@ import java.awt.Rectangle;
  * @version 1.2
  * */
 public abstract class Fixed extends Element {
+	
 	protected int width;
 	protected int height;
-	
-	public void move() {}
 	
 	public Rectangle getBounds() {
 		return new Rectangle(x,y,width,height);
@@ -24,4 +22,9 @@ public abstract class Fixed extends Element {
 	public int getHeight() {
 		return height;
 	}
+	
+	public boolean canBeOccupied() {
+		return false;
+	}
 }
+

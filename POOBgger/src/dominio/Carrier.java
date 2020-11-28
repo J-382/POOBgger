@@ -7,19 +7,19 @@ import java.util.ArrayList;
  * @author Angie Medina - Jose Perez
  * */
 
-public class Carrier extends Element {
+public class Carrier extends Mobile {
 	
-	protected int speed;
 	protected ArrayList<Pushable> carried;
 	protected boolean carrying;
 	protected int maxCarryNumber;
+	protected int speed;
 
 	@Override
 	public void move() {
 		x += speed;
 		if (carrying) {
 			for(Pushable i: carried) {
-				((Element) i).move(speed,0);	
+				((Mobile) i).move(speed,0);	
 			}
 		}
 	}

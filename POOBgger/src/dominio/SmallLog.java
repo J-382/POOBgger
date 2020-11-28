@@ -10,8 +10,9 @@ public class SmallLog extends Log{
 	private boolean isSubmerged;
 	private int state;
 	private Animator animator;
-	public SmallLog(int x, int y, int speed, String sprite) {
-		super(x, y, speed, sprite);
+	public SmallLog(int x, int y, int speed,int[] size, String sprite) {
+		super(x, y, speed, size, sprite);
+		this.isVisible = true;
 		state = 0;
 		isSubmerged = false;
 		animator = new Animator();
@@ -28,7 +29,6 @@ public class SmallLog extends Log{
 		}
 	}
 	
-	@Override
 	public boolean inCollision(Element e) {
 		super.inCollision(e);
 		if (isSubmerged) {

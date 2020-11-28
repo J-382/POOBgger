@@ -12,7 +12,6 @@ public class Lizard extends Carrier{
 	private boolean isOpen;
 	private int state;
 	private Animator animator;
-	private int length;
 	
 	
 	/**
@@ -21,16 +20,18 @@ public class Lizard extends Carrier{
 	 * @param y Lizard's y position
 	 * @param speed Lizzard's speed
 	 * */
-	public Lizard(int x, int y, int length,int speed) {
+	public Lizard(int x, int y, int[] size, String sprite, int speed) {
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
-		this.length = length;
+		this.width = size[0];
+		this.height = size[1];
 		this.carried = new ArrayList<Pushable>();
 		this.maxCarryNumber = Integer.MAX_VALUE;
+		this.isVisible = true;
 		isOpen = true;
 		state = 0;
-		sprite = "Alligator1";
+		this.sprite = sprite;
 		animator = new Animator();
 	}
 	
@@ -57,8 +58,7 @@ public class Lizard extends Carrier{
 		super.inCollision(e);
 		boolean isDead = false;
 		if (isOpen) {
-			if (x+2*length/3 <= e.getX()) {
-				System.out.println("Dead by alligator");
+			if (x+2*width/3 <= e.getX()) {
 				isDead = true;
 			} 
 		}

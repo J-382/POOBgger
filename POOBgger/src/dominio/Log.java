@@ -15,13 +15,16 @@ public class Log extends Carrier {
 	 * @param speed Log's speed
 	 * @param sprite Log's sprite name
 	 * */
-	public Log(int x, int y, int speed, String sprite) {
+	public Log(int x, int y, int speed, int size[], String sprite) {
 		this.sprite = sprite;
 		this.x = x;
 		this.y = y;
+		this.width = size[0];
+		this.height = size[1];
 		this.speed = speed;
 		this.carried = new ArrayList<Pushable>();
 		this.maxCarryNumber = Integer.MAX_VALUE;
+		this.isVisible = true;
 	}
 	
 	public void move() {

@@ -20,12 +20,13 @@ public class Truck extends Carrier{
 	 * @param speed Truck's speed
 	 * @param flipped if the Truck are flipped horizontally
 	 * */
-	public Truck(int x, int y, int speed,boolean flipped){
+	public Truck(int x, int y, int speed,int[] size, String sprite, boolean flipped){
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
 		this.maxCarryNumber = 1;
 		this.carried = new ArrayList<Pushable>();
+		this.isVisible = true;
 		orientation = flipped?"F":"";
 		frame = 0;
 		animator = new Animator();
@@ -44,6 +45,8 @@ public class Truck extends Carrier{
 	@Override
 	public void stopCarrying(Pushable c) {
 		sprite = "Truck"+(frame+1)+orientation;
+		if(((Element) c).isPlayable()) ((Playable) c).makeToxic();
+		System.out.println(((Playable) c).isToxic());
 		super.stopCarrying(c);
 	}
 	
@@ -55,14 +58,23 @@ public class Truck extends Carrier{
 		}
 	}
 	
+	/*Usar la direccion del jugador para evitar las colisiones*/
 	@Override
+	public void startCarrying(Pushable c) {
+		if(c.setPosition(x+48, y)) {
+			c.setVisible(false);
+			super.startCarrying(c);
+		}
+	}
+	
 	public boolean inCollision(Element e) {
-		boolean isDead = false;
+		boolean isDead = true;
 		if(e.isPlayable()) {
-			((Playable) e).makeToxic();
+			((Playable) e).makeToxic(true);
 		}
 		if(e.getX()<x) {
-			isDead = true;
+			isDead = !((Playable) e).isArmored();
+			if(!isDead) isVisible = false;
 		}else isDead = super.inCollision(e);
 		return isDead;
 	}

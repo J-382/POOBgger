@@ -10,11 +10,12 @@ public class Cave extends Fixed{
 		this.width = width;
 		this.height = height;
 		this.sprite = "Cave";
+		this.isVisible = true;
 		occupied = false;
 	}
 	
 	private double collisionPercentage(Element e) {
-		Rectangle player = ((Player) e).getBounds(((Player) e).getDimensions());
+		Rectangle player = ((Player) e).getBounds();
 		Rectangle cave = new Rectangle(x,y,width,height);
 		Rectangle intersection = (Rectangle) cave.createIntersection(player);
 		double areaCave = cave.getWidth()*cave.getHeight();
@@ -33,7 +34,6 @@ public class Cave extends Fixed{
 		return occupied;
 	}
 	
-	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = occupied;
 		if(e.isPlayable() && e.isPushable() && !occupied) {
@@ -45,5 +45,4 @@ public class Cave extends Fixed{
 		}
 		return isDead;
 	}
-
 }

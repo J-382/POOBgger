@@ -10,7 +10,7 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public class Thunder extends Element{
+public class Thunder extends Mobile{
 
 	private int state;
 	private int[] chasePoint;
@@ -26,6 +26,7 @@ public class Thunder extends Element{
 	
 	public Thunder(Player player) {
 		this.sprite = "Alligator1";
+		this.isVisible = true;
 		toChase = player;
 		x = 336;
 		y = 4;
@@ -74,7 +75,7 @@ public class Thunder extends Element{
 	}
 
 	@Override
-	void move() {
+	public void move() {
 		System.out.println(timerStill.isRunning());
 		if(y <= 100) {
 			super.move(dx, dy);
@@ -104,7 +105,7 @@ public class Thunder extends Element{
 			}
 		}
 	}
-	@Override
+
 	public boolean inCollision(Element e) {
 		return true;
 	}

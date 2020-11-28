@@ -5,7 +5,7 @@ package dominio;
  * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public class Snake extends Element{
+public class Snake extends Mobile{
 	
 	private int speed;
 	private int state;
@@ -19,11 +19,15 @@ public class Snake extends Element{
 	 * @param speed Snake's speed
 	 * @param flipped if the Snake can submerge
 	 * */
-	public Snake(int xPos, int yPos, int speed, boolean flipped){
+	public Snake(int xPos, int yPos, int speed,int[] size, String sprite, boolean flipped){
 		sprite = "Snake1";
-		x = xPos;
-		y = yPos;
+		this.x = xPos;
+		this.y = yPos;
+		this.width = size[0];
+		this.height = size[1];
 		this.speed = speed;
+		this.isVisible = true;
+		this.sprite = sprite;
 		orientation = "";
 		state = 0;
 		animator = new Animator();
@@ -44,7 +48,7 @@ public class Snake extends Element{
 		x += speed;
 		if (x>600) flip();
 		if(!animator.isRunning()) {
-			animator.animate(200,2,new Runnable() {public void run() {updateSprite();}});
+			animator.animate(50,2,new Runnable() {public void run() {updateSprite();}});
 		}
 		
 	}
@@ -58,8 +62,12 @@ public class Snake extends Element{
 		sprite = "Snake"+(state+1)+orientation;
 	}
 	
-	@Override
 	public boolean inCollision(Element e) {
-		return true;
+		boolean isDead = true;
+		if(e.isPlayable()) {
+			isDead = !((Playable) e).isToxic();
+			if(!isDead) isVisible = false;
+		}
+		return isDead;
 	}
 }

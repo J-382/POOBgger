@@ -5,7 +5,7 @@ package dominio;
  * @version 1.1
  * @author Angie Medina - Jose Perez
  * */
-public class Car extends Element{
+public class Car extends Mobile{
 	
 	private int speed;
 	/**
@@ -15,19 +15,26 @@ public class Car extends Element{
 	 * @param speed Car's speed
 	 * @param sprite Car's sprite name
 	 * */
-	public Car(int x, int y, int speed, String sprite){
+	public Car(int x, int y, int speed,int[] size, String sprite){
 		this.sprite = sprite+"Car";
 		this.x = x;
 		this.y = y;
+		this.width = size[0];
+		this.height = size[1];
 		this.speed = speed;
+		this.isVisible = true;
 	}
 	
 	public void move() {
 		x += speed;
 	}
-	
-	@Override
+
 	public boolean inCollision(Element e) {
-		return true;
+		boolean isDead = true;
+		if(e.isPlayable()) {
+			isDead = !((Playable) e).isArmored();
+			if(!isDead) isVisible = false;
+		}
+		return isDead;
 	}
 }

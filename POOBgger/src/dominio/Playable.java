@@ -9,15 +9,22 @@ import javax.swing.Timer;
  * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public abstract class Playable extends Element{
+public abstract class Playable extends Mobile{
 	protected boolean isToxic;
 	protected boolean isArmored;
 	protected boolean isFast;
 	protected boolean isInAir;
+	protected boolean isFlying;
+	protected boolean canFly;
+	protected int initX;
+	protected int initY;
 	protected int lives;
 	protected int points;
 	protected int bonus;
 	protected char orientation;
+	private Timer toxic;
+	private Timer fly;
+	private Timer fast;
 	
 	/**
 	 * Add bonus to the playable element
@@ -27,18 +34,60 @@ public abstract class Playable extends Element{
 		this.bonus += bonus;
 	}
 	
+	public void makeToxic(boolean isToxic) {
+		this.isToxic = isToxic;
+	}
+	
 	/**
 	 * Make the playable element toxic
 	 * */
 	public void makeToxic() {
 		if(isToxic) {
-			isToxic = true;
-			Timer toxic = new Timer(4000,new ActionListener() {
+			toxic = new Timer(4000,new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					isToxic = false;
 				}
 			});
 			toxic.start();
+		}
+	}
+	
+	public void makeArmored(boolean isArmored) {
+		this.isArmored = isArmored;
+	}
+	
+	public void makeFast(boolean isFast) {
+		this.isFast = isFast;
+		makeFast();
+	}
+	
+	public void makeFast() {
+		if(isFast) {
+			fast = new Timer(4000,new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					isFast = false;
+				}
+			});
+			fast.start();
+		}
+	}
+	
+	public void makeFly(boolean canFly) {
+		this.canFly = canFly;
+	}
+	
+	
+	/*Probablemente se deba hacer los timers como una variable privada*/
+	public void makeFly() {
+		if(canFly) {
+			isFlying = true;
+			canFly = false;
+			fly = new Timer(1000,new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					isFlying = false;
+				}
+			});
+			fly.start();
 		}
 	}
 	
@@ -55,6 +104,22 @@ public abstract class Playable extends Element{
 		return isInAir;
 	}
 	
+	public boolean canFly() {
+		return canFly;
+	}
+	
+	public boolean isToxic() {
+		return isToxic;
+	}
+	
+	public boolean isArmored() {
+		return isArmored;
+	}
+	
 	public void changeSprite() {
+	}
+	
+	public boolean inCollision(Element e) {
+		return false;
 	}
 }

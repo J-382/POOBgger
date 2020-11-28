@@ -21,16 +21,19 @@ public class Turtle extends Carrier{
 	 * @param speed Turtle's speed
 	 * @param doesSubmerge if the turtle can submerge
 	 * */
-	public Turtle(int x, int y, int speed, boolean doesSubmerge) {
+	public Turtle(int x, int y, int speed, int[] size, String sprite,boolean doesSubmerge) {
 		this.x = x;
 		this.y = y;
+		this.width = size[0];
+		this.height = size[1];
 		this.speed = speed;
 		this.carried = new ArrayList<Pushable>();
 		this.maxCarryNumber = 1;
+		this.isVisible = true;
+		this.doesSubmerge = doesSubmerge;
 		frame = 0;
 		isSubmerge = false;
-		this.doesSubmerge = doesSubmerge;
-		sprite = "Turtle1";
+		this.sprite = sprite;
 		animator = new Animator();
 	}
 	
@@ -62,7 +65,6 @@ public class Turtle extends Carrier{
 		}
 	}
 	
-	@Override
 	public boolean inCollision(Element e) {
 		return super.inCollision(e);
 	}	

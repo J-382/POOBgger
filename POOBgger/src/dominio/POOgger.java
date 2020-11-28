@@ -68,11 +68,12 @@ public class POOgger implements Serializable{
 		lizzardSpeed = 2;
 		logsSpeed = new int[] {1,2,3};
 		carsSpeed = new int[] {4,3,2,5,2};
-		player = new Player(5,624,678, sprites.get("Frog1W"));
+		player = new Player(5,48*7,48*14, sprites.get("Frog1W"));
 		elements = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
 		addFixedElements();
 		prepareClock();
+		//addSnake();
 		
 	}
 	
@@ -88,7 +89,7 @@ public class POOgger implements Serializable{
 	private void updateClock() {
 		clock = new Rectangle(0, 0, clock.width + 1 , clock.height);
 		if (clock.width == 306) {
-			player.decreasePlayerLives(336, 678);
+			player.decreasePlayerLives();
 			clock = new Rectangle(0, 0, 0, 20);
 		}
 		
@@ -155,8 +156,8 @@ public class POOgger implements Serializable{
 	private ArrayList<Element> update() {
 		boolean needsClear = false;
 		for(int i=0; i<elements.size(); i++) {
-			Element element = elements.get(i);
-			if(element.getX()>screenWidth+200 || element.getX()<-500) {
+			Mobile element = (Mobile) elements.get(i);
+			if(element.getX()>screenWidth+200 || element.getX()<-500 || !element.isVisible()) {
 				elements.set(i, null);
 				needsClear = true;
 				}
@@ -171,17 +172,17 @@ public class POOgger implements Serializable{
 	 */
 	private void clearElements() {
 		while(elements.remove(null)) {}
+		while(fixeds.remove(null)) {}
 	}
 	
-	
 	private void addEagle() {
-		elements.add(new Eagle(1, player));
+		elements.add(new Eagle(1, sprites.get("Eagle1"), "Eagle1", player));
 	}
 	/**
 	 * Add a new bike to POOgger's elements
 	 */
 	private void addBike() {
-		elements.add(new Bike(screenWidth,48*11,-carsSpeed[2],false));
+		elements.add(new Bike(screenWidth,48*11,-carsSpeed[2], sprites.get("Bike1"),"Bike1" ,false));
 		/*Random r = new Random();
 		if(r.nextBoolean()) {
 			elements.add(new Bike(0,8,1,true));
@@ -196,19 +197,19 @@ public class POOgger implements Serializable{
 		String[] types = new String[] {"Red","Green","Blue","Pink","Purple"};
 		switch (lane) {
 			case 0:
-				elements.add(new Car(screenWidth,48*12,-carsSpeed[0],types[0]));
+				elements.add(new Car(screenWidth,48*12,-carsSpeed[0],sprites.get(types[0]+"Car"),types[0]));
 				break;
 			case 1:
-				elements.add(new Car(-sprites.get(types[1]+"Car")[0],48*13,carsSpeed[1],types[1]));
+				elements.add(new Car(-sprites.get(types[1]+"Car")[0],48*13,carsSpeed[1],sprites.get(types[1]+"Car"),types[1]));
 				break;
 			case 2:
-				elements.add(new Car(screenWidth,48*11,-carsSpeed[2],types[2]));
+				elements.add(new Car(screenWidth,48*11,-carsSpeed[2],sprites.get(types[2]+"Car"),types[2]));
 				break;
 			case 3:
-				elements.add(new Car(-sprites.get(types[3]+"Car")[0],48*10,carsSpeed[3],types[3]));
+				elements.add(new Car(-sprites.get(types[3]+"Car")[0],48*10,carsSpeed[3],sprites.get(types[3]+"Car"),types[3]));
 				break;
 			case 4:
-				elements.add(new Car(screenWidth,48*9,-carsSpeed[4],types[4]));
+				elements.add(new Car(screenWidth,48*9,-carsSpeed[4],sprites.get(types[4]+"Car"),types[4]));
 				break;
 		}
 	}
@@ -217,7 +218,7 @@ public class POOgger implements Serializable{
 	 */
 	private void addLizzard() {
 		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
-		elements.add(new Lizard(-sprites.get("Alligator2")[0],48*3, 138, lizzardSpeed));
+		elements.add(new Lizard(-sprites.get("Lizard1")[0],48*3, sprites.get("Lizard1"), "Lizard1", lizzardSpeed));
 	}
 	
 	/** 
@@ -228,13 +229,13 @@ public class POOgger implements Serializable{
 		String[] types = new String[] {"Small","Medium","Large"};
 		switch (lane) {
 			case 0:
-				elements.add(new SmallLog(-sprites.get(types[0]+"Log1")[0],48*6,logsSpeed[0],types[0]+"Log1"));
+				elements.add(new SmallLog(-sprites.get(types[0]+"Log1")[0],48*6,logsSpeed[0],sprites.get(types[0]+"Log1"),types[0]+"Log1"));
 				break;
 			case 2:
-				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3,logsSpeed[1],types[1]+"Log"));
+				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3,logsSpeed[1],sprites.get(types[1]+"Log"),types[1]+"Log"));
 				break;
 			case 1:
-				elements.add(new Log(-sprites.get(types[2]+"Log")[0],48*5,logsSpeed[2],types[2]+"Log"));
+				elements.add(new Log(-sprites.get(types[2]+"Log")[0],48*5,logsSpeed[2],sprites.get(types[2]+"Log"),types[2]+"Log"));
 				break;
 		}
 	}
@@ -243,7 +244,7 @@ public class POOgger implements Serializable{
 	 * Add a new motorcycle to POOgger's elements
 	 */
 	private void addMotorcycle() {
-		elements.add(new Motorcycle(-sprites.get("Motorcycle1")[0],48*10,carsSpeed[3],true));
+		elements.add(new Motorcycle(-sprites.get("Motorcycle1")[0],48*10,carsSpeed[3],sprites.get("Motorcycle1"),"Motorcycle1",true));
 		/*
 		Random r = new Random();
 		if(r.nextBoolean()) {
@@ -259,8 +260,8 @@ public class POOgger implements Serializable{
 		Random r = new Random();
 		boolean flipped = r.nextBoolean();
 		if(flipped) {
-			elements.add(new Snake(678,0,-1*snakeSpeed,false));
-		}else elements.add(new Snake(0,0,-1*snakeSpeed,true));
+			elements.add(new Snake(screenWidth,48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",false));
+		}else elements.add(new Snake(0,48*8,-1*snakeSpeed,sprites.get("Snake1"),"Snake1",true));
 	}
 	
 	/** 
@@ -271,7 +272,7 @@ public class POOgger implements Serializable{
 		if(r.nextBoolean()) {
 			elements.add(new Truck(0,8,1,true));
 		}else*/
-		elements.add(new Truck(screenWidth,48*9,carsSpeed[4],false));
+		elements.add(new Truck(screenWidth,48*9,-carsSpeed[4],sprites.get("Truck1"),"Truck1",false));
 		
 	}
 	
@@ -282,12 +283,12 @@ public class POOgger implements Serializable{
     	Random r = new Random();
     	boolean doesSubmerge = r.nextBoolean();
     	if(lane==0) {
-			elements.add(new Turtle(screenWidth,48*7,-3*turtleSpeed, doesSubmerge));
-			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],48*7,-3*turtleSpeed, doesSubmerge));
-			elements.add(new Turtle(screenWidth+40+2*sprites.get("Turtle1")[0],48*7,-3*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth,48*7,-3*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
+			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],48*7,-3*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
+			elements.add(new Turtle(screenWidth+40+2*sprites.get("Turtle1")[0],48*7,-3*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
 		}else {
-			elements.add(new Turtle(screenWidth, 48*4, -2*turtleSpeed, doesSubmerge));
-			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0], 48*4, -2*turtleSpeed, doesSubmerge));
+			elements.add(new Turtle(screenWidth, 48*4, -2*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
+			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0], 48*4, -2*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
 		}
 		
     }
@@ -306,7 +307,7 @@ public class POOgger implements Serializable{
 		boolean isDead = false;
 		boolean touchingWater = true;
 		for(Element e: elements) {
-			if(player.getBounds(sprites.get("Frog1W")).intersects(e.getBounds(sprites.get(e.getSprite())))) {
+			if(player.getBounds().intersects(e.getBounds())) {
 				isDead = e.inCollision(player);
 				touchingWater = false;
 			}
@@ -318,12 +319,19 @@ public class POOgger implements Serializable{
 	
 	private boolean checkFixedElements(Player player, boolean touchingWater) {
 		boolean isDead = false;
-		if(player.getBounds(sprites.get("Frog1W")).intersects(((Fixed) fixeds.get(0)).getBounds())) {
+		if(player.getBounds().intersects(fixeds.get(0).getBounds())) {
 			touchingWater = touchingWater && fixeds.get(0).inCollision(player);
 		}else touchingWater = false;
-		for(int i=6; i<fixeds.size(); i++) {
+		for(int i=11; i<fixeds.size();i++){
+			Fixed e = (Fixed) fixeds.get(i);
+			if(player.getBounds().intersects(e.getBounds())) {
+				e.inCollision(player);
+				if(!e.isVisible()) fixeds.set(i, null);
+			}
+		}
+		for(int i=6; i<11; i++) {
 			Cave e = (Cave) fixeds.get(i);
-			if(player.getBounds(sprites.get("Frog1W")).intersects(e.getBounds())) {
+			if(player.getBounds().intersects(e.getBounds())) {
 				isDead = e.inCollision(player);
 				if(!isDead && e.isOccupied()) resetPlayer(player);
 			}
@@ -331,22 +339,23 @@ public class POOgger implements Serializable{
 		if(!isDead) {
 			for(int i=1; i<6; i++) {
 				Fixed e = (Fixed) fixeds.get(i);
-				if(player.getBounds(sprites.get("Frog1W")).intersects(e.getBounds())) {
+				if(player.getBounds().intersects(e.getBounds())) {
 					isDead = e.inCollision(player);
 					if(isDead) break;
 				}
 			}
 		}
+		clearElements();
 		return isDead || touchingWater;
 	}
 	
 	/***/
 	public void killPlayer(Player player) {
-		isPlayerAlive = player.decreasePlayerLives(48*7,48*14);
+		isPlayerAlive = player.decreasePlayerLives();
 	}
 	
 	public void resetPlayer(Player player) {
-		player.resetPlayer(48*7,48*14);
+		player.resetPlayer();
 	}
 	/**
 	 * Adds a new element to the given lane
@@ -375,10 +384,11 @@ public class POOgger implements Serializable{
 			}else addMotorcycle();
 		}
 		if(time%500==0) {
-			addCar(4);
 			if(r.nextBoolean()) {
 				addCar(4);
-			}else addTruck();
+			}else {
+				addTruck();
+			}
 		}
 	}
 		
@@ -408,8 +418,8 @@ public class POOgger implements Serializable{
 	}
 	
 	public ArrayList<Element> gameLoop(int time) {
-		addBeaverLane(time);
-		addLane(time);
+		//addBeaverLane(time);
+		//addLane(time);
 		checkPlayerCollisions(player);
 		if(time%2==0) update();
 		if(checkPlayerCollisions(player)) killPlayer(player);
@@ -420,17 +430,23 @@ public class POOgger implements Serializable{
 	}
 	
 	private void addFixedElements() {
+		/*Barriers*/
 		fixeds.add(new Beaver(0,48*3,screenWidth,240));
 		fixeds.add(new Barrier(-48,48*8,48,48*7,48,false));
 		fixeds.add(new Barrier(screenWidth,48*8,48,48*7,48,false));
 		fixeds.add(new Barrier(0,48*15,48*16,48,48,false));
 		fixeds.add(new Barrier(-48,48,48,48*7,48,true));
 		fixeds.add(new Barrier(screenWidth,48,48,48*7,48,true));
+		/*Caves*/
 		fixeds.add(new Cave(48,48*2,48,48));
 		fixeds.add(new Cave(48*4,48*2,48,48));
 		fixeds.add(new Cave(48*7,48*2,48,48));
 		fixeds.add(new Cave(48*10,48*2,48,48));
 		fixeds.add(new Cave(48*13,48*2,48,48));
+		/*Power*/
+		fixeds.add(new SpeedPower(48*3,48*13,48,48));
+		fixeds.add(new FlyPower(48*3,48*10,48,48));
+		fixeds.add(new ArmorPower(48*3,48*14,48,48));
 	}
 	
 	/**
