@@ -83,11 +83,12 @@ public class Eagle extends Element{
 			}
 		}
 		else {
+			//System.out.println(timerStill.isRunning());
 			if (!timerToChase.isRunning() && !chaseMood) timerToChase.start();
 			if (chaseMood) {
-				dy = 3;
+				dy = 1;
 				dx = 0;
-				if (x + dx == chasePoint[0] && y + dy == chasePoint[1]) {
+				if (y + dy == chasePoint[1] || y == chasePoint[1]) {
 					onAir = false;
 					dx = 0;
 					dy = 0;

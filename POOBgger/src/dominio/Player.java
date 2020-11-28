@@ -12,17 +12,18 @@ import javax.swing.Timer;
  * */
 public class Player extends Playable implements Pushable{
 	private final int delta = 48;
-	private int maxX;
-	private int maxY;
 	private int state;
 	private int[] dimensions;
 	private int minReachY;
 	private int lastMove;
-	
+	private final int initx;
+	private final int inity;
 	private boolean beingCarried;
 	private Carrier carrier;
 	private Animator animator;
 	private boolean isVisible;
+	private String hat;
+	
 	
 	/**
 	 * Player class constructor
@@ -36,16 +37,17 @@ public class Player extends Playable implements Pushable{
 		this.isVisible = true;
 		this.lives = initialLives;
 		this.isInAir = false;
-		this.maxX = maxX;
-		this.maxY = maxY;
+		initx = dimensions[0]*7;
+		inity = dimensions[0]*14;
 		points = 0;
-		x = 336;
-		y = 672;
+		x = initx;
+		y = inity;
 		minReachY = y;
 		lastMove = 0;
 		orientation = 'W';
 		state = 0;
 		sprite =  "Frog"+(state+1)+orientation;
+		hat = "Egg";
 		beingCarried = false;
 		animator = new Animator();
 		carrier = null;
@@ -72,7 +74,7 @@ public class Player extends Playable implements Pushable{
 			lastMove = (lastMove + 1) % 3;
 			if (lastMove == 0 && getY() < minReachY) {
 				minReachY = getY();
-				increasePoints(10);
+				changePoints(10);
 			}
 		}
 		super.move(dx, dy);
@@ -103,18 +105,20 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	private void stopBeignCarried() {
-		carrier.stopCarrying(this);
-		carrier = null;
-		setVisible(true);
-		Timer doWhenAnimationStop = new Timer(1,new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(!animator.isRunning()) {
-					beingCarried = false;
-					((Timer) e.getSource()).stop();
+		if (carrier != null) {
+			carrier.stopCarrying(this);
+			carrier = null;
+			setVisible(true);
+			Timer doWhenAnimationStop = new Timer(1,new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(!animator.isRunning()) {
+						beingCarried = false;
+						((Timer) e.getSource()).stop();
+					}
 				}
-			}
-		});
-		doWhenAnimationStop.start();
+			});
+			doWhenAnimationStop.start();
+		}
 	}
 	
 	/**
@@ -122,29 +126,30 @@ public class Player extends Playable implements Pushable{
 	 * @param initx x inital position
 	 * @param initx y inital position
 	 * */
-	public boolean decreasePlayerLives(int initx,int inity) {
+	public boolean decreasePlayerLives() {
 		boolean revives = false;
 		lives--;
 		if(lives>0) {
 			revives = true;
-			resetPlayer(initx, inity);
+			resetPlayer();
 		}
 		return revives;
 	}
 	
-	public void resetPlayer(int initx,int inity) {
+	public void resetPlayer() {
 		animator.stop();
 		state = 0;
-		x = initx;
-		y = inity;
+		x = this.initx;
+		y = this.inity;
+		minReachY = this.inity;
 		if(beingCarried) stopBeignCarried(); 
 	}
 	
 	/**
-	 * Increase the player point by some amount
+	 * Change the player point by some amount
 	 * @param value, the amount to add to the player's pointz
 	 */
-	public void increasePoints(int value) {
+	public void changePoints(int value) {
 		points += value;
 	} 
 	
@@ -198,6 +203,11 @@ public class Player extends Playable implements Pushable{
 		String returnImage = isVisible?sprite:"";
 		return returnImage;
 	}
+	 
+	public String getHat() {
+		String returnImage = isVisible?hat:"";
+		return returnImage;
+	}
 	
 	@Override
 	public boolean setPosition(int x, int y) {
@@ -213,20 +223,6 @@ public class Player extends Playable implements Pushable{
 	public void addPush(int push, String dir) {
 		if(dir.equals("W") || dir.equals("S")) super.move(0, push);
 		else super.move(push, 0);
-	}
-
-	@Override
-	public int calculateMaxPush(String dir) {
-		int push = 0;
-		if(dir.equals("A")) {
-			if(x>=96) push = -96;
-			else if(x>=48) push = -48;
-		}
-		if(dir.equals("D")) {
-			if(maxX-x>=96) push = 96;
-			else if(maxX-x>=48) push = 48;
-		}
-		return push;
 	}
 	
 	@Override 

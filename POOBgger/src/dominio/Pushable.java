@@ -25,13 +25,6 @@ public interface Pushable {
 	 * */
 	public void addPush(int push, String dir);
 	
-	/**
-	 * Returns the maximum push magnitude in the given direction
-	 * @param dir push's direction
-	 * @return maximum push magnitude
-	 * */
-	public int calculateMaxPush(String dir);
-	
 	public void setVisible(boolean visible);
 	
 	public char getDir();

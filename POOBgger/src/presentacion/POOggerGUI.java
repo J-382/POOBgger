@@ -23,6 +23,18 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class POOggerGUI extends JFrame {
+	/*private static  POOggerGUI gui = null;
+	
+	public static POOggerGUI demePOOggerGUI() {
+		if (gui == null) {
+			gui = new POOggerGUI();
+		}
+		return gui;
+	}
+	
+	public static void cambiePOOggerGUI(POOggerGUI p) {
+		gui = p;
+	}*/
 	
 	/* Paneles */
 	private StartPanel startPanel;
@@ -31,7 +43,8 @@ public class POOggerGUI extends JFrame {
 	private PointsPanel pointsPanel;
 	private SelectPanel selectPanel;
 	private HighScoresPanel highScoresPanel;
-	private GamePanel gamePanel;
+	
+	private JPanel currentPanel;
 	
 	/* Barra menu Menu */
 	private JMenuBar barraMenu;
@@ -41,9 +54,6 @@ public class POOggerGUI extends JFrame {
 	private JMenuItem saveAsItem;
 	private JMenuItem exitItem;
 	
-	/* Game */
-	//public GamePanel game;
-	
 	/* Imagenes */
 	private final ImageIcon icon = new ImageIcon("./resources/sprites/Icon.png");
 	private final ImageIcon fondo = new ImageIcon("./resources/inicial.png");
@@ -51,6 +61,7 @@ public class POOggerGUI extends JFrame {
 	/* Archivos */
 	private final File fontPath = new File("resources/8-BIT.TTF");
 	private static Font font;
+	 
 	
 			
 	public POOggerGUI() {
@@ -81,6 +92,8 @@ public class POOggerGUI extends JFrame {
 		openItem = new JMenuItem("Open");
 		saveAsItem = new JMenuItem("Save as");
 		exitItem = new JMenuItem("Exit");
+		saveAsItem.setEnabled(false);
+		openItem.setEnabled(false);
 		opciones.add(openItem);
 		opciones.add(saveAsItem);
 		opciones.addSeparator();
@@ -90,7 +103,8 @@ public class POOggerGUI extends JFrame {
 	}
 	
 	public void preparePaneles() {
-		startPanel = new StartPanel(fondo, this, fontPath);
+		startPanel = new StartPanel(fondo,this, fontPath, null);
+		currentPanel = startPanel;
 		startPanel.requestFocus(true);
 	}
 	
@@ -123,12 +137,12 @@ public class POOggerGUI extends JFrame {
     		public void actionPerformed(ActionEvent e) {
     			opcionSalga();
     		}
-    		
     	});
 	}
 	
 	public void prepareOpenGamePanel() {
-		
+		prepareGamePanel();
+		opcionAbra();
 	}
 	
 	public void preparePointsPanel() {
@@ -150,19 +164,18 @@ public class POOggerGUI extends JFrame {
 	public void prepareGamePanel() {
 		openItem.setEnabled(true);
 		saveAsItem.setEnabled(true);
-		gamePanel = new GamePanel();
-		carguePanel(newGamePanel,gamePanel);
+		carguePanel(newGamePanel,GamePanel.demeGamePanel());
 		startGamePanel();
 	}
 	
 	public void startGamePanel() {
 		Timer test = new Timer(10, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gamePanel.repaint();
+				GamePanel.demeGamePanel().repaint();
 			}
 		});
 		test.start();
-		gamePanel.requestFocus();
+		GamePanel.demeGamePanel().requestFocus();
 	}
 	
 	private void opcionSalga() {
@@ -172,19 +185,22 @@ public class POOggerGUI extends JFrame {
 		}
 	}
 	
-	private void opcionAbra() {
-		gamePanel.abra();
+	public void opcionAbra() {
+		GamePanel.demeGamePanel().abra();
 	}
 	
-	private void opcionGuardeComo() {
-		gamePanel.guarde();
+	public void opcionGuardeComo() {
+		GamePanel.demeGamePanel().guarde();
 	}
 
 	public void carguePanel(JPanel ini, JPanel fin) {
-		ini.setVisible(false);
-		remove(ini);
+		if(ini != null) {
+			ini.setVisible(false);
+			remove(ini);
+		}
     	add(fin);
     	fin.setVisible(true);
+    	currentPanel = fin;
     }
 	
 	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {
@@ -198,9 +214,11 @@ public class POOggerGUI extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		POOggerGUI game = new POOggerGUI();
-		game.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		game.setVisible(true);
+		POOggerGUI gui = new POOggerGUI();
+		//POOggerGUI.demePOOggerGUI().setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//POOggerGUI.demePOOggerGUI().setVisible(true);
+		gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		gui.setVisible(true);
 	}
 }
 

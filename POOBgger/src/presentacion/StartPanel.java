@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 
 public class StartPanel extends JBackground{
 
-	
 	/* Frame */
 	private POOggerGUI poogger;
 	
@@ -27,9 +26,7 @@ public class StartPanel extends JBackground{
 	private JButton openGameButton;
 	private JButton pointsButton;
 	
-	private static Font font;
-	
-	public StartPanel(ImageIcon image, POOggerGUI poogger,File fontPath) {
+	public StartPanel(ImageIcon image, POOggerGUI poogger,File fontPath, JBackground backPanel) {
 		super(image);
 		this.setLayout(new GridBagLayout());
 		try {
@@ -44,7 +41,6 @@ public class StartPanel extends JBackground{
 		prepareAcciones();
 		poogger.add(this);
 	}
-	
 	public void prepareElementos() {
 		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'>___________________<br>____________________<br>_____________________"
     			+ "<br>__________________________________________<br>____________________________________<br>"
@@ -102,7 +98,9 @@ public class StartPanel extends JBackground{
 	}
 	
 	public void prepareOpenGamePanel() {
-		
+		this.setVisible(false);
+		poogger.remove(this);
+		poogger.prepareOpenGamePanel();
 	}
 	
 	public void preparePointsPanel() {
@@ -120,5 +118,6 @@ public class StartPanel extends JBackground{
     	boton.setFocusPainted(false);
 		return boton;
 	}
+	
 	
 }

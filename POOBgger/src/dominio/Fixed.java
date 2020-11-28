@@ -24,4 +24,8 @@ public abstract class Fixed extends Element {
 	public int getHeight() {
 		return height;
 	}
+	
+	public boolean canBeOccupied() {
+		return false;
+	}
 }

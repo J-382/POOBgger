@@ -57,13 +57,8 @@ public class Motorcycle extends Element{
 	public boolean inCollision(Element e) {
 		boolean isDead = true;
 		if(e.isPushable()) {
-			String dir = e.getX()<x?"A":"D";
-			int maxPush = ((Pushable) e).calculateMaxPush(dir);
-			if(maxPush!=0) {
-				((Pushable) e).addPush(maxPush,dir);
-				isDead = false;
-			}
-			System.out.println(maxPush);
+			isDead = false;
+			((Pushable)e).addPush(-96,"W");
 		}
 		return isDead;
 	}

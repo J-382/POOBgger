@@ -93,25 +93,26 @@ public class NewGamePanel extends JBackground{
 	public void prepareAcciones() {
 		arcadeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				prepareGamePanel("Arcade");
+				prepareGamePanel();
+				//prepareSelectSkin("One");
 			}
 		});
 		
 		twoPlayersButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				prepareSelectSkin();
+				prepareSelectSkin("Two");
 			}
 		});
 		
 		playerMachineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				prepareSelectSkin();
+				prepareSelectSkin("Two");
 			}
 		});
 		
 		machinesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				prepareSelectSkin();
+				prepareSelectSkin("Two");
 			}
 		});
 		
@@ -122,11 +123,11 @@ public class NewGamePanel extends JBackground{
 		});
 	}
 
-	public void prepareGamePanel(String mode) {
+	public void prepareGamePanel() {
 		poogger.prepareGamePanel();
 	}
 	
-	public void prepareSelectSkin() {
+	public void prepareSelectSkin(String mode) {
 		this.setVisible(false);
 		poogger.remove(this);
 		poogger.prepareSelectPanel();

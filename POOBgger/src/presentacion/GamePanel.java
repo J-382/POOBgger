@@ -1,55 +1,72 @@
 package presentacion;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import dominio.Element;
-
 import dominio.POOgger;
 import dominio.POOggerException;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel{
+	
+	private static GamePanel panel = null;
+	public static GamePanel demeGamePanel() {
+		if (panel == null) {
+			panel = new GamePanel();
+		}
+		return panel;
+	}
+	public static void cambieGamePanel(GamePanel p) {
+		panel = p;
+	}
+	
 	private HashMap<String,Image> sprites;
+	private HashMap<String,int[]> dimensions;
 	private int width = 672;
 	private int height = 757;
 	private int lapsus = 0;
 	private boolean paused;
+	private Timer clockTime;
 	private final File font = new File("resources/8-BIT.TTF");
-	
-	public GamePanel() {
+	private GamePanel() {
+		dimensions = prepareArchivos();
 		prepareElementos();
 		prepareAcciones();
 	}
 	
 	public boolean refresh() {
-		return POOgger.demePOOgger(prepareArchivos()).isPlayerAlive();
+		return POOgger.demePOOgger(dimensions).isPlayerAlive();
 	}
 	
 	private void prepareElementos() {
 		addFont();
-		POOgger.demePOOgger(prepareArchivos());
+		POOgger.demePOOgger(dimensions);
+		clockTime = new Timer(100, new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				POOgger.demePOOgger(dimensions).updateClock();
+			}
+		});
+		clockTime.start();;
 		lapsus = 0;
 		setUIFont(new javax.swing.plaf.FontUIResource("8-bit Operator+ SC",Font.BOLD,12));
 	}
@@ -74,7 +91,7 @@ public class GamePanel extends JPanel{
 					paused = !paused;
 				}
 				else {
-					POOgger.demePOOgger(prepareArchivos()).movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0));
+					POOgger.demePOOgger(dimensions).movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0));
 				}
 			}
 		});
@@ -91,7 +108,7 @@ public class GamePanel extends JPanel{
     		if(selection == JFileChooser.APPROVE_OPTION) {
     			file = fileChooser.getSelectedFile();
     		}
-    		POOgger.demePOOgger(prepareArchivos()).abra(file);
+    		POOgger.demePOOgger(dimensions).abra(file);
     	} catch(POOggerException e) {
     		raiseError(e.getMessage());
     	}
@@ -108,7 +125,7 @@ public class GamePanel extends JPanel{
         	if(seleccion == JFileChooser.APPROVE_OPTION) {
         		file = fileChooser.getSelectedFile();
         	}
-        	POOgger.demePOOgger(prepareArchivos()).guarde(file);
+        	POOgger.demePOOgger(dimensions).guarde(file);
     	}catch (POOggerException e) {
     		raiseError(e.getMessage());
     	}
@@ -120,40 +137,32 @@ public class GamePanel extends JPanel{
 			super.paint(g);
 			g.setFont(new Font("8-bit Operator+ SC", Font.BOLD, 18));
 			g.drawImage(new ImageIcon("./resources/Fondo.png").getImage(),0,0,null);
-			for(Element i: POOgger.demePOOgger(prepareArchivos()).gameLoop(lapsus)) {
+			if(!clockTime.isRunning()) clockTime.start();
+			for(Element i: POOgger.demePOOgger(dimensions).gameLoop(lapsus)) {
 				g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
 			}
+			
 			g.setColor(Color.WHITE);
 			g.drawString("1-UP    HI-SCORE",40,23);
 			g.setColor(Color.RED.darker());
-			g.drawString(""+POOgger.demePOOgger(prepareArchivos()).getPoints(),52,45);
-			g.drawString(""+POOgger.demePOOgger(prepareArchivos()).getHighScore(),195,45);
+			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(),52,45);
+			g.drawString(""+POOgger.demePOOgger(dimensions).getHighScore(),195,45);
 			g.setColor(Color.YELLOW);
 			g.drawString("TIME",585,33);
 			g.setColor(Color.GREEN.darker());
 			g.fillRect(270, 16, 306, 20);
 			g.setColor(Color.BLACK);
 			
-			for (int i = 0; i < POOgger.demePOOgger(prepareArchivos()).getPlayer().getLives(); i++) {
+			for (int i = 0; i < POOgger.demePOOgger(dimensions).getPlayer().getLives(); i++) {
 				g.drawImage(sprites.get("Icon"),525 + 25*i,49,null);
 			}
-			g.fillRect(270, 16, POOgger.demePOOgger(prepareArchivos()).getClock().width, POOgger.demePOOgger(prepareArchivos()).getClock().height);
-			g.drawImage(sprites.get(POOgger.demePOOgger(prepareArchivos()).getPlayer().getSprite()),POOgger.demePOOgger(prepareArchivos()).getPlayer().getX(),POOgger.demePOOgger(prepareArchivos()).getPlayer().getY(),null);
+			g.fillRect(270, 16, POOgger.demePOOgger(dimensions).getClock().width, POOgger.demePOOgger(dimensions).getClock().height);
+			g.drawImage(sprites.get(POOgger.demePOOgger(dimensions).getPlayer().getSprite()),POOgger.demePOOgger(dimensions).getPlayer().getX(),POOgger.demePOOgger(dimensions).getPlayer().getY(),null);
+			g.drawImage(sprites.get(POOgger.demePOOgger(dimensions).getPlayer().getHat()),POOgger.demePOOgger(dimensions).getPlayer().getX() + 15,POOgger.demePOOgger(dimensions).getPlayer().getY() + 15,null);
 			lapsus+=1;
 		}
 		else {
-			float alpha = 0.5f;
-			try {
-				BufferedImage img = ImageIO.read(new File("./resources/pauseTest.jpg"));
-				Graphics2D g2d = (Graphics2D) g.create();
-	            g2d.setComposite(AlphaComposite.SrcOver.derive(alpha));
-				//g.drawImage(new ImageIcon("./resources/pauseTest.jpg").getImage(),0,0,null);
-	            g.drawImage(img,0,0,this);
-	            g2d.dispose();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			clockTime.stop();
 		}
 	}
 	

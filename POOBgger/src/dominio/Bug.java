@@ -10,10 +10,15 @@ public class Bug extends Fixed{
 		this.y = y;
 		points = 200;
 	}
+	
+	public void desapear() {
+		
+	}
+	
 	@Override
 	public boolean inCollision(Element e) {
 		if(e.isPlayable()) {
-			((Player)e).increasePoints(200);
+			((Player)e).changePoints(points);
 		}
 		return false;
 	}
