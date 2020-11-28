@@ -1,7 +1,6 @@
 package presentacion;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
@@ -17,7 +16,6 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLayer;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -27,6 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import dominio.Element;
 import dominio.POOgger;
 import dominio.POOggerException;
+import dominio.Player;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel{
@@ -147,7 +146,7 @@ public class GamePanel extends JPanel{
 			g.setColor(Color.WHITE);
 			g.drawString("1-UP    HI-SCORE",40,23);
 			g.setColor(Color.RED.darker());
-			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(),52,45);
+			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(0),52,45);
 			g.drawString(""+POOgger.demePOOgger(dimensions).getHighScore(),195,45);
 			g.setColor(Color.YELLOW);
 			g.drawString("TIME",585,33);
@@ -155,12 +154,14 @@ public class GamePanel extends JPanel{
 			g.fillRect(270, 16, 306, 20);
 			g.setColor(Color.BLACK);
 			
-			for (int i = 0; i < POOgger.demePOOgger(dimensions).getPlayer().getLives(); i++) {
+			for (int i = 0; i < POOgger.demePOOgger(dimensions).getPlayers().get(0).getLives(); i++) {
 				g.drawImage(sprites.get("Icon"),525 + 25*i,49,null);
 			}
 			g.fillRect(270, 16, POOgger.demePOOgger(dimensions).getClock().width, POOgger.demePOOgger(dimensions).getClock().height);
-			g.drawImage(sprites.get(POOgger.demePOOgger(dimensions).getPlayer().getSprite()),POOgger.demePOOgger(dimensions).getPlayer().getX(),POOgger.demePOOgger(dimensions).getPlayer().getY(),null);
-			g.drawImage(sprites.get(POOgger.demePOOgger(dimensions).getPlayer().getHat()),POOgger.demePOOgger(dimensions).getPlayer().getX() + 15,POOgger.demePOOgger(dimensions).getPlayer().getY() + 15,null);
+			for(Player player: POOgger.demePOOgger(dimensions).getPlayers()) {
+				g.drawImage(sprites.get(player.getSprite()),player.getX(),player.getY(),null);
+				g.drawImage(sprites.get(player.getHat()),player.getX(),player.getY(),null);
+			}
 			lapsus+=1;
 		}
 		else {

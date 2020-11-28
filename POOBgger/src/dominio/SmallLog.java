@@ -30,6 +30,8 @@ public class SmallLog extends Log{
 	}
 	
 	public boolean inCollision(Element e) {
+		boolean isDead = false;
+		if(isSubmerged) isDead = true;
 		super.inCollision(e);
 		if (isSubmerged) {
 			animator.stop();
@@ -38,6 +40,6 @@ public class SmallLog extends Log{
 				animator.animate(400,5,new Runnable() {public void run() {updateSprite();}});
 			}
 		}
-		return false;
+		return isDead;
 	}
 }

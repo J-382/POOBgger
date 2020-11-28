@@ -17,9 +17,9 @@ public class Player extends Playable implements Pushable{
 	private int minReachY;
 	private int lastMove;
 
-	private boolean beingCarried;
-	private Carrier carrier;
-	private Animator animator;
+	protected boolean beingCarried;
+	protected Carrier carrier;
+	protected Animator animator;
 
 	private String hat;
 	
@@ -63,9 +63,7 @@ public class Player extends Playable implements Pushable{
 		
 		if (("" + orientation).equals("W")) {
 			lastMove = (lastMove + 1) % 3;
-			System.out.println("1");
 			if (lastMove == 0 && getY() < minReachY) {
-				System.out.println("2");
 				minReachY = getY();
 				changePoints(10);
 			}
@@ -98,7 +96,7 @@ public class Player extends Playable implements Pushable{
 		}
 	}
 	
-	private void stopBeignCarried() {
+	protected void stopBeignCarried() {
 		if (carrier != null) {
 			carrier.stopCarrying(this);
 			carrier = null;
@@ -132,7 +130,6 @@ public class Player extends Playable implements Pushable{
 	
 	public void resetPlayer() {
 		orientation = 'W';
-		carrier = null;
 		sprite =  "Frog"+(state+1)+orientation;
 		animator.stop();
 		state = 0;
@@ -146,6 +143,7 @@ public class Player extends Playable implements Pushable{
 		canFly = false;
 		isFlying = false;
 		if(carrier!=null) stopBeignCarried(); 
+		carrier = null;
 	}
 	
 	/**
@@ -154,7 +152,6 @@ public class Player extends Playable implements Pushable{
 	 */
 	public void changePoints(int value) {
 		points += value;
-		System.out.println(points);
 	} 
 	
 	/**

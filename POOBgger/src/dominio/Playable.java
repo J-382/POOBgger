@@ -96,6 +96,10 @@ public abstract class Playable extends Mobile{
 		return true;
 	}
 	
+	public boolean isMachine() {
+		return false;
+	}
+	
 	public char getOrientation() {
 		return orientation;
 	}

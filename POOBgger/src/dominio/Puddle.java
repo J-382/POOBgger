@@ -12,8 +12,8 @@ public class Puddle extends Fixed{
 	}
 	
 	public boolean inCollision(Element e) {
-		if(e.isPushable()) {
-			((Pushable) e).addPush(96, "D");
+		if(e.isPushable() && e.isPlayable() && !((Playable) e).isInAir()) { 
+			((Pushable) e).addPush(96, "D");	
 		}
 		return false;
 	}

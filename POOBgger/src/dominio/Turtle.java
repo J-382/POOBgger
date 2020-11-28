@@ -66,6 +66,8 @@ public class Turtle extends Carrier{
 	}
 	
 	public boolean inCollision(Element e) {
-		return super.inCollision(e);
+		boolean isDead = false;
+		if(isSubmerge) isDead = true;
+		return isDead || super.inCollision(e);
 	}	
 }

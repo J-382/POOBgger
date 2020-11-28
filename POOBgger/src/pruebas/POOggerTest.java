@@ -35,7 +35,7 @@ public class POOggerTest {
 		}
 	}
 	
-	
+	/*
 	@Test
 	public void deberiaMoverseHaciaArriba() {
 		int xPos = POOgger.demePOOgger(sprites).getPlayer().getX(), yPos = POOgger.demePOOgger(sprites).getPlayer().getY();
@@ -86,5 +86,5 @@ public class POOggerTest {
 		POOgger.demePOOgger(sprites);
 		for (int i = 0; i < 6; i++) POOgger.demePOOgger(sprites).killPlayer(POOgger.demePOOgger(sprites).getPlayer());
 		assertFalse(POOgger.demePOOgger(sprites).isPlayerAlive());
-	}
+	}*/
 }

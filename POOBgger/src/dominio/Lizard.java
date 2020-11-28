@@ -42,7 +42,7 @@ public class Lizard extends Carrier{
 		state =  (state + 1)%2;
 		y+=state==0?8:-8;
 		isOpen = state == 1;
-		sprite = "Alligator"+(state + 1);
+		sprite = "Lizard"+(state + 1);
 	}
 	
 	@Override

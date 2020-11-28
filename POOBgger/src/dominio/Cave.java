@@ -27,7 +27,7 @@ public class Cave extends Fixed{
 
 	private void occupied(Element e) {
 		((Playable) e).changeSprite();
-		occupied = !(collisionPercentage(e)<20);
+		occupied = !(collisionPercentage(e)<40);
 		if(occupied) sprite = "CaveOccupied";
 	}
 	
