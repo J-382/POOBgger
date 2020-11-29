@@ -610,6 +610,24 @@ public class POOgger implements Serializable{
 		return allElements;
 	}
 	
+	public void pauseElements() {
+		for(Element element : elements) {
+			element.stopAnimator();
+		}
+		for(Element element : fixeds) {
+			element.stopAnimator();
+		}
+	}
+	
+	public void resumeElements() {
+		for(Element element : elements) {
+			element.resumeAnimator();
+		}
+		for(Element element : fixeds) {
+			element.resumeAnimator();
+		}
+	}
+	
 	private void addFixedElements() {
 		/*Barriers*/
 		fixeds.add(new Beaver(0,48*2,screenWidth,48*6));

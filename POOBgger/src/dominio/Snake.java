@@ -105,4 +105,14 @@ public class Snake extends Mobile implements Pushable{
 	public boolean isCarriable() {
 		return true;
 	}
+	
+	@Override
+	protected void stopAnimator() {
+		animator.stop();
+	}
+	
+	@Override
+	protected void resumeAnimator() {
+		animator.resume();
+	}
 }

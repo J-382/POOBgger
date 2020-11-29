@@ -71,4 +71,14 @@ public class Truck extends Carrier{
 		return isDead;
 	}
 	
+	@Override
+	protected void stopAnimator() {
+		animator.stop();
+	}
+	
+	@Override
+	protected void resumeAnimator() {
+		animator.resume();
+	}
+	
 }

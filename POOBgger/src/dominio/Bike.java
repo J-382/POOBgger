@@ -58,4 +58,14 @@ public class Bike extends Carrier{
 			super.startCarrying(c);
 		}
 	}
+	
+	@Override
+	protected void stopAnimator() {
+		animator.stop();
+	}
+	
+	@Override
+	protected void resumeAnimator() {
+		animator.resume();
+	}
 }

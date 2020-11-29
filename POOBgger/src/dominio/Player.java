@@ -75,7 +75,7 @@ public class Player extends Playable implements Pushable{
 		super.move(dx, dy);
 		updateSprite();
 		if(!animator.isRunning()) {
-			animator.animate(delay,3,new Runnable() {public void run() {move();}});
+			animator.animate(delay,2,new Runnable() {public void run() {move();}});
 		}
 		isInAir();
 	}
@@ -275,5 +275,15 @@ public class Player extends Playable implements Pushable{
 	public boolean isInAir() {
 		isInAir = !(state==0) || isFlying;
 		return isInAir;
+	}
+	
+	@Override
+	protected void stopAnimator() {
+		animator.stop();
+	}
+	
+	@Override
+	protected void resumeAnimator() {
+		animator.resume();
 	}
 }

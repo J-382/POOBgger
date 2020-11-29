@@ -38,6 +38,14 @@ public class Animator implements Serializable{
 		}
 	}
 	
+	/**
+	 * Resumes the animator
+	 */
+	public void resume() {
+		if (timer != null &&!timer.isRunning()) {
+			timer.start();
+		}
+	}
 	
 	public void animate(int delay, int frames, Runnable run) {
 		animate(delay,frames,run,true);

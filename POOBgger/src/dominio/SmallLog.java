@@ -71,4 +71,13 @@ public class SmallLog extends Log{
 		return state.isVisible();
 	}
 	
+	@Override
+	protected void stopAnimator() {
+		animator.stop();
+	}
+	
+	@Override
+	protected void resumeAnimator() {
+		animator.resume();
+	}
 }

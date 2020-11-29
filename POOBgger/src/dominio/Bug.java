@@ -33,4 +33,14 @@ public class Bug extends Fixed{
 		}
 		return false;
 	}
+	
+	@Override
+	protected void stopAnimator() {
+		animator.stop();
+	}
+	
+	@Override
+	protected void resumeAnimator() {
+		animator.resume();
+	}
 }

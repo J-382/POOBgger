@@ -93,7 +93,7 @@ public class GamePanel extends JPanel{
 					paused = !paused;
 				}
 				else {
-					POOgger.demePOOgger(dimensions).movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0));
+					if (!paused) POOgger.demePOOgger(dimensions).movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0));
 				}
 			}
 		});
@@ -157,6 +157,7 @@ public class GamePanel extends JPanel{
 	public void paint(Graphics g) {
 		if(!paused) {
 			super.paint(g);
+			POOgger.demePOOgger(dimensions).resumeElements();
 			g.setFont(new Font("8-bit Operator+ SC", Font.BOLD, 18));
 			g.drawImage(new ImageIcon("./resources/Fondo.png").getImage(),0,0,null);
 			if(!clockTime.isRunning()) clockTime.start();
@@ -187,6 +188,7 @@ public class GamePanel extends JPanel{
 			lapsus+=1;
 		}
 		else {
+			POOgger.demePOOgger(dimensions).pauseElements();
 			clockTime.stop();
 		}
 	}

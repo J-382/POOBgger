@@ -91,4 +91,11 @@ public abstract class Element implements Serializable{
 		return height;
 	}
 	
+	protected void stopAnimator() {
+		
+	}
+	
+	protected void resumeAnimator() {
+		
+	}
 }
