@@ -25,15 +25,5 @@ public class Log extends Carrier {
 		this.carried = new ArrayList<Pushable>();
 		this.maxCarryNumber = Integer.MAX_VALUE;
 		this.isVisible = true;
-	}
-	
-	public void move() {
-		super.move();
-	}
-	
-	@Override
-	public boolean inCollision(Element e) {
-		return super.inCollision(e);
-	}
-	
+	}	
 }

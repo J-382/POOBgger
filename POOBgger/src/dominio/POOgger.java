@@ -22,7 +22,7 @@ public class POOgger implements Serializable{
 	
 	public static POOgger demePOOgger(HashMap<String, int[]> archivo) {
 		if (poogger == null) {
-			poogger = new POOgger(720,768, archivo,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
+			poogger = new POOgger(720,720, archivo,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		}
 		return poogger;
 	}
@@ -77,7 +77,8 @@ public class POOgger implements Serializable{
 		fixeds = new ArrayList<Element>();
 		clock = new Rectangle(0,0, 0, 20);
 		addFixedElements();
-		//addSnake();
+		addSnake();
+		//addEagle(players.get(0));
 	}
 	
 	private void restoreClock() {
@@ -190,7 +191,7 @@ public class POOgger implements Serializable{
 	}
 	
 	private void addThunder(Player player) {
-		elements.add(new Thunder(player));
+		//elements.add(new Thunder(player));
 	}
 	/**
 	 * Add a new bike to POOgger's elements
@@ -249,7 +250,16 @@ public class POOgger implements Serializable{
 				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3,logsSpeed[1],sprites.get(types[1]+"Log"),types[1]+"Log"));
 				break;
 			case 1:
-				elements.add(new Log(-sprites.get(types[2]+"Log")[0],48*5,logsSpeed[2],sprites.get(types[2]+"Log"),types[2]+"Log"));
+				Random r = new Random();
+				Log log = new Log(-sprites.get(types[2]+"Log")[0],48*5,logsSpeed[2],sprites.get(types[2]+"Log"),types[2]+"Log");
+				elements.add(log);
+				if(r.nextBoolean()) {
+					Snake snake = new Snake(-sprites.get(types[2]+"Log")[0], 48*5, 1 ,sprites.get("Snake1"), "Snake1", false);
+					elements.add(snake);
+					log.inCollision(snake);
+					
+				}
+				
 				break;
 		}
 	}
@@ -274,8 +284,8 @@ public class POOgger implements Serializable{
 		Random r = new Random();
 		boolean flipped = r.nextBoolean();
 		if(flipped) {
-			elements.add(new Snake(screenWidth,48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",false));
-		}else elements.add(new Snake(0,48*8,-1*snakeSpeed,sprites.get("Snake1"),"Snake1",true));
+			elements.add(new Snake(-sprites.get("Snake1")[0],48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",false));
+		}else elements.add(new Snake(screenWidth,48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",true));
 	}
 	
 	/** 
@@ -354,15 +364,17 @@ public class POOgger implements Serializable{
 			}
 			else {
 				if(player.getBounds().intersects(f.getBounds())) {
-					isDead = f.inCollision(player);
-					if(isDead) break;
+					isDead = f.inCollision(player);		
 				}
 			}
-			if(!f.isVisible()) fixeds.set(i, null);
+			if(!f.isVisible()) {
+				fixeds.set(i, null);
+			}if(isDead) break;
 		}
 		clearElements();	
 		if (isDead) {
 			player.changePoints(deadPenalization);
+			killPlayer(player);
 			restoreClock();
 		}
 		return isDead || touchingWater;
@@ -371,6 +383,7 @@ public class POOgger implements Serializable{
 	/***/
 	public void killPlayer(Player player) {
 		isPlayerAlive = player.decreasePlayerLives();
+		resetPlayer(player);
 	}
 	
 	public void resetPlayer(Player player) {
@@ -439,8 +452,8 @@ public class POOgger implements Serializable{
 	}
 	
 	public ArrayList<Element> gameLoop(int time) {
-		//addBeaverLane(time);
-		addLane(time);
+		addBeaverLane(time);
+		//addLane(time);
 		if(time%2==0) update();
 		for(Player player: players) {
 			if(checkPlayerCollisions(player)) killPlayer(player);
@@ -465,13 +478,13 @@ public class POOgger implements Serializable{
 		fixeds.add(new Cave(48*7,48*2,48,48));
 		fixeds.add(new Cave(48*10,48*2,48,48));
 		fixeds.add(new Cave(48*13,48*2,48,48));
-		fixeds.add(new Cave(48*13,48*12,48,48));
 		/*Power*/
-		fixeds.add(new SpeedPower(48*3,48*13,48,48));
-		fixeds.add(new FlyPower(48*3,48*10,48,48));
-		fixeds.add(new ArmorPower(48*3,48*14,48,48));
+		//fixeds.add(new SpeedPower(48*3,48*13,48,48));
+		//fixeds.add(new FlyPower(48*3,48*10,48,48));
+		//fixeds.add(new ArmorPower(48*3,48*14,48,48));
 		/*Puddles*/
-		fixeds.add(new Puddle(48*7,48*8,48,48));
+		//fixeds.add(new Puddle(48*7,48*8,48,48));
+		fixeds.add(new Thunder(48*3, 48, screenHeight-48, players.get(0)));
 	}
 	
 	/**

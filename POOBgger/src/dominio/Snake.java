@@ -5,12 +5,14 @@ package dominio;
  * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
-public class Snake extends Mobile{
+public class Snake extends Mobile implements Pushable{
 	
 	private int speed;
 	private int state;
 	private String orientation;
 	private Animator animator;
+	private boolean beingCarried;
+	private Carrier carrier;	
 
 	/**
 	 * Snake class constructor
@@ -28,7 +30,7 @@ public class Snake extends Mobile{
 		this.speed = speed;
 		this.isVisible = true;
 		this.sprite = sprite;
-		orientation = "";
+		orientation = "F";
 		state = 0;
 		animator = new Animator();
 		if(flipped) flip();
@@ -46,7 +48,7 @@ public class Snake extends Mobile{
 	
 	public void move() {
 		x += speed;
-		if (x>600) flip();
+		if (carrier!=null && (x+width>carrier.getX()+carrier.getWidth() || x<=carrier.getX())) flip();
 		if(!animator.isRunning()) {
 			animator.animate(50,2,new Runnable() {public void run() {updateSprite();}});
 		}
@@ -69,5 +71,39 @@ public class Snake extends Mobile{
 			if(!isDead) isVisible = false;
 		}
 		return isDead;
+	}
+
+	@Override
+	public void beingCarried(Carrier c) {
+		beingCarried = true;
+		carrier = c;
+	}
+
+	@Override
+	public boolean setPosition(int x, int y) {
+		return false;
+	}
+
+	@Override
+	public void addPush(int push, String dir) {
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+	}
+
+	@Override
+	public char getDir() {
+		return orientation.charAt(0);
+	}
+
+	@Override
+	public boolean isBeingCarried() {
+		return beingCarried;
+	}
+	
+	@Override
+	public boolean isCarriable() {
+		return true;
 	}
 }

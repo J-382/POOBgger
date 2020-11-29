@@ -39,9 +39,9 @@ public class Eagle extends Mobile{
 		state = 0;
 		onAir = true;
 		try {
-			//sound = AudioSystem.getClip();
-			//sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/eagleSound.wav")));
-			//sound.loop(0);
+			sound = AudioSystem.getClip();
+			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/eagleSound.wav")));
+			sound.loop(0);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
