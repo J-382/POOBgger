@@ -33,6 +33,7 @@ public class Lizard extends Carrier{
 		state = 0;
 		this.sprite = sprite;
 		animator = new Animator();
+		animator.animate(1500, 2, new Runnable() {public void run() {updateSprite();}},false);
 	}
 	
 	/**
@@ -40,17 +41,8 @@ public class Lizard extends Carrier{
 	 * */
 	private void updateSprite() {
 		state =  (state + 1)%2;
-		y+=state==0?8:-8;
 		isOpen = state == 1;
 		sprite = "Lizard"+(state + 1);
-	}
-	
-	@Override
-	public void move() {
-		super.move();
-		if (!animator.isRunning()) {
-			animator.animate(1000, 2, new Runnable() {public void run() {updateSprite();}});
-		}
 	}
 	
 	@Override

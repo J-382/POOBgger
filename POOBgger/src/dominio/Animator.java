@@ -54,14 +54,15 @@ public class Animator implements Serializable{
 		frame = 0;
 		timer = new Timer(delay, new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				frame++;
 				if(frame<frames) {
 					run.run();
+					frame++;
 				}else if (!stopAtEnd){
 					frame = 0;
 				}else {
 					((Timer) e.getSource()).stop();
 				}
+				
 			}
 		});
 		timer.start();

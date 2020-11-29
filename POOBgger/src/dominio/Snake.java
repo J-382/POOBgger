@@ -48,7 +48,7 @@ public class Snake extends Mobile implements Pushable{
 		x += speed;
 		if (carrier!=null && (x+width>carrier.getX()+carrier.getWidth() || x<=carrier.getX())) flip();
 		if(!animator.isRunning()) {
-			animator.animate(100,2,new Runnable() {public void run() {updateSprite();}});
+			animator.animate(200,4,new Runnable() {public void run() {updateSprite();}});
 		}
 		
 	}

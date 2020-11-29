@@ -33,6 +33,7 @@ public class Bike extends Carrier{
 		this.sprite = sprite+orientation;
 		frame = 0;
 		animator = new Animator();
+		animator.animate(200,2,new Runnable() {public void run() {updateSprite();}},false);
 	}
 	
 	@Override
@@ -48,14 +49,6 @@ public class Bike extends Carrier{
 		String state = carrying?"C":"";
 		frame = (frame+1)%2;
 		sprite = "Bike"+state+(frame+1)+orientation;
-	}
-	
-	@Override
-	public void move() {
-		super.move();
-		if(!animator.isRunning()) {
-			animator.animate(200,2,new Runnable() {public void run() {updateSprite();}});
-		}
 	}
 	
 	@Override

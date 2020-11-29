@@ -25,5 +25,13 @@ public class Log extends Carrier {
 		this.carried = new ArrayList<Pushable>();
 		this.maxCarryNumber = Integer.MAX_VALUE;
 		this.isVisible = true;
-	}	
+	}
+	
+	public int getMinWidth() {
+		return width;
+	}
+	
+	public int getMinHeight() {
+		return height;
+	}
 }

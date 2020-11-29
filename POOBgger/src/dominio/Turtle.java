@@ -1,5 +1,6 @@
 package dominio;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +14,7 @@ public class Turtle extends Carrier{
 	private boolean doesSubmerge;
 	private int frame;
 	private Animator animator;
+	private TurtleState state;
 	
 	/**
 	 * Turtle class constructor
@@ -31,6 +33,7 @@ public class Turtle extends Carrier{
 		this.maxCarryNumber = 1;
 		this.isVisible = true;
 		this.doesSubmerge = doesSubmerge;
+		state = new TurtleFloatingState(this);
 		frame = 0;
 		isSubmerge = false;
 		this.sprite = sprite;
@@ -43,6 +46,7 @@ public class Turtle extends Carrier{
 	private void submerge() {
 		frame = (frame+1)%7;
 		isSubmerge = frame>=3 && frame<5;
+		state = isSubmerge?new TurtleSubmergedState(this):new TurtleFloatingState(this);
 		sprite = "Turtle"+"S"+(frame+1);
 	}
 	
@@ -65,9 +69,8 @@ public class Turtle extends Carrier{
 		}
 	}
 	
-	public boolean inCollision(Element e) {
-		boolean isDead = false;
-		if(isSubmerge) isDead = true;
-		return isDead || super.inCollision(e);
-	}	
+	@Override
+	public Rectangle getBounds() {
+		return state.getBounds();
+	}
 }

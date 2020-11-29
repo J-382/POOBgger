@@ -49,7 +49,7 @@ public class Cave extends Fixed{
 				isDead = !occupied;
 			}
 		}
-		return isDead;
+		return false;
 	}
 	@Override
 	public boolean canBeOccupied() {

@@ -11,11 +11,9 @@ import javax.swing.Timer;
  * @author Angie Medina - Jose Perez
  * */
 public class Motorcycle extends Mobile{
-	private Timer animator;
+	private Animator animator;
 	private int frame;
 	private String orientation;
-	private int speed;
-	
 	/**
 	 * Motorcycle class constructor
 	 * @param x Motorcycle's x position
@@ -33,11 +31,8 @@ public class Motorcycle extends Mobile{
 		orientation = flipped?"F":"";
 		frame = 0;
 		this.sprite = sprite+orientation;
-		animator = new Timer(150, new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				updateSprite();
-			}
-		});
+		animator = new Animator();
+		animator.animate(150, 2, new Runnable() {public void run() {updateSprite();}},false);
 	}
 	
 	/**
@@ -48,13 +43,6 @@ public class Motorcycle extends Mobile{
 		sprite = "Motorcycle"+(frame+1)+orientation;
 	}
 	
-	@Override
-	public void move() {
-		x += speed;
-		if(!animator.isRunning()) {
-			animator.start();
-		}
-	}
 	
 	@Override
 	public boolean inCollision(Element e) {

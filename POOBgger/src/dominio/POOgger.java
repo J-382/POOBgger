@@ -244,7 +244,7 @@ public class POOgger implements Serializable{
 		String[] types = new String[] {"Small","Medium","Large"};
 		switch (lane) {
 			case 0:
-				elements.add(new SmallLog(-sprites.get(types[0]+"Log1")[0],48*6,logsSpeed[0],sprites.get(types[0]+"Log1"),types[0]+"Log1"));
+				elements.add(new SmallLog(-sprites.get(types[0]+"Log1")[0],48*6,logsSpeed[0],sprites.get(types[0]+"Log1"),new int[] {48,48},types[0]+"Log1"));
 				break;
 			case 2:
 				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3,logsSpeed[1],sprites.get(types[1]+"Log"),types[1]+"Log"));
@@ -354,11 +354,15 @@ public class POOgger implements Serializable{
 			if (f.canBeOccupied()) {
 				Cave e = (Cave) f;
 				if(player.getBounds().intersects(e.getBounds())) {
-					isDead = e.inCollision(player);
-					if(!isDead && e.isOccupied()) {
-						player.changePoints(e.getPoints());
-						restoreClock();
-						resetPlayer(player);
+					if(!e.isOccupied()) {
+						e.inCollision(player);
+						if(e.isOccupied()) {
+							player.changePoints(e.getPoints());
+							restoreClock();
+							resetPlayer(player);
+							touchingWater = false;
+							break;
+						}
 					}
 				}
 			}
@@ -466,7 +470,7 @@ public class POOgger implements Serializable{
 	
 	private void addFixedElements() {
 		/*Barriers*/
-		fixeds.add(new Beaver(0,48*3,screenWidth,240));
+		fixeds.add(new Beaver(0,48*2,screenWidth,48*6));
 		fixeds.add(new Barrier(-48,48*8,48,48*7,48,false));
 		fixeds.add(new Barrier(screenWidth,48*8,48,48*7,48,false));
 		fixeds.add(new Barrier(0,48*15,48*16,48,48,false));
@@ -485,6 +489,7 @@ public class POOgger implements Serializable{
 		/*Puddles*/
 		//fixeds.add(new Puddle(48*7,48*8,48,48));
 		fixeds.add(new Thunder(48*3, 48, screenHeight-48, players.get(0)));
+		fixeds.add(new Bug(48*4,48*12,48,48,1500));
 	}
 	
 	/**

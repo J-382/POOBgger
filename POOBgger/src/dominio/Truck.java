@@ -31,6 +31,7 @@ public class Truck extends Carrier{
 		frame = 0;
 		animator = new Animator();
 		sprite = "Truck"+(frame+1)+orientation;
+		animator.animate(5,2,new Runnable() {public void run() {updateSprite();}},false);
 	}
 	
 	/**
@@ -46,16 +47,7 @@ public class Truck extends Carrier{
 	public void stopCarrying(Pushable c) {
 		sprite = "Truck"+(frame+1)+orientation;
 		if(((Element) c).isPlayable()) ((Playable) c).makeToxic();
-		System.out.println(((Playable) c).isToxic());
 		super.stopCarrying(c);
-	}
-	
-	@Override
-	public void move() {
-		super.move();
-		if(!animator.isRunning()) {
-			animator.animate(5,2,new Runnable() {public void run() {updateSprite();}});
-		}
 	}
 	
 	/*Usar la direccion del jugador para evitar las colisiones*/

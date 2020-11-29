@@ -23,6 +23,5 @@ public class ArmorPower extends Power{
 	
 	public void givePower(Playable player) {
 		player.makeArmored(true);
-		System.out.println("Brutal");
 	}
 }
