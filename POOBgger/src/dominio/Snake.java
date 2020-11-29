@@ -34,6 +34,7 @@ public class Snake extends Mobile implements Pushable{
 		state = 0;
 		animator = new Animator();
 		if(flipped) flip();
+		animator.animate(100,4,new Runnable() {public void run() {updateSprite();}},false);
 	}
 	
 	/**
@@ -46,11 +47,10 @@ public class Snake extends Mobile implements Pushable{
 	
 	public void move() {
 		x += speed;
-		if (carrier!=null && (x+width>carrier.getX()+carrier.getWidth() || x<=carrier.getX())) flip();
-		if(!animator.isRunning()) {
-			animator.animate(200,4,new Runnable() {public void run() {updateSprite();}});
+		if (carrier!=null && (x+width>carrier.getX()+carrier.getWidth() || x<=carrier.getX())) {
+			flip();
+			if(speed<0) x+=speed;
 		}
-		
 	}
 	
 	/**
@@ -68,6 +68,7 @@ public class Snake extends Mobile implements Pushable{
 			isDead = !((Playable) e).isToxic();
 			if(!isDead) isVisible = false;
 		}
+		if (isDead) System.out.println("Killed by snake");
 		return isDead;
 	}
 

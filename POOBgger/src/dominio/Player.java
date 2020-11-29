@@ -36,8 +36,12 @@ public class Player extends Playable implements Pushable{
 		this.height = size[1]; 
 		this.isVisible = true;
 		this.lives = initialLives;
+		initLives = initialLives;
 		this.initX = initX;
 		this.initY = initY;
+		cavesReach = 0;
+		roundsWon = 0;
+		isAlive = true;
 		hat = "Egg";
 		animator = new Animator();
 		resetPlayer();
@@ -114,18 +118,23 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	/**
+	 * Returns if the player is alive
+	 */
+	public boolean isAlive() {
+		return isAlive;
+	}
+	
+	/**
 	 * Decrease the player lives and reset his position
 	 * @param initx x inital position
 	 * @param initx y inital position
 	 * */
 	public boolean decreasePlayerLives() {
-		boolean revives = false;
 		lives--;
-		if(lives>0) {
-			revives = true;
+		if (lives >= 1) {
 			resetPlayer();
-		}
-		return revives;
+		}else isAlive = false;
+		return isAlive;
 	}
 	
 	public void resetPlayer() {
@@ -155,6 +164,25 @@ public class Player extends Playable implements Pushable{
 	} 
 	
 	/**
+	 * Increase the caves that the player have reached
+	 */
+	public void increaseCavesReach() {
+		cavesReach++;
+	}
+	
+	public void increaseRoudsWon() {
+		roundsWon++;
+	}
+	
+	public int getRoundsWon() {
+		return roundsWon;
+	}
+	
+	public int getCavesReach() {
+		return cavesReach;
+	}
+	
+	/**
 	 * Returns player's size
 	 * @return player's size
 	 * */
@@ -168,6 +196,13 @@ public class Player extends Playable implements Pushable{
 	 * */
 	public int getLives() {
 		return lives;
+	}
+	
+	/**
+	 * Returns player's initial lives
+	 */
+	public int getInitialLives() {
+		return initLives;
 	}
 	
 	/**

@@ -1,5 +1,5 @@
-Nickname5 01270
-Nickname6 01000
-Nickname7 00900
-Nickname8 00500
-Nickname9 00010
+Nickname5 00000
+Nickname6 00000
+Nickname7 00000
+Nickname8 00000
+Nickname9 00000

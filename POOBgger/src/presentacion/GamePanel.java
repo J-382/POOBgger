@@ -102,6 +102,7 @@ public class GamePanel extends JPanel{
 	}
 	
 	public void abra() {
+		paused = true;
 		JFileChooser fileChooser = new JFileChooser();
     	fileChooser.setCurrentDirectory(new File("."));
     	try {
@@ -110,7 +111,8 @@ public class GamePanel extends JPanel{
     		if(selection == JFileChooser.APPROVE_OPTION) {
     			file = fileChooser.getSelectedFile();
     		}
-    		POOgger.demePOOgger(dimensions).abra(file);
+    		POOgger.demePOOgger(dimensions).open(file);
+    		paused = false;
     	} catch(POOggerException e) {
     		raiseError(e.getMessage());
     	}
@@ -118,6 +120,7 @@ public class GamePanel extends JPanel{
 	}
 	
 	public void guarde() {
+		//paused = true;
 		JFileChooser fileChooser = new JFileChooser();
     	fileChooser.setCurrentDirectory(new File("."));
     	fileChooser.setFileFilter(new FileNameExtensionFilter("DAT File","dat"));
@@ -127,11 +130,20 @@ public class GamePanel extends JPanel{
         	if(seleccion == JFileChooser.APPROVE_OPTION) {
         		file = fileChooser.getSelectedFile();
         	}
-        	POOgger.demePOOgger(dimensions).guarde(file);
+        	POOgger.demePOOgger(dimensions).save(file);
+        	//paused = false;
     	}catch (POOggerException e) {
     		raiseError(e.getMessage());
     	}
 	}
+	
+	public boolean[] getGameState() {
+		return POOgger.demePOOgger(dimensions).getGameState();
+	}
+	
+	public boolean checkScoresRecords() {
+		return POOgger.demePOOgger(dimensions).checkScoresRecords();
+	} 
 	
 	private void paintCollisions(Element i, Graphics g) {
 		Color initialColor = g.getColor();
@@ -156,8 +168,8 @@ public class GamePanel extends JPanel{
 			g.setColor(Color.WHITE);
 			g.drawString("1-UP    HI-SCORE",40,23);
 			g.setColor(Color.RED.darker());
-			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(0),52,45);
-			g.drawString(""+POOgger.demePOOgger(dimensions).getHighScore(),195,45);
+			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(0),20,45);
+			g.drawString(POOgger.demePOOgger(dimensions).getHighScore(),110,45);
 			g.setColor(Color.YELLOW);
 			g.drawString("TIME",585,33);
 			g.setColor(Color.GREEN.darker());
