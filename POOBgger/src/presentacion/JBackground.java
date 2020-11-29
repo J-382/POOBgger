@@ -29,7 +29,7 @@ public abstract class JBackground extends JPanel{
 	public abstract void prepareAcciones();
 	
 	public void paintComponent(Graphics g) {
-		g.drawImage(background.getImage(), 0, 0, 672, 757, null);
+		g.drawImage(background.getImage(), 0, 0, 720,768, null);
 		setOpaque(false);
 		super.paintComponent(g);
 	}

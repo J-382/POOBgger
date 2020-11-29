@@ -36,8 +36,10 @@ public class Player extends Playable implements Pushable{
 		this.height = size[1]; 
 		this.isVisible = true;
 		this.lives = initialLives;
+		initLives = initialLives;
 		this.initX = initX;
 		this.initY = initY;
+		isAlive = true;
 		hat = "Egg";
 		animator = new Animator();
 		resetPlayer();
@@ -114,18 +116,23 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	/**
+	 * Returns if the player is alive
+	 */
+	public boolean isAlive() {
+		return isAlive;
+	}
+	
+	/**
 	 * Decrease the player lives and reset his position
 	 * @param initx x inital position
 	 * @param initx y inital position
 	 * */
 	public boolean decreasePlayerLives() {
-		boolean revives = false;
-		lives--;
-		if(lives>0) {
-			revives = true;
+		if (lives >= 1) {
+			lives--;
 			resetPlayer();
-		}
-		return revives;
+		}else isAlive = false;
+		return isAlive;
 	}
 	
 	public void resetPlayer() {
@@ -168,6 +175,13 @@ public class Player extends Playable implements Pushable{
 	 * */
 	public int getLives() {
 		return lives;
+	}
+	
+	/**
+	 * Returns player's initial lives
+	 */
+	public int getInitialLives() {
+		return initLives;
 	}
 	
 	/**

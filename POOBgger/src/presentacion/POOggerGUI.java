@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -62,7 +63,8 @@ public class POOggerGUI extends JFrame {
 	private final File fontPath = new File("resources/8-BIT.TTF");
 	private static Font font;
 	 
-	
+	/* Game Execution  */
+	private Timer execution;
 			
 	public POOggerGUI() {
 		prepareElementos();
@@ -79,7 +81,7 @@ public class POOggerGUI extends JFrame {
 		}
 		setTitle("POOgger");
 		setIconImage(icon.getImage());
-		setSize(new Dimension(672, 757));
+		setSize(new Dimension(720,768));
 		setLocationRelativeTo(null);
 		prepareElementosMenu();
 		preparePaneles();
@@ -169,14 +171,28 @@ public class POOggerGUI extends JFrame {
 	}
 	
 	public void startGamePanel() {
-		Timer test = new Timer(10, new ActionListener() {
+		execution = new Timer(10, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GamePanel.demeGamePanel().repaint();
+				if (GamePanel.demeGamePanel().getGameState()[0]) {
+					stopGamePanel();
+				}
 			}
 		});
-		test.start();
+		execution.start();
 		GamePanel.demeGamePanel().requestFocus();
 	}
+	
+	public void stopGamePanel() {
+		execution.stop();
+		String message = "You lose :(";
+		if (GamePanel.demeGamePanel().getGameState()[1])  message = "You have won :3";
+		if (GamePanel.demeGamePanel().checkScoresRecords()) message += " and you have made a record!!";
+		Toolkit.getDefaultToolkit().beep();
+    	JOptionPane.showMessageDialog(null, message,"",JOptionPane.INFORMATION_MESSAGE);
+    	System.exit(0);
+	}
+	
 	
 	private void opcionSalga() {
 		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit Application",JOptionPane.YES_NO_OPTION);
@@ -217,7 +233,6 @@ public class POOggerGUI extends JFrame {
 		POOggerGUI gui = new POOggerGUI();
 		//POOggerGUI.demePOOggerGUI().setDefaultCloseOperation(EXIT_ON_CLOSE);
 		//POOggerGUI.demePOOggerGUI().setVisible(true);
-		gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		gui.setVisible(true);
 	}
 }

@@ -10,6 +10,7 @@ import javax.swing.Timer;
  * @author Angie Medina - Jose Perez
  * */
 public abstract class Playable extends Mobile{
+	protected boolean isAlive;
 	protected boolean isToxic;
 	protected boolean isArmored;
 	protected boolean isFast;
@@ -18,6 +19,7 @@ public abstract class Playable extends Mobile{
 	protected boolean canFly;
 	protected int initX;
 	protected int initY;
+	protected int initLives;
 	protected int lives;
 	protected int points;
 	protected int bonus;
