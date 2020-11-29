@@ -27,7 +27,7 @@ public class POOgger implements Serializable{
 	
 	public static POOgger demePOOgger(HashMap<String, int[]> archivo) {
 		if (poogger == null) {
-			poogger = new POOgger(720,768, archivo,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
+			poogger = new POOgger(720,720, archivo,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
 		}
 		return poogger;
 	}
@@ -88,7 +88,8 @@ public class POOgger implements Serializable{
 		fixeds = new ArrayList<Element>();
 		clock = new Rectangle(0,0, 0, 20);
 		addFixedElements();
-		//addSnake();
+		addSnake();
+		//addEagle(players.get(0));
 		testFile = new File("./resources/HighScoresJvsJ.txt");
 		try {
 			highScores = readHighScoreFile(testFile);
@@ -111,9 +112,8 @@ public class POOgger implements Serializable{
 		clock = new Rectangle(0, 0, clock.width + 1, clock.height);
 		if (clock.width == timeLimit) {
 			for(Player player: players) {
-				player.decreasePlayerLives();
+				killPlayer(player);
 			}
-			restoreClock();
 		}
 	}
 	
@@ -208,22 +208,6 @@ public class POOgger implements Serializable{
 	}
 	
 	/**
-	 * Add a new eagle to POOgger's elements
-	 * @param player, player the eagle will chase
-	 */
-	private void addEagle(Player player) {
-		elements.add(new Eagle(1, sprites.get("Eagle1"), "Eagle1", player));
-	}
-	
-	/**
-	 * 
-	 * @param player
-	 */
-	private void addThunder(Player player) {
-		elements.add(new Thunder(player));
-	}
-	
-	/**
 	 * Add a new bike to POOgger's elements
 	 */
 	private void addBike() {
@@ -259,6 +243,22 @@ public class POOgger implements Serializable{
 		}
 	}
 	
+	/**
+	 * Add a new eagle to POOgger's elements
+	 * @param player, player the eagle will chase
+	 */
+	private void addEagle(Player player) {
+		elements.add(new Eagle(1, sprites.get("Eagle1"), "Eagle1", player));
+	}
+	
+	/**
+	 * Add one element to POOgger's elements
+	 * @param element, the element to add
+	 */
+	public void addElement(Element element) {
+		elements.add(element);
+	}
+	
 	/** Add a new Lizzard to POOgger's elements
 	 */
 	private void addLizard() {
@@ -280,7 +280,16 @@ public class POOgger implements Serializable{
 				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3,logsSpeed[1],sprites.get(types[1]+"Log"),types[1]+"Log"));
 				break;
 			case 1:
-				elements.add(new Log(-sprites.get(types[2]+"Log")[0],48*5,logsSpeed[2],sprites.get(types[2]+"Log"),types[2]+"Log"));
+				Random r = new Random();
+				Log log = new Log(-sprites.get(types[2]+"Log")[0],48*5,logsSpeed[2],sprites.get(types[2]+"Log"),types[2]+"Log");
+				elements.add(log);
+				if(r.nextBoolean()) {
+					Snake snake = new Snake(-sprites.get(types[2]+"Log")[0], 48*5, 1 ,sprites.get("Snake1"), "Snake1", false);
+					elements.add(snake);
+					log.inCollision(snake);
+					
+				}
+				
 				break;
 		}
 	}
@@ -305,9 +314,18 @@ public class POOgger implements Serializable{
 		Random r = new Random();
 		boolean flipped = r.nextBoolean();
 		if(flipped) {
-			elements.add(new Snake(screenWidth,48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",false));
-		}else elements.add(new Snake(0,48*8,-1*snakeSpeed,sprites.get("Snake1"),"Snake1",true));
+			elements.add(new Snake(-sprites.get("Snake1")[0],48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",false));
+		}else elements.add(new Snake(screenWidth,48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",true));
 	}
+	
+	/**
+	 * 
+	 * @param player
+	 */
+	private void addThunder(Player player) {
+		//elements.add(new Thunder(player));
+	}
+	
 	
 	/** 
 	 * Add a new Truck to POOgger's elements
@@ -363,10 +381,6 @@ public class POOgger implements Serializable{
 			}
 			if(isDead) break;
 		}
-		if (isDead) {
-			player.changePoints(deadPenalization);
-			restoreClock();
-		}
 		return new boolean[] {isDead,touchingWater};
 	}
 	
@@ -389,6 +403,7 @@ public class POOgger implements Serializable{
 					isDead = e.inCollision(player);
 					if(!isDead && e.isOccupied()) {
 						player.changePoints(e.getPoints());
+						player.increaseCavesReach();
 						checkCavesState(player);
 						restoreClock();
 						resetPlayer(player);
@@ -397,11 +412,12 @@ public class POOgger implements Serializable{
 			}
 			else {
 				if(player.getBounds().intersects(f.getBounds())) {
-					isDead = f.inCollision(player);
-					if(isDead) break;
+					isDead = f.inCollision(player);		
 				}
 			}
-			if(!f.isVisible()) fixeds.set(i, null);
+			if(!f.isVisible()) {
+				fixeds.set(i, null);
+			}if(isDead) break;
 		}
 		clearElements();	
 		return isDead || touchingWater;
@@ -423,6 +439,9 @@ public class POOgger implements Serializable{
 			if (player.getLives() == player.getInitialLives()) player.changePoints(1000);
 			else player.changePoints(player.getLives()*100);
 			player.changePoints(timeLimit - (int)clock.getWidth());
+			if (player.getCavesReach() >= 3) {
+				player.increaseRoudsWon();
+			}
 			nextLevel();
 		}
 	}
@@ -431,7 +450,13 @@ public class POOgger implements Serializable{
 	 * Creates another level if possible (max level 5)
 	 */
 	public void nextLevel() {
+		String winner;
 		if (level == 5) {
+			for (int i = 1; i <= players.size(); i++) {
+				if (players.get(i).getRoundsWon() >= 3) {
+					winner = "" + i;
+				}
+			}
 			isOver[0] = true;
 			isOver[1] = true;
 		}
@@ -444,6 +469,10 @@ public class POOgger implements Serializable{
 	 * 				   third position if some player made a record
 	 */
 	public boolean[] getGameState() {
+		if (!isPlayerAlive) {
+			isOver[0] = true;
+			isOver[1] = false;
+		}
 		return isOver;
 	}
 	
@@ -482,7 +511,10 @@ public class POOgger implements Serializable{
 	 * @param player, the player killed
 	 */
 	public void killPlayer(Player player) {
+		player.changePoints(deadPenalization);
+		restoreClock();
 		isPlayerAlive = player.decreasePlayerLives();
+		resetPlayer(player);
 	}
 	
 	/**
@@ -501,7 +533,7 @@ public class POOgger implements Serializable{
 		Random r = new Random();
 		if (!exist) {
 			
-			addEagle(players.get(r.nextInt(players.size())));
+			//addEagle(players.get(r.nextInt(players.size())));
 			//addThunder();
 			exist = true;
 		}
@@ -557,11 +589,10 @@ public class POOgger implements Serializable{
 	
 	public ArrayList<Element> gameLoop(int time) {
 		addBeaverLane(time);
-		addLane(time);
+		//addLane(time);
 		if(time%2==0) update();
 		for(Player player: players) {
 			if(checkPlayerCollisions(player)) {
-				player.changePoints(deadPenalization);
 				killPlayer(player);
 				if (!player.isAlive()) {
 					isOver[0] = true;
@@ -589,13 +620,13 @@ public class POOgger implements Serializable{
 		fixeds.add(new Cave(48*7,48*2,48,48));
 		fixeds.add(new Cave(48*10,48*2,48,48));
 		fixeds.add(new Cave(48*13,48*2,48,48));
-		fixeds.add(new Cave(48*13,48*12,48,48));
 		/*Power*/
 		/**fixeds.add(new SpeedPower(48*3,48*13,48,48));
 		fixeds.add(new FlyPower(48*3,48*10,48,48));
 		fixeds.add(new ArmorPower(48*3,48*14,48,48));**/
 		/*Puddles*/
-		fixeds.add(new Puddle(48*7,48*8,48,48));
+		//fixeds.add(new Puddle(48*7,48*8,48,48));
+		//fixeds.add(new Thunder(48*3, 48, screenHeight-48, players.get(0)));
 	}
 	
 	/**
@@ -626,7 +657,7 @@ public class POOgger implements Serializable{
 	 * @throws POOggerException	    - TIPO_ERRONEO When the file is not a .txt
 	 * 								- ERROR_IMPORTAR  When some error occurs when tries to read the file
 	 */
-	public TreeMap<Integer, ArrayList<String>> readHighScoreFile(File file) throws POOggerException{
+	private TreeMap<Integer, ArrayList<String>> readHighScoreFile(File file) throws POOggerException{
 		TreeMap<Integer, ArrayList<String>> scores = new TreeMap<>();
 		try {
 			if (!file.getCanonicalPath().endsWith(".txt")) {
@@ -678,7 +709,7 @@ public class POOgger implements Serializable{
 	 * @throws POOggerException     - TIPO_ERRONEO   When the file is not a .txt
 	 * 								- ERROR_EXPORTAR When some error occurs when tries to export 
 	 * */
-	public void writeHighScoreFile(File file) throws POOggerException {
+	private void writeHighScoreFile(File file) throws POOggerException {
 		try {
 			if (!file.getCanonicalPath().endsWith(".txt")) {
 				throw new POOggerException(POOggerException.TIPO_ERRONEO_TXT);
@@ -714,7 +745,7 @@ public class POOgger implements Serializable{
 	 * @param ultiScore, the score desire to format
 	 * @return the format score
 	 */
-	public String formatScore(int ultiScore) {
+	private String formatScore(int ultiScore) {
 		String sign = ultiScore < 0 ? "-" : "";
 		ultiScore = Math.abs(ultiScore);
 		String format = "" + ultiScore;

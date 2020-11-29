@@ -1,76 +1,62 @@
 package dominio;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
-
+import java.awt.Rectangle;
 import java.io.File;
-import javax.sound.sampled.AudioFileFormat;
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public class Thunder extends Mobile{
+public class Thunder extends Fixed{
 
-	private int state;
+	private int frame;
+	private boolean falling;
+	private boolean impacted;
 	private int[] chasePoint;
-	private boolean chaseMood;
 	private Animator animator;
-	private Player toChase;
-	private Timer timerToChase;
-	private Timer timerStill;
-	private int dy;
-	private int dx;
-	private boolean onAir;
 	private transient Clip sound;
 	
-	public Thunder(Player player) {
-		this.sprite = "Alligator1";
+	public Thunder(int width, int height, int y,Player player) {
+		this.sprite = "Thunder1";
 		this.isVisible = true;
-		toChase = player;
-		dy = 20;
-		dx = 0;
-		state = 0;
-		onAir = true;
-		chasePoint = new int[] {toChase.getX(), toChase.getY()};
-		x = chasePoint[0];
-		y = 4;
+		this.width = width;
+		this.height = height;
+		falling = false;
+		this.x = player.getX()-width/3;
+		this.y = -height/2-(y-player.getY());
+		chasePoint = new int[] {x,player.getY()};
+		animator = new Animator();
+		playSound();
+		animator.animate(300, 3, new Runnable() {public void run() {fall();}});
+	}
+	
+	private void fall() {
+		if(falling) {
+			animator.stop();
+			animator.animate(50, 12, new Runnable() {public void run() {updateSprite();}});
+		}
+		else falling = true;
+	}
+	private void playSound() {
 		try {
-			sound = AudioSystem.getClip();
-			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/ThunderSound.wav")));
-			sound.loop(0);
+			/*sound = AudioSystem.getClip();
+			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/thunderSound.wav")));
+			sound.loop(0);*/
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
-		chaseMood = false;
-		timerStill = new Timer(800, new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				y += 1;
-				onAir = true;
-				timerStill.stop();
-			}
-		});
-		animator = new Animator();
 	}
 	
-	private void updateFlySprite() {
-		state =  (state + 1)%2;
-		y+=state==0?15:-15;
-		sprite = "Alligator"+(state + 1);
+	private void updateSprite() {
+		frame =  (frame + 1)%12;
+		sprite = "Thunder"+(frame + 1);
+		impacted = frame>6;
+		isVisible = !(frame>=11);
 	}
-
+	
 	@Override
-	public void move() {
-		if (x + dx == chasePoint[0] && y + dy == chasePoint[1]) {
-			onAir = false;
-			dx = 0;
-			dy = 0;
-			if (!timerStill.isRunning()) timerStill.start();
-		}
-		super.move(dx, dy);
-		if (!animator.isRunning()) {
-			animator.animate(1000, 2, new Runnable() {public void run() {updateFlySprite();}});
-		}
+	public Rectangle getBounds() {
+		Rectangle bound = impacted?new Rectangle(chasePoint[0],chasePoint[1],width,height):new Rectangle(0,0,0,0);
+		return bound;
 	}
 
 	public boolean inCollision(Element e) {

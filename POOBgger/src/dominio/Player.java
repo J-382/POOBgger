@@ -39,6 +39,8 @@ public class Player extends Playable implements Pushable{
 		initLives = initialLives;
 		this.initX = initX;
 		this.initY = initY;
+		cavesReach = 0;
+		roundsWon = 0;
 		isAlive = true;
 		hat = "Egg";
 		animator = new Animator();
@@ -128,8 +130,8 @@ public class Player extends Playable implements Pushable{
 	 * @param initx y inital position
 	 * */
 	public boolean decreasePlayerLives() {
+		lives--;
 		if (lives >= 1) {
-			lives--;
 			resetPlayer();
 		}else isAlive = false;
 		return isAlive;
@@ -160,6 +162,25 @@ public class Player extends Playable implements Pushable{
 	public void changePoints(int value) {
 		points += value;
 	} 
+	
+	/**
+	 * Increase the caves that the player have reached
+	 */
+	public void increaseCavesReach() {
+		cavesReach++;
+	}
+	
+	public void increaseRoudsWon() {
+		roundsWon++;
+	}
+	
+	public int getRoundsWon() {
+		return roundsWon;
+	}
+	
+	public int getCavesReach() {
+		return cavesReach;
+	}
 	
 	/**
 	 * Returns player's size

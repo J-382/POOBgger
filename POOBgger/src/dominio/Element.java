@@ -83,4 +83,12 @@ public abstract class Element implements Serializable{
 		return isVisible;
 	}
 	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
 }

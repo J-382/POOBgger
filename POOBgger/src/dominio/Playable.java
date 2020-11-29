@@ -10,6 +10,8 @@ import javax.swing.Timer;
  * @author Angie Medina - Jose Perez
  * */
 public abstract class Playable extends Mobile{
+	protected int cavesReach;
+	protected int roundsWon;
 	protected boolean isAlive;
 	protected boolean isToxic;
 	protected boolean isArmored;
