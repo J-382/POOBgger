@@ -41,8 +41,6 @@ public class Snake extends Mobile implements Pushable{
 	 * */
 	private void updateSprite(){
 		state = (state+1)%4;
-		if(state==2) y+=20;
-		else if(state==3) y-=20;
 		sprite = "Snake"+(state+1)+orientation;
 	}
 	
@@ -50,7 +48,7 @@ public class Snake extends Mobile implements Pushable{
 		x += speed;
 		if (carrier!=null && (x+width>carrier.getX()+carrier.getWidth() || x<=carrier.getX())) flip();
 		if(!animator.isRunning()) {
-			animator.animate(50,2,new Runnable() {public void run() {updateSprite();}});
+			animator.animate(100,2,new Runnable() {public void run() {updateSprite();}});
 		}
 		
 	}

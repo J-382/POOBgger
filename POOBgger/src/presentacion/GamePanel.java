@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -144,6 +145,14 @@ public class GamePanel extends JPanel{
 		return POOgger.demePOOgger(dimensions).checkScoresRecords();
 	} 
 	
+	private void paintCollisions(Element i, Graphics g) {
+		Color initialColor = g.getColor();
+		g.setColor(Color.RED);
+		Rectangle r = i.getBounds();
+		g.drawRect(r.x, r.y, r.width, r.height);
+		g.setColor(initialColor);		
+	}
+	
 	@Override
 	public void paint(Graphics g) {
 		if(!paused) {
@@ -152,6 +161,7 @@ public class GamePanel extends JPanel{
 			g.drawImage(new ImageIcon("./resources/Fondo.png").getImage(),0,0,null);
 			if(!clockTime.isRunning()) clockTime.start();
 			for(Element i: POOgger.demePOOgger(dimensions).gameLoop(lapsus)) {
+				paintCollisions(i,g);
 				g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
 			}
 			
