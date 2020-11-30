@@ -35,10 +35,6 @@ public class Cave extends Fixed{
 		return occupied;
 	}
 	
-	public int getPoints() {
-		return points;
-	}
-	
 	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = occupied;
@@ -54,5 +50,15 @@ public class Cave extends Fixed{
 	@Override
 	public boolean canBeOccupied() {
 		return true;
+	}
+	
+	@Override
+	protected boolean givesBonus() {
+		return true;
+	}
+	
+	@Override
+	protected int getPoints() {
+		return points;
 	}
 }

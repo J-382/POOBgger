@@ -98,4 +98,12 @@ public abstract class Element implements Serializable{
 	protected void resumeAnimator() {
 		
 	}
+	
+	protected boolean givesBonus() {
+		return false;
+	}
+	
+	protected int getPoints() {
+		return 0;
+	}
 }

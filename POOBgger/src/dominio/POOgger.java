@@ -377,6 +377,7 @@ public class POOgger implements Serializable{
 		for(Element e: elements) {
 			if(player.getBounds().intersects(e.getBounds())) {
 				isDead = e.inCollision(player);
+				if (e.givesBonus()) givePlayerBonus(player, e.getPoints());
 				touchingWater = false;
 			}
 			if(isDead) break;
@@ -403,7 +404,7 @@ public class POOgger implements Serializable{
 					if(!e.isOccupied()) {
 						e.inCollision(player);
 						if(e.isOccupied()) {
-							player.changePoints(e.getPoints());
+							givePlayerBonus(player, e.getPoints());
 							player.increaseCavesReach();
 							checkCavesState(player);
 							restoreClock();
@@ -416,6 +417,7 @@ public class POOgger implements Serializable{
 			}
 			else {
 				if(player.getBounds().intersects(f.getBounds())) {
+					if (f.givesBonus()) givePlayerBonus(player, f.getPoints());
 					isDead = f.inCollision(player);		
 				}
 			}
@@ -527,6 +529,15 @@ public class POOgger implements Serializable{
 	 */
 	public void resetPlayer(Player player) {
 		player.resetPlayer();
+	}
+	
+	/**
+	 * Gives to one player a bonification
+	 * @param player
+	 * @param bonusPoints
+	 */
+	public void givePlayerBonus(Player player, int bonusPoints) {
+		player.changePoints(bonusPoints);
 	}
 	
 	/**

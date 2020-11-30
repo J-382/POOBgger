@@ -28,7 +28,7 @@ public class Bug extends Fixed{
 	@Override
 	public boolean inCollision(Element e) {
 		if(e.isPlayable()) {
-			((Player)e).changePoints(points);
+			//((Player)e).changePoints(points);
 			isVisible = false;
 		}
 		return false;
@@ -42,5 +42,15 @@ public class Bug extends Fixed{
 	@Override
 	protected void resumeAnimator() {
 		animator.resume();
+	}
+	
+	@Override
+	protected boolean givesBonus() {
+		return true;
+	}
+	
+	@Override
+	protected int getPoints() {
+		return points;
 	}
 }
