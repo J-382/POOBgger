@@ -45,7 +45,7 @@ public class SmallLog extends Log{
 	@Override
 	public boolean inCollision(Element e) {
 		super.inCollision(e);
-		if(!animator.isRunning()) {
+		if(e.isPlayable() && !animator.isRunning()) {
 			animator.animate(400,5,new Runnable() {public void run() {updateSprite();}});
 		}
 		return false;

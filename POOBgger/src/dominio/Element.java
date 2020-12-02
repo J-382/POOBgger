@@ -91,12 +91,10 @@ public abstract class Element implements Serializable{
 		return height;
 	}
 	
-	protected void stopAnimator() {
-		
+	protected void stopAnimator() {	
 	}
 	
 	protected void resumeAnimator() {
-		
 	}
 	
 	protected boolean givesBonus() {
@@ -105,5 +103,14 @@ public abstract class Element implements Serializable{
 	
 	protected int getPoints() {
 		return 0;
+	}
+	
+	public boolean isDestructible() {
+		return true;
+	}
+	
+	public Power destroy() {
+		isVisible = false;
+		return null;
 	}
 }

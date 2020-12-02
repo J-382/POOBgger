@@ -1,5 +1,6 @@
 package dominio;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -29,6 +30,7 @@ public abstract class Playable extends Mobile{
 	private Timer toxic;
 	private Timer fly;
 	private Timer fast;
+	protected PlayerState frogState;
 	
 	/**
 	 * Add bonus to the playable element
@@ -129,5 +131,14 @@ public abstract class Playable extends Mobile{
 	
 	public boolean inCollision(Element e) {
 		return false;
+	}
+	
+	public void changeState(PlayerState playerState) {
+		frogState = playerState;
+	}
+	
+	@Override
+	public Rectangle getBounds() {
+		return frogState.getBounds();
 	}
 }

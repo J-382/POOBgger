@@ -144,7 +144,7 @@ public class GamePanel extends JPanel{
 	public boolean checkScoresRecords() {
 		return POOgger.demePOOgger(dimensions).checkScoresRecords();
 	} 
-	
+		
 	private void paintCollisions(Element i, Graphics g) {
 		Color initialColor = g.getColor();
 		g.setColor(Color.RED);

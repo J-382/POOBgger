@@ -37,4 +37,10 @@ public class Car extends Mobile{
 		}
 		return isDead;
 	}
+	
+	@Override
+	public Power destroy() {
+		isVisible = false;
+		return new SpeedPower(x,y,width,height);
+	}
 }

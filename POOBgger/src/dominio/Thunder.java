@@ -72,5 +72,9 @@ public class Thunder extends Fixed{
 	protected void resumeAnimator() {
 		animator.resume();
 	}
-
+	
+	@Override
+	public boolean isDestructible() {
+		return false;
+	}
 }

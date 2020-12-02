@@ -5,6 +5,14 @@ public class Bug extends Fixed{
 	private int points;
 	private Animator animator;
 	private int state;
+	/**
+	 *  
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param time
+	 */
 	public Bug(int x, int y, int width, int height, int time) {
 		this.x = x;
 		this.y = y;
@@ -19,7 +27,6 @@ public class Bug extends Fixed{
 	}
 	
 	private void setVisible() {
-		System.out.println(state);
 		if(state==1) isVisible = false;
 		else state+=1;
 	}

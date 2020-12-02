@@ -83,4 +83,10 @@ public class Turtle extends Carrier{
 	protected void resumeAnimator() {
 		animator.resume();
 	}
+	
+	@Override
+	public Power destroy() {
+		isVisible = false;
+		return new ArmorPower(x,y,width,height);
+	}
 }
