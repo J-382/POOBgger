@@ -1,5 +1,5 @@
 TestPlayer 02150
-Nickname4 00000
-Nickname3 00000
-Nickname2 00000
+asdasda 01787
 Nickname1 00000
+Nickname2 00000
+Nickname3 00000

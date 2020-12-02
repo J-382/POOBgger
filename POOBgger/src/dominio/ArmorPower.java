@@ -17,7 +17,8 @@ public class ArmorPower extends Power{
 	}
 	
 	/**
-	 * */
+	 * Change
+	 */
 	private void updateSprite() {
 		state = (state+1)%3;
 		sprite = "Armor"+(state+1);

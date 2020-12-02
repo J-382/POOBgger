@@ -137,7 +137,7 @@ public abstract class Playable extends Mobile{
 		return false;
 	}
 	
-	public void changeState(PlayerState playerState) {
+	protected void changeState(PlayerState playerState) {
 		frogState = playerState;
 	}
 	
