@@ -144,6 +144,7 @@ public class Player extends Playable implements Pushable{
 	 * @param initx y inital position
 	 * */
 	public boolean decreasePlayerLives() {
+		frogState.decreasePlayerlives();
 		lives--;
 		if (lives >= 1) {
 			resetPlayer();

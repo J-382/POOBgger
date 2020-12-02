@@ -7,7 +7,12 @@ package dominio;
  * */
 public class Beaver extends Fixed{
 	/**
-	 * */
+	 * Beaver class's constructor
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
 	public Beaver(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;

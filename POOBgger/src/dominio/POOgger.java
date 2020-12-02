@@ -15,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.TreeMap;
 
 /**
@@ -46,14 +45,7 @@ public class POOgger implements Serializable{
 	}
 	
 	private int screenWidth;
-	private int[] logsSpeed;
-	private int[] carsSpeed;
-	private int snakeSpeed;
-	private int turtleSpeed;
-	private int lizzardSpeed;
-	private boolean exist;
-	private Rectangle clock;
-    private boolean isPlayerAlive;
+	private int screenHeight;
 	private ArrayList<Element> elements;
 	private ArrayList<Element> fixeds;
 	private ArrayList<Player> players;
@@ -65,8 +57,8 @@ public class POOgger implements Serializable{
 	private int timeLimit;
 	private TreeMap<Integer, ArrayList<String>> highScores;
 	private File scoresFile;
-	//private File playersFile = new File("./resources/HighScoresJvsJ.txt");;
-	
+	private Element throwable;
+	private Generator levelGenerator;
 	
 	/**
 	 * POOgger class constructor
@@ -78,26 +70,17 @@ public class POOgger implements Serializable{
 	private POOgger(int width, int height, HashMap<String,int[]> sprites, String[] player1, String[] player2, String mapType, String scoreFile) {
 		screenWidth = width;
 		this.sprites = sprites;
+		levelGenerator = new Generator(sprites,screenWidth,screenHeight,48,0,"Day");
 		isOver = new boolean[]{false, false, false};
 		level = 5;
-		timeLimit = 300;
-		exist = false;
-		isPlayerAlive = true;
-		snakeSpeed = 1;
-		turtleSpeed = 1;
-		lizzardSpeed = 2;
-		logsSpeed = new int[] {1,2,3};
-		carsSpeed = new int[] {4,3,2,5,2};
 		players = new ArrayList<Player>();
 		elements = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
-		clock = new Rectangle(0,0, 0, 20);
+		fixeds.addAll(levelGenerator.addFixedElements());
 		ArrayList<String[]> newPlayers = new ArrayList<>();
 		newPlayers.add(player1);
 		if (player2[0] != null) newPlayers.add(player2);
 		addPlayers(newPlayers);
-		addFixedElements();
-		addSnake();
 		scoresFile = new File(scoreFile);
 		try {
 			highScores = readHighScoreFile(scoresFile);
@@ -205,14 +188,6 @@ public class POOgger implements Serializable{
 	public Rectangle getClock(Player player) {
 		return player.getClock();
 	}
-
-	/**
-	 * Returns if player is alive
-	 * @return true if player is alive, false otherwise
-	 */
-	public boolean isPlayerAlive() {
-		return isPlayerAlive;
-	}
 	
 	/**
 	 * Move or eliminates the POOgger's elements
@@ -223,6 +198,7 @@ public class POOgger implements Serializable{
 		for(int i=0; i<elements.size(); i++) {
 			Mobile element = (Mobile) elements.get(i);
 			if(element.getX()>screenWidth+200 || element.getX()<-500 || !element.isVisible()) {
+				if(element.isVisible==false) System.out.println(element.getClass());
 				elements.set(i, null);
 				needsClear = true;
 				}
@@ -239,155 +215,6 @@ public class POOgger implements Serializable{
 		while(elements.remove(null)) {}
 		while(fixeds.remove(null)) {}
 	}
-	
-	/**
-	 * Add a new bike to POOgger's elements
-	 */
-	private void addBike() {
-		elements.add(new Bike(screenWidth,48*11,-carsSpeed[2], sprites.get("Bike1"),"Bike1" ,false));
-		/*Random r = new Random();
-		if(r.nextBoolean()) {
-			elements.add(new Bike(0,8,1,true));
-		}*/		
-	}
-	
-	/** 
-	 * Add a new car to POOgger's elements in the given lane
-	 * @param lane the new car's lane
-	 */
-	private void addCar(int lane) {
-		String[] types = new String[] {"Red","Green","Blue","Pink","Purple"};
-		switch (lane) {
-			case 0:
-				elements.add(new Car(screenWidth,48*12,-carsSpeed[0],sprites.get(types[0]+"Car"),types[0]));
-				break;
-			case 1:
-				elements.add(new Car(-sprites.get(types[1]+"Car")[0],48*13,carsSpeed[1],sprites.get(types[1]+"Car"),types[1]));
-				break;
-			case 2:
-				elements.add(new Car(screenWidth,48*11,-carsSpeed[2],sprites.get(types[2]+"Car"),types[2]));
-				break;
-			case 3:
-				elements.add(new Car(-sprites.get(types[3]+"Car")[0],48*10,carsSpeed[3],sprites.get(types[3]+"Car"),types[3]));
-				break;
-			case 4:
-				elements.add(new Car(screenWidth,48*9,-carsSpeed[4],sprites.get(types[4]+"Car"),types[4]));
-				break;
-		}
-	}
-	
-	/**
-	 * Add a new eagle to POOgger's elements
-	 * @param player, player the eagle will chase
-	 */
-	private void addEagle(Player player) {
-		elements.add(new Eagle(1, sprites.get("Eagle1"), "Eagle1", player));
-	}
-	
-	/**
-	 * Add one element to POOgger's elements
-	 * @param element, the element to add
-	 */
-	public void addElement(Element element) {
-		elements.add(element);
-	}
-	
-	/** Add a new Lizzard to POOgger's elements
-	 */
-	private void addLizard() {
-		//elements.add(new Lizzard(0, 48*5+4, lizzardSpeed));
-		elements.add(new Lizard(-sprites.get("Lizard1")[0],48*3, sprites.get("Lizard1"), "Lizard1", lizzardSpeed));
-	}
-	
-	/** 
-	 * Add a new log to POOgger's elements in the given lane
-	 * @param lane the new log's lane
-	 */
-	private void addLog(int lane) {
-		String[] types = new String[] {"Small","Medium","Large"};
-		switch (lane) {
-			case 0:
-				elements.add(new SmallLog(-sprites.get(types[0]+"Log1")[0],48*6,logsSpeed[0],sprites.get(types[0]+"Log1"),new int[] {48,48},types[0]+"Log1"));
-				break;
-			case 2:
-				elements.add(new Log(-sprites.get(types[1]+"Log")[0],48*3,logsSpeed[1],sprites.get(types[1]+"Log"),types[1]+"Log"));
-				break;
-			case 1:
-				Random r = new Random();
-				Log log = new Log(-sprites.get(types[2]+"Log")[0],48*5,logsSpeed[2],sprites.get(types[2]+"Log"),types[2]+"Log");
-				elements.add(log);
-				if(r.nextBoolean()) {
-					Snake snake = new Snake(-sprites.get(types[2]+"Log")[0], 48*5, 1 ,sprites.get("Snake1"), "Snake1", false);
-					elements.add(snake);
-					log.inCollision(snake);
-					
-				}
-				
-				break;
-		}
-	}
-	
-	/** 
-	 * Add a new motorcycle to POOgger's elements
-	 */
-	private void addMotorcycle() {
-		elements.add(new Motorcycle(-sprites.get("Motorcycle1")[0],48*10,carsSpeed[3],sprites.get("Motorcycle1"),"Motorcycle1",true));
-		/*
-		Random r = new Random();
-		if(r.nextBoolean()) {
-			
-		}else elements.add(new Motorcycle(350,6,-2	,false));
-		*/
-	}
-
-	/** 
-	 * Add a new snake to POOgger's elements
-	 */
-	private void addSnake() {
-		Random r = new Random();
-		boolean flipped = r.nextBoolean();
-		if(flipped) {
-			elements.add(new Snake(-sprites.get("Snake1")[0],48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",false));
-		}else elements.add(new Snake(screenWidth,48*8,snakeSpeed,sprites.get("Snake1"),"Snake1",true));
-	}
-	
-	/**
-	 * 
-	 * @param player
-	 */
-	private void addThunder(Player player) {
-		//elements.add(new Thunder(player));
-	}
-	
-	
-	/** 
-	 * Add a new Truck to POOgger's elements
-	 */
-	private void addTruck() {
-		/**Random r = new Random();
-		if(r.nextBoolean()) {
-			elements.add(new Truck(0,8,1,true));
-		}else*/
-		elements.add(new Truck(screenWidth,48*9,-carsSpeed[4],sprites.get("Truck1"),"Truck1",false));
-		
-	}
-	
-	/** Add a new turtle to POOgger's elements in the given lane
-	 * @param lane the new turtle's lane
-	 */
-    private void addTurtle(int lane) {
-    	Random r = new Random();
-    	boolean doesSubmerge = r.nextBoolean();
-    	if(lane==0) {
-			elements.add(new Turtle(screenWidth,48*7,-3*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
-			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0],48*7,-3*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
-			elements.add(new Turtle(screenWidth+40+2*sprites.get("Turtle1")[0],48*7,-3*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
-		}else {
-			elements.add(new Turtle(screenWidth, 48*4, -2*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
-			elements.add(new Turtle(screenWidth+20+sprites.get("Turtle1")[0], 48*4, -2*turtleSpeed,sprites.get("Turtle1"),"Turtle1", doesSubmerge));
-		}
-		
-    }
 	
 	/**
 	 * Checks if player is collisioning with some level's elements
@@ -460,7 +287,21 @@ public class POOgger implements Serializable{
 		clearElements();	
 		return isDead || touchingWater;
 	}
-	
+
+	private void checkThrowableCollision(){
+		if(throwable!=null) {
+			for(Element e: elements) {
+				if(throwable!=e && e.getBounds().intersects(throwable.getBounds())) {
+					if(throwable.isDestructible() && e.inCollision(throwable)) {
+						fixeds.add(throwable.destroy());
+						throwable = null;
+						break;
+					}else if(!throwable.isDestructible()) fixeds.add(e.destroy());
+				}
+			}
+		}
+	}
+		
 	
 	/**
 	 * Check the cave's state to see if some player have won
@@ -476,7 +317,7 @@ public class POOgger implements Serializable{
 		if (cont == 5) {
 			if (player.getLives() == player.getInitialLives()) player.changePoints(1000);
 			else player.changePoints(player.getLives()*100);
-			player.changePoints(timeLimit - (int)clock.getWidth());
+			player.changePoints(timeLimit - (int)player.getClock().getWidth());
 			if (player.getCavesReach() >= 3) {
 				player.increaseRoudsWon();
 			}
@@ -583,71 +424,11 @@ public class POOgger implements Serializable{
 		player.changePoints(bonusPoints);
 	}
 	
-	/**
-	 * Adds a new element to the given lane
-	 * @param lane the new element's lane
-	 */
-	private void addLane(int time) {
-		Random r = new Random();
-		if (!exist) {
-			
-			//addEagle(players.get(r.nextInt(players.size())));
-			//addThunder();
-			exist = true;
-		}
-		if(time%250==0) {
-			addCar(0);
-		}
-		if(time%500==0) {
-			addCar(1);
-		}
-		if(time%300==0) {
-			if(r.nextBoolean()) {
-				addCar(2);
-			}else addBike();
-		}
-		if(time%250==0) {
-			if(r.nextBoolean()) {
-				addCar(3);
-			}else addMotorcycle();
-		}
-		if(time%500==0) {
-			if(r.nextBoolean()) {
-				addCar(4);
-			}else {
-				addTruck();
-			}
-		}
-	}
-		
-	/**
-	 * Adds a new element to the given lane
-	 * @param lane the new element's lane
-	 */
-	private void addBeaverLane(int time) {
-		Random r = new Random();
-		if(time%200==0) {
-			addTurtle(0);
-		}
-		if(time%500==0) {
-			addLog(0);
-		}
-		if(time%400==0) {
-			addLog(1);
-		}
-		if(time%200==0) {
-			addTurtle(3);
-		}
-		if(time%300==0) {
-			if(r.nextBoolean()) {
-				addLog(2);
-			} else addLizard();
-		}
-	}
-	
 	public ArrayList<Element> gameLoop(int time) {
-		addBeaverLane(time);
-		//addLane(time);
+		levelGenerator.addElements(time, throwable==null, players);
+		elements.addAll(levelGenerator.getMobilesElements());
+		fixeds.addAll(levelGenerator.getFixedsElements());
+		checkThrowableCollision();
 		if(time%2==0) update();
 		for(Player player: players) {
 			if(checkPlayerCollisions(player)  && player.isAlive()) {
@@ -676,31 +457,6 @@ public class POOgger implements Serializable{
 		for(Element element : fixeds) {
 			element.resumeAnimator();
 		}
-	}
-	
-	private void addFixedElements() {
-		/*Barriers*/
-		fixeds.add(new Beaver(0,48*2,screenWidth,48*6));
-		fixeds.add(new Barrier(-48,48*8,48,48*7,48,false));
-		fixeds.add(new Barrier(screenWidth,48*8,48,48*7,48,false));
-		fixeds.add(new Barrier(0,48*15,48*16,48,48,false));
-		fixeds.add(new Barrier(-48,48,48,48*7,48,true));
-		fixeds.add(new Barrier(screenWidth,48,48,48*7,48,true));
-		/*Caves*/
-		fixeds.add(new Cave(48,48*2,48,48));
-		fixeds.add(new Cave(48*4,48*2,48,48));
-		fixeds.add(new Cave(48*7,48*2,48,48));
-		fixeds.add(new Cave(48*10,48*2,48,48));
-		fixeds.add(new Cave(48*13,48*2,48,48));
-		/*Power*/
-		/**fixeds.add(new SpeedPower(48*3,48*13,48,48));
-		fixeds.add(new FlyPower(48*3,48*10,48,48));
-		fixeds.add(new ArmorPower(48*3,48*14,48,48));**/
-		/*Puddles*/
-		//fixeds.add(new Puddle(48*7,48*8,48,48));
-		//fixeds.add(new Thunder(48*3, 48, screenHeight-48, players.get(0)));
-		fixeds.add(new Bug(48*4,48*12,48,48,1500));
-		//fixeds.add(new Thunder(48*3, 48, screenHeight-48, players.get(0)));
 	}
 	
 	/**

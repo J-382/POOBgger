@@ -25,15 +25,15 @@ public class Eagle extends Mobile{
 	private boolean onAir;
 	private transient Clip sound;
 	
-	public Eagle(int speed,int[] size, String sprite, Player player) {
+	public Eagle(int xPos, int yPos, int speed,int[] size, String sprite, Player player) {
 		this.sprite = sprite;
 		this.speed = speed;
 		this.isVisible = true;
 		this.width = size[0];
 		this.height = size[1];
 		toChase = player;
-		x = 336;
-		y = 4;
+		x = xPos;
+		y = yPos;
 		dy = 1;
 		dx = 0;
 		state = 0;
@@ -125,5 +125,11 @@ public class Eagle extends Mobile{
 	@Override
 	protected void resumeAnimator() {
 		animator.resume();
+	}
+	
+	@Override
+	public Power destroy() {
+		isVisible = false;
+		return new FlyPower(x,y,48,48);
 	}
 }

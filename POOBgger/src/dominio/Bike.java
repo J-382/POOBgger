@@ -68,4 +68,11 @@ public class Bike extends Carrier{
 	protected void resumeAnimator() {
 		animator.resume();
 	}
+	
+	@Override
+	public boolean inCollision(Element e) {
+		boolean isDead = true;
+		if(e.isPlayable()) isDead = super.inCollision(e);
+		return isDead;
+	}
 }

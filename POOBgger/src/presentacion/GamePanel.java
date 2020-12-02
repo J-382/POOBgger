@@ -76,9 +76,9 @@ public class GamePanel extends JPanel{
 		prepareAcciones();
 	}
 	
-	public boolean refresh() {
+	/*public boolean refresh() {
 		return POOgger.demePOOgger(dimensions, player1, player2, mapType, mode).isPlayerAlive();
-	}
+	}*/
 	
 	private void prepareElementos(String[] player1, String[] player2, String mapType, String mode) {
 		addFont();
@@ -176,7 +176,7 @@ public class GamePanel extends JPanel{
 	public boolean checkScoresRecords() {
 		return POOgger.demePOOgger(dimensions).checkScoresRecords();
 	} 
-	
+		
 	private void paintCollisions(Element i, Graphics g) {
 		Color initialColor = g.getColor();
 		g.setColor(Color.RED);
