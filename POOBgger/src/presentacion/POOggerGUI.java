@@ -13,6 +13,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,6 +46,7 @@ public class POOggerGUI extends JFrame {
 	private PointsPanel pointsPanel;
 	private SelectPanel selectPanel;
 	private HighScoresPanel highScoresPanel;
+	private NamePanel namePanel;
 	
 	private JPanel currentPanel;
 	
@@ -60,7 +63,10 @@ public class POOggerGUI extends JFrame {
 	private final ImageIcon fondo = new ImageIcon("./resources/inicial.png");
 	
 	/* Archivos */
+	private transient Clip sound;
 	private final File fontPath = new File("resources/8-BIT.TTF");
+	private final String highScoresPlayersFile = "./resources/HighScoresPlayer.txt";
+	private final String highScoresMachinesFile = "./resources/HighScoresMachine.txt";
 	private static Font font;
 	 
 	/* Game Execution  */
@@ -81,11 +87,21 @@ public class POOggerGUI extends JFrame {
 		}
 		setTitle("POOgger");
 		setIconImage(icon.getImage());
-		setSize(new Dimension(720,768));
+		setSize(new Dimension(720, 780));
 		setLocationRelativeTo(null);
+		playSound();
 		prepareElementosMenu();
-		preparePaneles();
-		
+		preparePaneles();		
+	}
+	
+	public void playSound() {
+		try {
+			sound = AudioSystem.getClip();
+			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/Intro.wav")));
+			sound.loop(1);
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	public void prepareElementosMenu() {
@@ -143,7 +159,6 @@ public class POOggerGUI extends JFrame {
 	}
 	
 	public void prepareOpenGamePanel() {
-		prepareGamePanel();
 		opcionAbra();
 	}
 	
@@ -159,15 +174,21 @@ public class POOggerGUI extends JFrame {
 		newGamePanel = new NewGamePanel(fondo, this, fontPath, startPanel);
 	}
 	
-	public void prepareSelectPanel() {
-		selectPanel = new SelectPanel(fondo, this, fontPath, newGamePanel);
+	public void prepareSelectPanel(int players, String mode) {
+		selectPanel = new SelectPanel(fondo, this, fontPath, newGamePanel, players, mode);
 	}
 	
-	public void prepareGamePanel() {
+	public void prepareNamePanel(String player1, String player2, String mode) {
+		namePanel = new NamePanel(fondo, this, fontPath, selectPanel, player1, player2, mode);
+	}
+	 
+	public void prepareGamePanel(String[] player1, String[] player2, String mapType, String mode) {
 		openItem.setEnabled(true);
 		saveAsItem.setEnabled(true);
-		carguePanel(newGamePanel,GamePanel.demeGamePanel());
-		startGamePanel();
+		String file = highScoresPlayersFile;
+		if(mode.substring(0, 1).equals("M")) file =  highScoresMachinesFile;
+		carguePanel(namePanel,GamePanel.demeGamePanel(player1, player2, mapType, file));
+		startGamePanel(); 
 	}
 	
 	public void startGamePanel() {

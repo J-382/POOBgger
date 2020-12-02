@@ -42,7 +42,7 @@ public class Snake extends Mobile implements Pushable{
 	 * */
 	private void updateSprite(){
 		state = (state+1)%4;
-		sprite = "Snake"+(state+1)+orientation;
+		sprite = "Snake"+(state+1)+orientation; 
 	}
 	
 	public void move() {
@@ -68,7 +68,6 @@ public class Snake extends Mobile implements Pushable{
 			isDead = !((Playable) e).isToxic();
 			if(!isDead) isVisible = false;
 		}
-		if (isDead) System.out.println("Killed by snake");
 		return isDead;
 	}
 

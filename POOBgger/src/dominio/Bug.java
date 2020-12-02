@@ -19,7 +19,6 @@ public class Bug extends Fixed{
 	}
 	
 	private void setVisible() {
-		System.out.println(state);
 		if(state==1) isVisible = false;
 		else state+=1;
 	}

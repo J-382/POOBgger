@@ -1,5 +1,0 @@
-player 02004
-player 01448
-Nickname3 00804
-Nickname1 00005
-Nickname3 00003

@@ -52,30 +52,31 @@ public class NewGamePanel extends JBackground{
 	}
 	
 	public void prepareElementos() {
-		JLabel logo = new JLabel("POOgger");
-    	font = font.deriveFont(100f);
-    	logo.setFont(font);
-    	logo.setForeground(Color.GREEN.darker());
+		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
+    			+ "<br><br><br><br><br><br><br><br><br>"
+    			+ "<br><br><br><br><br><br>"
+    			+ "<br><br><br></font></html>");
     	
     	arcadeButton = prepareBoton(new JButton("ARCADE"), Color.WHITE, 45f);
+    	arcadeButton.setBounds(100, 350, 500, 100);
     	
     	twoPlayersButton = prepareBoton(new JButton("PLAYER vs PLAYER"), Color.WHITE, 45f);
+    	twoPlayersButton.setBounds(90, 410, 500, 100);
     	
     	playerMachineButton = prepareBoton(new JButton("PLAYER vs MACHINE"), Color.WHITE, 45f);
+    	playerMachineButton.setBounds(50, 470, 600, 100);
     	
     	machinesButton = prepareBoton(new JButton("MACHINE vs MACHINE"), Color.WHITE, 45f);
+    	machinesButton.setBounds(50, 530, 600, 100);
     	
     	backNewGameButton = prepareBoton(new JButton("BACK"), Color.WHITE, 40f);
+    	backNewGameButton.setBounds(100, 590, 500, 100); 
     	
-    	JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'>___________________<br>____________________<br>_____________________"
-    			+ "<br>__________________________________________<br>____________________________________<br>"
-    			+ "<br>__________________________________________<br>____________________________________<br></font></html>");
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.gridx = 0;
     	constraints.gridy = 0;
     	add(separator, constraints);
     	constraints.gridy = 1;
-    	add(logo, constraints);
     	constraints.gridy = 2;
     	add(vertical, constraints);
     	constraints.gridy = 3;
@@ -93,26 +94,26 @@ public class NewGamePanel extends JBackground{
 	public void prepareAcciones() {
 		arcadeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				prepareGamePanel();
-				//prepareSelectSkin("One");
+				//prepareGamePanel();
+				prepareSelectSkin(1, "Human");
 			}
 		});
 		
 		twoPlayersButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				prepareSelectSkin("Two");
+				prepareSelectSkin(2, "Humans");
 			}
 		});
 		
 		playerMachineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				prepareSelectSkin("Two");
+				prepareSelectSkin(2, "Machine");
 			}
 		});
 		
 		machinesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				prepareSelectSkin("Two");
+				prepareSelectSkin(2, "Machines");
 			}
 		});
 		
@@ -123,14 +124,10 @@ public class NewGamePanel extends JBackground{
 		});
 	}
 
-	public void prepareGamePanel() {
-		poogger.prepareGamePanel();
-	}
-	
-	public void prepareSelectSkin(String mode) {
+	public void prepareSelectSkin(int players, String mode) {
 		this.setVisible(false);
 		poogger.remove(this);
-		poogger.prepareSelectPanel();
+		poogger.prepareSelectPanel(players, mode);
 		
 	}
 	

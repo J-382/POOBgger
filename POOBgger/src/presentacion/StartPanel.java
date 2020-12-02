@@ -26,6 +26,9 @@ public class StartPanel extends JBackground{
 	private JButton openGameButton;
 	private JButton pointsButton;
 	
+	private int WIDTH;
+	private int HEIGHT;
+	
 	public StartPanel(ImageIcon image, POOggerGUI poogger,File fontPath, JBackground backPanel) {
 		super(image);
 		this.setLayout(new GridBagLayout());
@@ -36,20 +39,19 @@ public class StartPanel extends JBackground{
 		} catch(IOException | FontFormatException e) {
 			
 		}
+		WIDTH = poogger.getWidth();
+		HEIGHT = poogger.getHeight();
+		
 		this.poogger = poogger;
 		prepareElementos();
 		prepareAcciones();
 		poogger.add(this);
 	}
 	public void prepareElementos() {
-		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'>___________________<br>____________________<br>_____________________"
-    			+ "<br>__________________________________________<br>____________________________________<br>"
-    			+ "<br>__________________________________________<br>____________________________________<br></font></html>");
-		JLabel logo = new JLabel("POOgger");
-    	font = font.deriveFont(100f);
-    	logo.setFont(font);
-    	logo.setForeground(Color.GREEN.darker());
-    	
+		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
+    			+ "<br><br><br><br><br><br><br><br><br>"
+    			+ "<br><br><br><br><br><br>"
+    			+ "<br><br><br></font></html>");
     	newGameButton = prepareBoton(new JButton("NEW GAME"), Color.WHITE, 50f);
     	
     	openGameButton = prepareBoton(new JButton("OPEN GAME"), Color.WHITE, 50f);
@@ -59,14 +61,12 @@ public class StartPanel extends JBackground{
         GridBagConstraints constraints = new GridBagConstraints();
     	constraints.gridx = 0;
     	constraints.gridy = 0;
-    	add(logo, constraints);
-    	constraints.gridy = 1;
     	add(separator, constraints);
-    	constraints.gridy = 2;
+    	constraints.gridy = 1;
     	add(newGameButton, constraints);
-    	constraints.gridy = 3;
+    	constraints.gridy = 2;
     	add(openGameButton, constraints);
-    	constraints.gridy = 4;
+    	constraints.gridy = 3;
     	add(pointsButton, constraints);
 	}
 	

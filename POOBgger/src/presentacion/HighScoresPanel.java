@@ -30,8 +30,8 @@ public class HighScoresPanel extends JBackground{
 	private static Font font;
 	
 	/* Archivos */
-	private final File highScoresPlayersFile = new File("./resources/HighScoresJvsJ.txt");
-	private final File highScoresMachinesFile = new File("./resources/HighScoresJvsM.txt");
+	private final File highScoresPlayersFile = new File("./resources/HighScoresPlayer.txt");
+	private final File highScoresMachinesFile = new File("./resources/HighScoresMachine.txt");
 	
 	public HighScoresPanel(ImageIcon image, POOggerGUI poogger,File fontPath, JBackground backPanel) {
 		super(image);
@@ -51,11 +51,10 @@ public class HighScoresPanel extends JBackground{
 	}
 	
 	public void prepareElementos() {
-		JLabel logo = new JLabel("POOgger");
-    	font = font.deriveFont(100f);
-    	logo.setFont(font);
-    	logo.setForeground(Color.GREEN.darker());
-    	
+		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
+    			+ "<br><br><br><br><br>"
+    			+ "<br><br><br><br><br>"
+    			+ "<br><br><br><br></font></html>");
     	JLabel rankingPlayersText = new JLabel("SCORE PvsP RANKING");
     	font = font.deriveFont(20f);
     	rankingPlayersText.setFont(font);
@@ -71,7 +70,7 @@ public class HighScoresPanel extends JBackground{
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.gridx = 0;
     	constraints.gridy = 0;
-    	add(logo, constraints);
+    	add(separator, constraints);
     	constraints.gridy = 1;
     	add(rankingPlayersText, constraints);
     	

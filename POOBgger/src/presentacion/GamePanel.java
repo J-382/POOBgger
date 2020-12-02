@@ -12,11 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -34,43 +34,69 @@ public class GamePanel extends JPanel{
 	private static GamePanel panel = null;
 	public static GamePanel demeGamePanel() {
 		if (panel == null) {
-			panel = new GamePanel();
+			panel = new GamePanel(player1, player2, mapType, mode);
 		}
 		return panel;
 	}
+	
+	public static GamePanel demeGamePanel(String[] player1, String[] player2, String mapType, String mode) {
+		if (panel == null) {
+			panel = new GamePanel(player1, player2, mapType, mode);
+		}
+		return panel;
+	}
+	
 	public static void cambieGamePanel(GamePanel p) {
 		panel = p;
 	}
 	
 	private HashMap<String,Image> sprites;
 	private HashMap<String,int[]> dimensions;
-	private int width = 672;
-	private int height = 757;
 	private int lapsus = 0;
+	private static String[] player1 = {null, null};
+	private static String[] player2 = {null, null};
+	private static String mapType = null;
+	private static String mode = null;
 	private boolean paused;
 	private Timer clockTime;
+	private HashMap<Integer, Character> player1Keys = new HashMap<Integer, Character>(){{
+		put(68, 'D'); put(65, 'A'); put(87, 'W'); put(83, 'S');
+		}};
+	private HashMap<Integer, Character> player2Keys = new HashMap<Integer, Character>(){{
+		put(39, 'D'); put(37, 'A'); put(38, 'W'); put(40, 'S');
+		}};	
 	private final File font = new File("resources/8-BIT.TTF");
-	private GamePanel() {
+	private GamePanel(String[] player1, String[] player2, String mapType, String mode) {
+		GamePanel.player1 = player1;
+		GamePanel.player2 = player2;
+		GamePanel.mapType = mapType;
+		GamePanel.mode = mode;
 		dimensions = prepareArchivos();
-		prepareElementos();
+		prepareElementos(player1, player2, mapType, mode);
 		prepareAcciones();
 	}
 	
 	public boolean refresh() {
-		return POOgger.demePOOgger(dimensions).isPlayerAlive();
+		return POOgger.demePOOgger(dimensions, player1, player2, mapType, mode).isPlayerAlive();
 	}
 	
-	private void prepareElementos() {
+	private void prepareElementos(String[] player1, String[] player2, String mapType, String mode) {
 		addFont();
-		POOgger.demePOOgger(dimensions);
-		clockTime = new Timer(100, new ActionListener(){
+		POOgger.demePOOgger(dimensions, player1, player2, mapType, mode);
+		clockTime = new Timer(200, new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				POOgger.demePOOgger(dimensions).updateClock();
+				reduceTime();
 			}
 		});
 		clockTime.start();;
 		lapsus = 0;
 		setUIFont(new javax.swing.plaf.FontUIResource("8-bit Operator+ SC",Font.BOLD,12));
+	}
+	
+	private void reduceTime() {
+		for (Player player : POOgger.demePOOgger(dimensions).getPlayers()) {
+			POOgger.demePOOgger(dimensions).updateClock(player);
+		}
 	}
 	
 	private HashMap<String,int[]> prepareArchivos() {
@@ -93,7 +119,15 @@ public class GamePanel extends JPanel{
 					paused = !paused;
 				}
 				else {
-					if (!paused) POOgger.demePOOgger(dimensions).movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0));
+					if (!paused) {
+						if(player1Keys.containsKey(e.getKeyCode())) {
+							POOgger.demePOOgger(dimensions).movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0), 0);
+						}
+						else if(player2Keys.containsKey(e.getKeyCode())) {
+							POOgger.demePOOgger(dimensions).movePlayer(player2Keys.get(e.getKeyCode()), 1);
+						}
+						
+					}
 				}
 			}
 		});
@@ -102,7 +136,6 @@ public class GamePanel extends JPanel{
 	}
 	
 	public void abra() {
-		paused = true;
 		JFileChooser fileChooser = new JFileChooser();
     	fileChooser.setCurrentDirectory(new File("."));
     	try {
@@ -112,7 +145,6 @@ public class GamePanel extends JPanel{
     			file = fileChooser.getSelectedFile();
     		}
     		POOgger.demePOOgger(dimensions).open(file);
-    		paused = false;
     	} catch(POOggerException e) {
     		raiseError(e.getMessage());
     	}
@@ -165,27 +197,80 @@ public class GamePanel extends JPanel{
 				paintCollisions(i,g);
 				g.drawImage(sprites.get(i.getSprite()),i.getX(),i.getY(),null);
 			}
+				
+			int[] players = {430, 10};
+			int cont = 1;
+			/*for(Player player: POOgger.demePOOgger(dimensions).getPlayers()) {*/
+			ArrayList<Player> listPlayers = POOgger.demePOOgger(dimensions).getPlayers();
+			g.setColor(Color.GREEN.darker());
+			g.fillRect(players[0], players[1], 150, 15);
+			g.setColor(Color.BLACK);
+			g.fillRect(players[0], players[1], listPlayers.get(0).getClock().width, listPlayers.get(0).getClock().height);
+			players[0] += 190;
+			players[1] += 20;
+			for (int i = 0; i < listPlayers.get(0).getLives(); i++) {
+				g.drawImage(sprites.get("Icon"), players[0] - 25*i, players[1],null);
+			}
+			players[1] += 15;
+			for (int i = 0; i < listPlayers.get(0).getLives(); i++) { 
+				g.drawImage(sprites.get("Icon"),players[0] - 25*i, players[1],null);
+			}
+			players[0] -= 50;
+			players[1] += 35;
+			g.setColor(Color.RED.darker());
+			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(listPlayers.get(0)), players[0], players[1]);
+			players[0] += 12;
+			players[1] -= 55;
+			g.setColor(Color.YELLOW);
+			g.drawString("TIME",players[0], players[1]);
+			players[0] += 65;
+			players[1] += 22;
+			g.setColor(Color.WHITE);
+			g.drawString(cont + "-UP",players[0], players[1]);
+			g.drawImage(sprites.get(listPlayers.get(0).getSprite()),listPlayers.get(0).getX(),listPlayers.get(0).getY(),null);
+			g.drawImage(sprites.get(listPlayers.get(0).getHat()),listPlayers.get(0).getX(),listPlayers.get(0).getY(),null);
+			cont++;
+			
+			players[0] = 40;
+			players[1] = 25;
+			
+			if (POOgger.demePOOgger(dimensions).getPlayers().size() > 1) {
+				g.setColor(Color.YELLOW);
+				g.drawString("TIME", 74, 25);
+				g.setColor(Color.GREEN.darker());
+				g.fillRect(130, 10, listPlayers.get(1).getClock().width, listPlayers.get(1).getClock().height);
+				g.setColor(Color.BLACK);
+				players[0] += 190;
+				players[1] += 20;
+				for (int i = 0; i < listPlayers.get(1).getLives(); i++) {
+					g.drawImage(sprites.get("Icon"), 75 + 25*i, 30,null);
+				}
+				players[1] += 15;
+				for (int i = 0; i < listPlayers.get(1).getLives(); i++) { 
+					g.drawImage(sprites.get("Icon"), 75 + 25*i, 45,null);
+				}
+				players[0] -= 50;
+				players[1] += 35;
+				g.setColor(Color.RED.darker());
+				g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(listPlayers.get(1)), 75, 80);
+				players[0] += 65;
+				players[1] += 22;
+				g.setColor(Color.WHITE);
+				g.drawString(cont + "-UP", 15, 47);
+				g.drawImage(sprites.get(listPlayers.get(1).getSprite()),listPlayers.get(1).getX(),listPlayers.get(1).getY(),null);
+				g.drawImage(sprites.get(listPlayers.get(1).getHat()),listPlayers.get(1).getX(),listPlayers.get(1).getY(),null);
+			}
+			/*}*/
+			
+			
+			lapsus+=1;
 			
 			g.setColor(Color.WHITE);
-			g.drawString("1-UP    HI-SCORE",40,23);
-			g.setColor(Color.RED.darker());
-			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(0),20,45);
-			g.drawString(POOgger.demePOOgger(dimensions).getHighScore(),110,45);
-			g.setColor(Color.YELLOW);
-			g.drawString("TIME",585,33);
-			g.setColor(Color.GREEN.darker());
-			g.fillRect(270, 16, 306, 20);
-			g.setColor(Color.BLACK);
-			
-			for (int i = 0; i < POOgger.demePOOgger(dimensions).getPlayers().get(0).getLives(); i++) {
-				g.drawImage(sprites.get("Icon"),525 + 25*i,49,null);
-			}
-			g.fillRect(270, 16, POOgger.demePOOgger(dimensions).getClock().width, POOgger.demePOOgger(dimensions).getClock().height);
-			for(Player player: POOgger.demePOOgger(dimensions).getPlayers()) {
-				g.drawImage(sprites.get(player.getSprite()),player.getX(),player.getY(),null);
-				g.drawImage(sprites.get(player.getHat()),player.getX(),player.getY(),null);
-			}
-			lapsus+=1;
+			g.drawString("HI-SCORE",310,80);
+			g.drawString("LEVEL",325,40);
+			g.setColor(Color.RED.darker()); 
+			g.drawString(POOgger.demePOOgger(dimensions).getHighScore(),325,60);
+			g.drawString(POOgger.demePOOgger(dimensions).getLevel(),350,20);
 		}
 		else {
 			POOgger.demePOOgger(dimensions).pauseElements();
@@ -228,19 +313,4 @@ public class GamePanel extends JPanel{
     	Toolkit.getDefaultToolkit().beep();
     	JOptionPane.showMessageDialog(null, message,"Error",JOptionPane.ERROR_MESSAGE);
     }
-    
-	public static void main(String args[])  throws InterruptedException {
-		JFrame frame = new JFrame();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GamePanel game = new GamePanel();
-		frame.add(game);
-		frame.setSize(687,757);
-		frame.setVisible(true);
-		frame.setBackground(Color.BLACK);
-		frame.setLocationRelativeTo(null);
-		while(true) {
-			game.repaint();
-			Thread.sleep(10);
-		}
-	}
 }

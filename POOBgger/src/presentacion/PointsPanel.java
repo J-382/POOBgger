@@ -46,15 +46,11 @@ public class PointsPanel extends JBackground{
 	}
 	
 	public void prepareElementos(){
-		JLabel separator = new JLabel("<html><font color 'black'>"
-				+ "<br>______<br>____<br>____<br><br></html>");
+		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
+    			+ "<br><br><br><br><br></font></html>");
 		
-		JLabel logo = new JLabel("POOgger");
-    	font = font.deriveFont(100f);
-    	logo.setFont(font);
-    	logo.setForeground(Color.GREEN.darker());
-    	
     	font = font.deriveFont(25f);
+    	
     	JLabel pointTable = new JLabel("       -POINT TABLE-     ");
     	pointTable.setFont(font);
     	pointTable.setForeground(Color.WHITE);
@@ -104,7 +100,7 @@ public class PointsPanel extends JBackground{
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.gridx = 0;
     	constraints.gridy = 0;
-    	add(logo, constraints);
+    	add(separator, constraints);
     	constraints.gridy = 1;
     	add(pointTable, constraints);
     	constraints.gridy = 2;

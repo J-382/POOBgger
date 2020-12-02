@@ -124,6 +124,10 @@ public abstract class Playable extends Mobile{
 		return isArmored;
 	}
 	
+	public boolean isAlive() {
+		return isAlive;
+	}
+	
 	public void changeSprite() {
 	}
 	

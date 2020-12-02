@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class Thoughtless extends Player{
 
-	public Thoughtless(int initialLives, int initX, int initY, int[] size) {
-		super(initialLives, initX, initY, size);
+	public Thoughtless(int initialLives, int initX, int initY, int[] size, String name, String hat) {
+		super(initialLives, initX, initY, size, name, hat);
 	}
 
 	

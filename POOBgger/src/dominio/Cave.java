@@ -21,7 +21,6 @@ public class Cave extends Fixed{
 		Rectangle intersection = (Rectangle) cave.createIntersection(player);
 		double areaCave = cave.getWidth()*cave.getHeight();
 		double areaIntersection = intersection.getWidth()*intersection.getHeight();
-		System.out.println(areaIntersection/areaCave*100);
 		return areaIntersection/areaCave*100;
 	}
 

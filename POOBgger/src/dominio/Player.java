@@ -1,5 +1,6 @@
 package dominio;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,15 +13,17 @@ import javax.swing.Timer;
  * */
 public class Player extends Playable implements Pushable{
 	
-	private final int delta = 48;
+	private final int delta;
 	private int state;
 	private int minReachY;
 	private int lastMove;
+	private Clock clock;
 
 	protected boolean beingCarried;
 	protected Carrier carrier;
 	protected Animator animator;
 
+	private String name;
 	private String hat;
 	
 	
@@ -31,8 +34,9 @@ public class Player extends Playable implements Pushable{
 	 * @param maxY Player's POOgger height
 	 * @param dimensions Player's size
 	 */
-	public Player(int initialLives,int initX, int initY, int[] size) {
+	public Player(int initialLives,int initX, int initY, int[] size, String name, String hat) {
 		this.width = size[0];
+		delta = size[0];
 		this.height = size[1]; 
 		this.isVisible = true;
 		this.lives = initialLives;
@@ -42,7 +46,9 @@ public class Player extends Playable implements Pushable{
 		cavesReach = 0;
 		roundsWon = 0;
 		isAlive = true;
-		hat = "Egg";
+		this.hat = hat;
+		this.name = name;
+		clock = new Clock();
 		animator = new Animator();
 		resetPlayer();
 	}
@@ -78,6 +84,14 @@ public class Player extends Playable implements Pushable{
 			animator.animate(delay,2,new Runnable() {public void run() {move();}});
 		}
 		isInAir();
+	}
+	
+	public boolean updateClock() {
+		return clock.updateClock();
+	}
+	
+	public Rectangle getClock() {
+		return clock.getClock();
 	}
 	
 	private void updateSprite() {
@@ -141,6 +155,7 @@ public class Player extends Playable implements Pushable{
 		orientation = 'W';
 		sprite =  "Frog"+(state+1)+orientation;
 		animator.stop();
+		clock.restoreClock();
 		state = 0;
 		x = initX;
 		y = initY;
@@ -240,6 +255,9 @@ public class Player extends Playable implements Pushable{
 		return returnImage;
 	}
 	
+	public String getName() {
+		return name;
+	}
 	@Override
 	public boolean setPosition(int x, int y) {
 		animator.stop();

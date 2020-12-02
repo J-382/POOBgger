@@ -30,6 +30,7 @@ public class SelectPanel extends JBackground{
 	private JButton skin03Button;
 	private String player1;
 	private String player2;
+	private String mode;
 	
 	private JBackground backPanel;
 	private static Font font;
@@ -39,7 +40,7 @@ public class SelectPanel extends JBackground{
 	private ImageIcon skin02ButtonIco = new ImageIcon("./resources/skin02.png");
 	private ImageIcon skin03ButtonIco = new ImageIcon("./resources/skin03.png");
 	
-	public SelectPanel(ImageIcon image, POOggerGUI poogger,File fontPath, JBackground backPanel) {
+	public SelectPanel(ImageIcon image, POOggerGUI poogger,File fontPath, JBackground backPanel, int players, String mode) {
 		super(image);
 		this.setLayout(new GridBagLayout());
 		try {
@@ -51,33 +52,36 @@ public class SelectPanel extends JBackground{
 		}
 		this.poogger = poogger;
 		this.backPanel = backPanel;
+		if (players == 1) {
+			player2 = "";
+		}
+		this.mode = mode;
 		prepareElementos();
 		prepareAcciones();
 		poogger.add(this);
 	}
 	
 	public void prepareElementos() {
-		JLabel logo = new JLabel("POOgger");
-    	font = font.deriveFont(100f);
-    	logo.setFont(font);
-    	logo.setForeground(Color.GREEN.darker());
-    	
+		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
+    			+ "<br><br><br><br><br>"
+    			+ "<br><br><br><br><br>"
+    			+ "<br><br><br><br><br>"
+    			+ "<br><br><br><br><br>"
+    			+ "</font></html>");
+		
     	font = font.deriveFont(40f);
+    	
     	JLabel select = new JLabel("-SELECT-");
     	select.setFont(font);
     	select.setForeground(Color.WHITE);
     	
-    	JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'>___________________<br>____________________<br>_____________________"
-    			+ "<br>__________________________________________<br>____________________________________<br>"
-    			+ "<br>__________________________________________</font></html>");
-    	
-		Image scale = defaultButtonIco.getImage().getScaledInstance(50,  50,  Image.SCALE_DEFAULT);
-		defaultButtonIco = new ImageIcon(scale);
+		Image scale = defaultButtonIco.getImage().getScaledInstance(48,  48,  Image.SCALE_DEFAULT);
+		defaultButtonIco = new ImageIcon(scale); 
 		
-		scale = skin02ButtonIco.getImage().getScaledInstance(50,  50,  Image.SCALE_DEFAULT);
+		scale = skin02ButtonIco.getImage().getScaledInstance(48,  48,  Image.SCALE_DEFAULT);
 		skin02ButtonIco = new ImageIcon(scale);
 		
-		scale = skin03ButtonIco.getImage().getScaledInstance(50,  50,  Image.SCALE_DEFAULT);
+		scale = skin03ButtonIco.getImage().getScaledInstance(48,  48,  Image.SCALE_DEFAULT);
 		skin03ButtonIco = new ImageIcon(scale);
 		
 		defaultButton = new JButton();
@@ -95,12 +99,12 @@ public class SelectPanel extends JBackground{
 		
 		backSelectButton = prepareBoton(new JButton("BACK"), Color.WHITE, 40f);
 		
-		playButton = prepareBoton(new JButton("PLAY"), Color.WHITE, 40f);
+		playButton = prepareBoton(new JButton("NEXT"), Color.WHITE, 40f);
 		
 		GridBagConstraints constraints = new GridBagConstraints();
     	constraints.gridx = 0;
     	constraints.gridy = 0;
-		add(logo, constraints);
+		add(separator, constraints);
 		constraints.gridy = 1;
 		add(separator, constraints);
 		constraints.gridy = 2;
@@ -125,6 +129,7 @@ public class SelectPanel extends JBackground{
                 	if(player1 == null) player1 = "default";
                 	else if(player2 == null)player2 = "default";
                 }
+                	 
        	    }
     	});
 		
@@ -132,8 +137,8 @@ public class SelectPanel extends JBackground{
     		public void actionPerformed(ActionEvent e) {
                 if (skin02Button.isEnabled() && (player1 == null || player2 == null)) {
                 	skin02Button.setEnabled(false);
-                	if(player1 == null) player1 = "skin02";
-                	else if(player2 == null)player2 = "skin02";
+                	if(player1 == null) player1 = "Flower";
+                	else if(player2 == null)player2 = "Flower"; 
                 }
        	    }
     	});
@@ -142,17 +147,17 @@ public class SelectPanel extends JBackground{
     		public void actionPerformed(ActionEvent e) {
                 if (skin03Button.isEnabled() && (player1 == null || player2 == null)) {
                 	skin03Button.setEnabled(false);
-                	if(player1 == null) player1 = "skin03";
-                	else if(player2 == null)player2 = "skin03";
+                	if(player1 == null) player1 = "Egg";
+                	else if(player2 == null)player2 = "Egg";
                 }
        	    }
     	});
 		
 		playButton.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent e) {
-    			if(player1 == null && player2 == null) playButton.setEnabled(false);
-    			
-       	    }
+    			if(player1 != null && player2 != null)
+    				prepareNamePanel();
+    			}
     	});
 		
 		backSelectButton.addActionListener(new ActionListener(){
@@ -164,6 +169,12 @@ public class SelectPanel extends JBackground{
 	
 	public void back() {
 		poogger.carguePanel(this, backPanel);
+	}
+	
+	public void prepareNamePanel() {
+		this.setVisible(false);
+		poogger.remove(this);
+		poogger.prepareNamePanel(player1, player2, mode);
 	}
 	
 	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {

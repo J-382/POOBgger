@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,12 +23,20 @@ import java.util.TreeMap;
  * @version 2.3
  * @author Angie Medina - Jose Perez
  */
+@SuppressWarnings("serial")
 public class POOgger implements Serializable{
 	private static POOgger poogger = null;
 	
-	public static POOgger demePOOgger(HashMap<String, int[]> archivo) {
+	public static POOgger demePOOgger(HashMap<String, int[]> archivo, String[] player1, String[] player2, String mapType, String fileMode){
 		if (poogger == null) {
-			poogger = new POOgger(720,720, archivo,new char[] {'A','W','S','D'},new char[] {'A','W','S','D'});
+			poogger = new POOgger(720,740, archivo, player1, player2, mapType, fileMode);
+		}
+		return poogger;
+	}
+	
+	public static POOgger demePOOgger(HashMap<String, int[]> archivo){
+		if (poogger == null) {
+			poogger = new POOgger(720,740, archivo, new String[] {null, null}, new String[] {null, null}, null, null);
 		}
 		return poogger;
 	}
@@ -37,7 +46,6 @@ public class POOgger implements Serializable{
 	}
 	
 	private int screenWidth;
-	private int screenHeight;
 	private int[] logsSpeed;
 	private int[] carsSpeed;
 	private int snakeSpeed;
@@ -45,32 +53,31 @@ public class POOgger implements Serializable{
 	private int lizzardSpeed;
 	private boolean exist;
 	private Rectangle clock;
-    private Animator animator;
-	private boolean isPlayerAlive;
+    private boolean isPlayerAlive;
 	private ArrayList<Element> elements;
 	private ArrayList<Element> fixeds;
 	private ArrayList<Player> players;
-	private char[] player1Keys;
-	private char[] player2Keys;
+	private char[] player1Keys = {'A','W','S','D'};
 	private HashMap<String,int[]> sprites;
 	private final int deadPenalization = -100;
 	private boolean[] isOver;
 	private int level;
 	private int timeLimit;
 	private TreeMap<Integer, ArrayList<String>> highScores;
-	private File testFile;
+	private File scoresFile;
+	//private File playersFile = new File("./resources/HighScoresJvsJ.txt");;
+	
+	
 	/**
 	 * POOgger class constructor
 	 * @param width POOgger's windows width
 	 * @param height POOgger's windows height
 	 * @param sprites HashMap with all sprites's sizes
+	 * @throws POOggerException 
 	 */
-	private POOgger(int width, int height, HashMap<String,int[]> sprites, char[] player1Keys, char[] player2Keys) {
+	private POOgger(int width, int height, HashMap<String,int[]> sprites, String[] player1, String[] player2, String mapType, String scoreFile) {
 		screenWidth = width;
-		screenHeight = height;
 		this.sprites = sprites;
-		this.player1Keys = player1Keys;
-		this.player2Keys = player2Keys;
 		isOver = new boolean[]{false, false, false};
 		level = 5;
 		timeLimit = 300;
@@ -82,47 +89,69 @@ public class POOgger implements Serializable{
 		logsSpeed = new int[] {1,2,3};
 		carsSpeed = new int[] {4,3,2,5,2};
 		players = new ArrayList<Player>();
-		players.add(new Player(5,48*7,48*14, sprites.get("Frog1W")));
-		//players.add(new Thoughtless(5,48*7,48*14, sprites.get("Frog1W")));
 		elements = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
 		clock = new Rectangle(0,0, 0, 20);
+		ArrayList<String[]> newPlayers = new ArrayList<>();
+		newPlayers.add(player1);
+		if (player2[0] != null) newPlayers.add(player2);
+		addPlayers(newPlayers);
 		addFixedElements();
 		addSnake();
-		//addEagle(players.get(0));
-		testFile = new File("./resources/HighScoresJvsJ.txt");
+		scoresFile = new File(scoreFile);
 		try {
-			highScores = readHighScoreFile(testFile);
+			highScores = readHighScoreFile(scoresFile);
 		} catch (POOggerException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	/**
-	 * Restores the clock size, givin 30 seconds
-	 */
-	private void restoreClock() {
-		clock = new Rectangle(0, 0, 0, clock.height);
+	
+	public void addPlayers(ArrayList<String[]> newPlayers){
+		int lives = players.size() >= 1 || (newPlayers.size() >= 2 && newPlayers.get(1)[0] != null) ? 3 : 5;
+		int initPosx = 48*8, initPosy = 48*14;
+		for (String[] player : newPlayers) {
+			initPosx -= 48;
+			if (player[0] != null) { 
+				Class c = null;
+				try {
+					c = Class.forName("dominio." + player[0]);
+				} catch (ClassNotFoundException e1) {
+					try {
+						c = Class.forName("dominio.Player");
+					} catch (ClassNotFoundException e) {
+						//throw new POOggerException(POOggerException.CLASE_NO_ENCONTRADA);
+					}
+				}
+				try {
+					Object o = c.getDeclaredConstructor(int.class, int.class, int.class, int[].class, String.class, String.class).
+							newInstance(lives, initPosx, initPosy, sprites.get("Frog1W"), player[0], player[1]);
+					
+					players.add((Player)o);
+				} catch ( InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					//throw new POOggerException(POOggerException.ERROR_INFORMACION);
+				}
+			}
+		}
 	}
 	
 	/**
 	 * Updates clock size
 	 **/
-	public void updateClock() {
-		clock = new Rectangle(0, 0, clock.width + 1, clock.height);
-		if (clock.width == timeLimit) {
-			for(Player player: players) {
+	public void updateClock(Player player) {
+		if (player.isAlive()) {
+			if (player.updateClock()) {
 				killPlayer(player);
 			}
 		}
 	}
 	
-	
 	/**
 	 * Move the player, if possible, in the given direction
 	 * @param dir direction
 	 */
-	public void movePlayer(char dir) {
+	public void movePlayer(char dir, int numPlayer) {
 		boolean isValid = false;
 		for(char i: player1Keys) {
 			if(i==dir) {
@@ -130,8 +159,8 @@ public class POOgger implements Serializable{
 				break;
 			}
 		}
-		if (isValid) {
-			players.get(0).setOrientation(dir);
+		if (isValid && numPlayer < players.size()) {
+			if (players.get(numPlayer).isAlive()) players.get(numPlayer).setOrientation(dir);
 		}
 	}
 	
@@ -148,12 +177,16 @@ public class POOgger implements Serializable{
 		return players;
 	}
 	
+	public String getLevel() {
+		return "" + level;
+	}
+	
 	/**
 	 * Returns the player's points
 	 * @param player, the player's number
 	 */
-	public String getPoints(int player) {
-		int ultiScore = players.get(player).getPoints();
+	public String getPoints(Player player) {
+		int ultiScore = player.getPoints();
 		return formatScore(ultiScore);
 	}
 	
@@ -169,8 +202,8 @@ public class POOgger implements Serializable{
 	/**
 	 * Returns the clock sprite
 	 */
-	public Rectangle getClock() {
-		return clock;
+	public Rectangle getClock(Player player) {
+		return player.getClock();
 	}
 
 	/**
@@ -407,7 +440,6 @@ public class POOgger implements Serializable{
 							givePlayerBonus(player, e.getPoints());
 							player.increaseCavesReach();
 							checkCavesState(player);
-							restoreClock();
 							resetPlayer(player);
 							touchingWater = false;
 							break;
@@ -436,7 +468,7 @@ public class POOgger implements Serializable{
 	 */
 	public void checkCavesState(Player player) {
 		int cont = 0;
-		for (int i = 1; i < fixeds.size(); i++) {
+		for (int i = 0; i < fixeds.size(); i++) {
 			if (((Fixed)fixeds.get(i)).canBeOccupied()) {
 				if (((Cave)fixeds.get(i)).isOccupied()) cont++;
 			}
@@ -457,12 +489,18 @@ public class POOgger implements Serializable{
 	 */
 	public void nextLevel() {
 		String winner;
+		
+		for (Player player : players) {
+			player.resetPlayer();
+		}
+		
 		if (level == 5) {
 			for (int i = 1; i <= players.size(); i++) {
-				if (players.get(i).getRoundsWon() >= 3) {
-					winner = "" + i;
+				if (players.get(i-1).getRoundsWon() >= 3) {
+					winner = players.get(i-1).getName();
 				}
 			}
+			level++;
 			isOver[0] = true;
 			isOver[1] = true;
 		}
@@ -475,7 +513,13 @@ public class POOgger implements Serializable{
 	 * 				   third position if some player made a record
 	 */
 	public boolean[] getGameState() {
-		if (!isPlayerAlive) {
+		boolean onePlayerAlive = false;
+		for (Player player : players) {
+			if (player.isAlive()) {
+				onePlayerAlive = true;
+			}
+		}
+		if (!onePlayerAlive) {
 			isOver[0] = true;
 			isOver[1] = false;
 		}
@@ -496,7 +540,7 @@ public class POOgger implements Serializable{
 			if (!player.isMachine() && player.getPoints() >= minScore) {
 				record = true;
 				ArrayList<String> names = new ArrayList<>();
-				names.add("player");
+				names.add(player.getName());
 				if (highScores.containsKey(player.getPoints())) { 
 					names.addAll(highScores.get(player.getPoints()));
 				}
@@ -504,7 +548,7 @@ public class POOgger implements Serializable{
 			}
 		}
 		try {
-			writeHighScoreFile(testFile);
+			writeHighScoreFile(scoresFile);
 		} catch (POOggerException e) {
 			e.printStackTrace();
 		}
@@ -518,8 +562,7 @@ public class POOgger implements Serializable{
 	 */
 	public void killPlayer(Player player) {
 		player.changePoints(deadPenalization);
-		restoreClock();
-		isPlayerAlive = player.decreasePlayerLives();
+		player.decreasePlayerLives();
 		resetPlayer(player);
 	}
 	
@@ -607,12 +650,8 @@ public class POOgger implements Serializable{
 		//addLane(time);
 		if(time%2==0) update();
 		for(Player player: players) {
-			if(checkPlayerCollisions(player)) {
+			if(checkPlayerCollisions(player)  && player.isAlive()) {
 				killPlayer(player);
-				if (!player.isAlive()) {
-					isOver[0] = true;
-					isOver[1] = false;
-				}
 			}
 		}
 		ArrayList<Element> allElements = new ArrayList<Element>();
@@ -659,7 +698,7 @@ public class POOgger implements Serializable{
 		fixeds.add(new ArmorPower(48*3,48*14,48,48));**/
 		/*Puddles*/
 		//fixeds.add(new Puddle(48*7,48*8,48,48));
-		fixeds.add(new Thunder(48*3, 48, screenHeight-48, players.get(0)));
+		//fixeds.add(new Thunder(48*3, 48, screenHeight-48, players.get(0)));
 		fixeds.add(new Bug(48*4,48*12,48,48,1500));
 		//fixeds.add(new Thunder(48*3, 48, screenHeight-48, players.get(0)));
 	}
