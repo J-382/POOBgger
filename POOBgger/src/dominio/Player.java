@@ -39,6 +39,7 @@ public class Player extends Playable implements Pushable{
 		initLives = initialLives;
 		this.initX = initX;
 		this.initY = initY;
+		frogState = new PlayerNormalState(this);
 		cavesReach = 0;
 		roundsWon = 0;
 		isAlive = true;

@@ -9,11 +9,10 @@ public class PlayerNormalState extends PlayerState{
 
 	@Override
 	public Rectangle getBounds() {
-		return player.getBounds();
+		return new Rectangle(player.getX(),player.getY(),player.getWidth(),player.getHeight());
 	}
 
 	@Override
 	public void decreasePlayerlives() {
-		player.decreasePlayerLives();
 	}
 }
