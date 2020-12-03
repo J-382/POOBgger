@@ -34,7 +34,7 @@ public class FemaleFrog extends Mobile implements Pushable{
 	}
 	
 	/**
-	 * Plays snake's move animation;
+	 * Plays female's frog  move animation;
 	 * */
 	private void updateSprite(){
 		state = (state+1)%3;

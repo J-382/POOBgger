@@ -42,7 +42,6 @@ public class POOggerGUI extends JFrame {
 	/* Paneles */
 	private StartPanel startPanel;
 	private NewGamePanel newGamePanel;
-	private JBackground openGamePanel;
 	private PointsPanel pointsPanel;
 	private SelectPanel selectPanel;
 	private HighScoresPanel highScoresPanel;
@@ -53,7 +52,6 @@ public class POOggerGUI extends JFrame {
 	/* Barra menu Menu */
 	private JMenuBar barraMenu;
 	private JMenu opciones;
-	private JMenu help;
 	private JMenuItem openItem;
 	private JMenuItem saveAsItem;
 	private JMenuItem exitItem;
@@ -239,16 +237,6 @@ public class POOggerGUI extends JFrame {
     	fin.setVisible(true);
     	currentPanel = fin;
     }
-	
-	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {
-		font = font.deriveFont(sizeFont);
-		boton.setFont(font);
-		boton.setContentAreaFilled(false);
-    	boton.setBorderPainted(false);
-    	boton.setForeground(color);
-    	boton.setFocusPainted(false);
-		return boton;
-	}
 
 	public static void main(String[] args) {
 		POOggerGUI gui = new POOggerGUI();

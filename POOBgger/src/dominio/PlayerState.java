@@ -1,8 +1,9 @@
 package dominio;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
-public abstract class PlayerState {
+public abstract class PlayerState implements Serializable{
 	Player player;
 	PlayerState(Player player){
 		this.player = player;

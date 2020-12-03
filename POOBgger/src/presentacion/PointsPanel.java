@@ -17,14 +17,10 @@ import javax.swing.JLabel;
 
 public class PointsPanel extends JBackground{
 	
-	/* Frame */
-	private POOggerGUI poogger;
-	
 	/*Botones points panel */
 	private JButton backPointsButton;
 	private JButton highScoresButton;
 	
-	private JBackground backPanel;
 	private static Font font;
 	
 	
@@ -147,19 +143,5 @@ public class PointsPanel extends JBackground{
 		poogger.remove(this);
 		poogger.prepareHighScoresPanel();
 		
-	}
-	
-	public void back() {
-		poogger.carguePanel(this, backPanel);
-	}
-	
-	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {
-		font = font.deriveFont(sizeFont);
-		boton.setFont(font);
-		boton.setContentAreaFilled(false);
-    	boton.setBorderPainted(false);
-    	boton.setForeground(color);
-    	boton.setFocusPainted(false);
-		return boton;
 	}
 }

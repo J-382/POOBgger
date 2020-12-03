@@ -95,6 +95,10 @@ public class Player extends Playable implements Pushable{
 		return clock.getClock();
 	}
 	
+	public int secondsLeft() {
+		return clock.secondsLeft(); 
+	}
+	
 	private void updateSprite() {
 		state = (state+1)%3;
 		sprite =  "Frog"+(state+1)+orientation;	
@@ -141,15 +145,15 @@ public class Player extends Playable implements Pushable{
 	
 	/**
 	 * Decrease the player lives and reset his position
-	 * @param initx x inital position
-	 * @param initx y inital position
 	 * */
-	public boolean decreasePlayerLives() {
+	public boolean decreasePlayerLives(int penalization) {
 		frogState.decreasePlayerlives();
+		changePoints(penalization);
 		lives--;
-		if (lives >= 1) {
-			resetPlayer();
-		}else isAlive = false;
+		resetPlayer();
+		if (lives < 1) {
+			isAlive = false;
+		}
 		return isAlive;
 	}
 	

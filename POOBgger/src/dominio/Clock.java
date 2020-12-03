@@ -26,5 +26,9 @@ public class Clock implements Serializable{
 	public Rectangle getClock() {
 		return clock;
 	}
+	
+	public int secondsLeft() {
+		return ((int)clock.getWidth() / (timeLimit/30));
+	}
 
 }

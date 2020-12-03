@@ -49,12 +49,11 @@ public class POOgger implements Serializable{
 	private ArrayList<Element> elements;
 	private ArrayList<Element> fixeds;
 	private ArrayList<Player> players;
-	private char[] player1Keys = {'A','W','S','D'};
+	private char[] playerKeys = {'A','W','S','D'};
 	private HashMap<String,int[]> sprites;
 	private final int deadPenalization = -100;
 	private boolean[] isOver;
-	private int level;
-	private int timeLimit;
+	private int timeLimit = 150;
 	private TreeMap<Integer, ArrayList<String>> highScores;
 	private File scoresFile;
 	private Element throwable;
@@ -72,7 +71,6 @@ public class POOgger implements Serializable{
 		this.sprites = sprites;
 		levelGenerator = new Generator(sprites,screenWidth,screenHeight,48,0,"Day");
 		isOver = new boolean[]{false, false, false};
-		level = 5;
 		players = new ArrayList<Player>();
 		elements = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
@@ -136,7 +134,7 @@ public class POOgger implements Serializable{
 	 */
 	public void movePlayer(char dir, int numPlayer) {
 		boolean isValid = false;
-		for(char i: player1Keys) {
+		for(char i: playerKeys) {
 			if(i==dir) {
 				isValid = true;
 				break;
@@ -161,7 +159,7 @@ public class POOgger implements Serializable{
 	}
 	
 	public String getLevel() {
-		return "" + level;
+		return "" + levelGenerator.getLevel();
 	}
 	
 	/**
@@ -266,7 +264,7 @@ public class POOgger implements Serializable{
 						if(e.isOccupied()) {
 							givePlayerBonus(player, e.getPoints());
 							player.increaseCavesReach();
-							checkCavesState(player);
+							checkCavesState();
 							resetPlayer(player);
 							touchingWater = false;
 							break;
@@ -305,9 +303,8 @@ public class POOgger implements Serializable{
 	
 	/**
 	 * Check the cave's state to see if some player have won
-	 * @param player, the player who collision with the cave
 	 */
-	public void checkCavesState(Player player) {
+	private void checkCavesState() {
 		int cont = 0;
 		for (int i = 0; i < fixeds.size(); i++) {
 			if (((Fixed)fixeds.get(i)).canBeOccupied()) {
@@ -315,11 +312,13 @@ public class POOgger implements Serializable{
 			}
 		}
 		if (cont == 5) {
-			if (player.getLives() == player.getInitialLives()) player.changePoints(1000);
-			else player.changePoints(player.getLives()*100);
-			player.changePoints(timeLimit - (int)player.getClock().getWidth());
-			if (player.getCavesReach() >= 3) {
-				player.increaseRoudsWon();
+			for(Player player : players) {
+				if (player.getLives() == player.getInitialLives()) player.changePoints(1000);
+				else player.changePoints(player.getLives()*100);
+				player.changePoints(player.secondsLeft() * 10);
+				if (player.getCavesReach() >= 3) {
+					player.increaseRoudsWon();
+				}
 			}
 			nextLevel();
 		}
@@ -328,20 +327,20 @@ public class POOgger implements Serializable{
 	/**
 	 * Creates another level if possible (max level 5)
 	 */
-	public void nextLevel() {
+	private void nextLevel() {
 		String winner;
 		
 		for (Player player : players) {
 			player.resetPlayer();
 		}
 		
-		if (level == 5) {
+		if (levelGenerator.getLevel() == 5) {
 			for (int i = 1; i <= players.size(); i++) {
 				if (players.get(i-1).getRoundsWon() >= 3) {
 					winner = players.get(i-1).getName();
 				}
 			}
-			level++;
+			levelGenerator.levelUp();
 			isOver[0] = true;
 			isOver[1] = true;
 		}
@@ -356,9 +355,7 @@ public class POOgger implements Serializable{
 	public boolean[] getGameState() {
 		boolean onePlayerAlive = false;
 		for (Player player : players) {
-			if (player.isAlive()) {
-				onePlayerAlive = true;
-			}
+			onePlayerAlive = onePlayerAlive || player.isAlive;
 		}
 		if (!onePlayerAlive) {
 			isOver[0] = true;
@@ -369,9 +366,11 @@ public class POOgger implements Serializable{
 	
 	/**
 	 * Returns if some player have made a record
+	 * @throws POOggerException     - TIPO_ERRONEO   When the file is not a .txt
+	 * 								- ERROR_EXPORTAR When some error occurs when tries to export
 	 */
-	public boolean checkScoresRecords() {
-		boolean record = false;
+	public boolean checkScoresRecords() throws POOggerException {
+		isOver[2] = false;
 		int minScore = -10000;
 		for (int score : highScores.keySet()) {
 			minScore = score;
@@ -379,7 +378,7 @@ public class POOgger implements Serializable{
 		}
 		for (Player player : players) {
 			if (!player.isMachine() && player.getPoints() >= minScore) {
-				record = true;
+				isOver[2] = true;
 				ArrayList<String> names = new ArrayList<>();
 				names.add(player.getName());
 				if (highScores.containsKey(player.getPoints())) { 
@@ -388,13 +387,8 @@ public class POOgger implements Serializable{
 				highScores.put(player.getPoints(), names);
 			}
 		}
-		try {
-			writeHighScoreFile(scoresFile);
-		} catch (POOggerException e) {
-			e.printStackTrace();
-		}
-		isOver[2] = record;
-		return record;
+		writeHighScoreFile(scoresFile);
+		return isOver[2];
 	}
 	
 	/**
@@ -402,9 +396,7 @@ public class POOgger implements Serializable{
 	 * @param player, the player killed
 	 */
 	public void killPlayer(Player player) {
-		player.changePoints(deadPenalization);
-		player.decreasePlayerLives();
-		resetPlayer(player);
+		player.decreasePlayerLives(deadPenalization);
 	}
 	
 	/**
@@ -529,6 +521,7 @@ public class POOgger implements Serializable{
 			out.writeObject(poogger);
 			out.close();
 		} catch(IOException e) {
+			System.out.println(e.getMessage());
 			throw new POOggerException(POOggerException.ERROR_SALVAR);
 		}
 	}

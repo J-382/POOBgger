@@ -18,16 +18,11 @@ import javax.swing.JLabel;
 
 public class StartPanel extends JBackground{
 
-	/* Frame */
-	private POOggerGUI poogger;
 	
 	/* Botones start panel */
 	private JButton newGameButton;
 	private JButton openGameButton;
 	private JButton pointsButton;
-	
-	private int WIDTH;
-	private int HEIGHT;
 	
 	public StartPanel(ImageIcon image, POOggerGUI poogger,File fontPath, JBackground backPanel) {
 		super(image);
@@ -39,9 +34,6 @@ public class StartPanel extends JBackground{
 		} catch(IOException | FontFormatException e) {
 			
 		}
-		WIDTH = poogger.getWidth();
-		HEIGHT = poogger.getHeight();
-		
 		this.poogger = poogger;
 		prepareElementos();
 		prepareAcciones();
@@ -108,16 +100,4 @@ public class StartPanel extends JBackground{
 		poogger.remove(this);
 		poogger.preparePointsPanel();
 	}
-	
-	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {
-		font = font.deriveFont(sizeFont);
-		boton.setFont(font);
-		boton.setContentAreaFilled(false);
-    	boton.setBorderPainted(false);
-    	boton.setForeground(color);
-    	boton.setFocusPainted(false);
-		return boton;
-	}
-	
-	
 }

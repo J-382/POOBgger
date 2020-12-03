@@ -38,9 +38,9 @@ public class Thunder extends Fixed{
 	}
 	private void playSound() {
 		try {
-			/*sound = AudioSystem.getClip();
+			sound = AudioSystem.getClip();
 			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/thunderSound.wav")));
-			sound.loop(0);*/
+			sound.loop(0);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

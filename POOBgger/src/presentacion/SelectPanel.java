@@ -18,10 +18,6 @@ import javax.swing.JLabel;
 
 public class SelectPanel extends JBackground{
 	
-
-	/* Frame */
-	private POOggerGUI poogger;
-	
 	/* Botones select skin panel */
 	private JButton backSelectButton;
 	private JButton playButton;
@@ -31,8 +27,8 @@ public class SelectPanel extends JBackground{
 	private String player1;
 	private String player2;
 	private String mode;
+
 	
-	private JBackground backPanel;
 	private static Font font;
 	
 	/* Imagenes */
@@ -167,23 +163,9 @@ public class SelectPanel extends JBackground{
     	});
 	}
 	
-	public void back() {
-		poogger.carguePanel(this, backPanel);
-	}
-	
 	public void prepareNamePanel() {
 		this.setVisible(false);
 		poogger.remove(this);
 		poogger.prepareNamePanel(player1, player2, mode);
-	}
-	
-	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {
-		font = font.deriveFont(sizeFont);
-		boton.setFont(font);
-		boton.setContentAreaFilled(false);
-    	boton.setBorderPainted(false);
-    	boton.setForeground(color);
-    	boton.setFocusPainted(false);
-		return boton;
 	}
 }

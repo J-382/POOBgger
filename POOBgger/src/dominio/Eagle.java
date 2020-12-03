@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import java.io.File;
-import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
@@ -66,12 +65,6 @@ public class Eagle extends Mobile{
 	/**
 	 * Plays Eagle's move animation
 	 * */
-	private void updateChaseSprite() {
-		state =  (state + 1)%2;
-		y+=state==0?15:-15;
-		sprite = "Alligator"+(state + 1);
-	}
-	
 	private void updateFlySprite() {
 		state =  (state + 1)%30;
 		sprite = "Eagle"+((state>4?0:state) + 1);

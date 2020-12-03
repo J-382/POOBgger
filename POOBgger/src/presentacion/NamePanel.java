@@ -30,8 +30,6 @@ public class NamePanel extends JBackground{
 	private JButton backNameButton;
 	private JButton playButton;
 	
-	private JBackground backPanel;
-	
 	private String[] player1;
 	private String[] player2;
 	private String mode;
@@ -275,11 +273,7 @@ public class NamePanel extends JBackground{
        	    }
     	});
 	}
-	
-	public void back() {
-		poogger.carguePanel(this, backPanel);
-	}
-	
+
 	public void prepareGamePanel() {
 		if (mode.equals("Human") || mode.equals("Humans") || mode.equals("Machine")) player1[0] = namePlayer1.getText();
 		else player1[0] = (String)typeMachine1.getSelectedItem();
@@ -288,15 +282,4 @@ public class NamePanel extends JBackground{
 		else if (mode.equals("Machines") || mode.equals("Machine"))player2[0] = (String)typeMachine2.getSelectedItem();
 		poogger.prepareGamePanel(player1, player2, (String)mapType.getSelectedItem(), mode);
 	}
-	
-	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {
-		font = font.deriveFont(sizeFont);
-		boton.setFont(font);
-		boton.setContentAreaFilled(false);
-    	boton.setBorderPainted(false);
-    	boton.setForeground(color);
-    	boton.setFocusPainted(false);
-		return boton;
-	}
-
 }

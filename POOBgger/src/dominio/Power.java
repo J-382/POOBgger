@@ -2,6 +2,7 @@ package dominio;
 
 public abstract class Power extends Fixed{
 	protected int duration;
+	protected int state;
 	
 	abstract public void givePower(Playable player);
 	

@@ -82,8 +82,6 @@ public abstract class Playable extends Mobile{
 		this.canFly = canFly;
 	}
 	
-	
-	/*Probablemente se deba hacer los timers como una variable privada*/
 	public void makeFly() {
 		if(canFly) {
 			isFlying = true;

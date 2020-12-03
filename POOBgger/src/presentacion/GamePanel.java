@@ -53,10 +53,10 @@ public class GamePanel extends JPanel{
 	private HashMap<String,Image> sprites;
 	private HashMap<String,int[]> dimensions;
 	private int lapsus = 0;
-	private static String[] player1 = {null, null};
+	private static String[] player1 = {"deafult", "default"};
 	private static String[] player2 = {null, null};
-	private static String mapType = null;
-	private static String mode = null;
+	private static String mapType = "Sunny";
+	private static String mode = "./resources/HighScoresPlayer.txt";
 	private boolean paused;
 	private Timer clockTime;
 	private HashMap<Integer, Character> player1Keys = new HashMap<Integer, Character>(){{
@@ -174,7 +174,13 @@ public class GamePanel extends JPanel{
 	}
 	
 	public boolean checkScoresRecords() {
-		return POOgger.demePOOgger(dimensions).checkScoresRecords();
+		boolean checkFile = false;
+		try {
+			checkFile =  POOgger.demePOOgger(dimensions).checkScoresRecords();
+		} catch (POOggerException e) {
+			raiseError(e.getMessage());
+		}
+		return checkFile;
 	} 
 		
 	private void paintCollisions(Element i, Graphics g) {

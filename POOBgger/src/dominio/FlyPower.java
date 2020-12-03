@@ -2,8 +2,6 @@ package dominio;
 
 
 public class FlyPower extends Power{
-
-	private int state;
 	
 	public FlyPower(int x, int y, int width, int height) {
 		this.x = x;

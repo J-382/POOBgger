@@ -50,7 +50,6 @@ public class Truck extends Carrier{
 		super.stopCarrying(c);
 	}
 	
-	/*Usar la direccion del jugador para evitar las colisiones*/
 	@Override
 	public void startCarrying(Pushable c) {
 		if(c.setPosition(x+48, y)) {

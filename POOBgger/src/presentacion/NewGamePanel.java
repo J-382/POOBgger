@@ -18,9 +18,6 @@ import javax.swing.Timer;
 
 public class NewGamePanel extends JBackground{
 
-	/* Frame */
-	private POOggerGUI poogger;
-	
 	/* Botones new game panel */
 	private JButton backNewGameButton;
 	private JButton arcadeButton;
@@ -28,7 +25,6 @@ public class NewGamePanel extends JBackground{
 	private JButton playerMachineButton;
 	private JButton machinesButton;
 	
-	private JBackground backPanel;
 	private static Font font;
 	
 	/* Separador */
@@ -130,19 +126,4 @@ public class NewGamePanel extends JBackground{
 		poogger.prepareSelectPanel(players, mode);
 		
 	}
-	
-	public void back() {
-		poogger.carguePanel(this, backPanel);
-	}
-	
-	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {
-		font = font.deriveFont(sizeFont);
-		boton.setFont(font);
-		boton.setContentAreaFilled(false);
-    	boton.setBorderPainted(false);
-    	boton.setForeground(color);
-    	boton.setFocusPainted(false);
-		return boton;
-	}
-	
 }

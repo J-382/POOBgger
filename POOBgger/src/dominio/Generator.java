@@ -1,10 +1,11 @@
 package dominio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Generator {
+public class Generator implements Serializable{
 
 	private int screenHeight;
 	private int screenWidth;
