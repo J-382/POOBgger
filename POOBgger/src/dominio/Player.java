@@ -8,7 +8,7 @@ import javax.swing.Timer;
 
 /**
  * POOgger's player implementation
- * @version 2.6
+ * @version 3.0
  * @author Angie Medina - Jose Perez
  * */
 public class Player extends Playable implements Pushable{
@@ -178,7 +178,7 @@ public class Player extends Playable implements Pushable{
 	
 	/**
 	 * Change the player point by some amount
-	 * @param value, the amount to add to the player's pointz
+	 * @param value, the amount to add to the player's points
 	 */
 	public void changePoints(int value) {
 		points += value;
@@ -191,14 +191,25 @@ public class Player extends Playable implements Pushable{
 		cavesReach++;
 	}
 	
+	/**
+	 * Increase the rounds that the player have won
+	 */
 	public void increaseRoudsWon() {
 		roundsWon++;
 	}
 	
+	/**
+	 * Returns the number of the rounds that the player have won
+	 * @return the number of the rounds that the player have won
+	 */
 	public int getRoundsWon() {
 		return roundsWon;
 	}
 	
+	/**
+	 * Returns the number of the rounds that the player have won
+	 * @return the number of the caves that the player have reached
+	 */
 	public int getCavesReach() {
 		return cavesReach;
 	}
@@ -255,23 +266,31 @@ public class Player extends Playable implements Pushable{
 		String returnImage = isVisible?sprite:"";
 		return returnImage;
 	}
-	 
+	
+	/**
+	 * Returns player's hat name
+	 * @return player's hat name
+	 */
 	public String getHat() {
 		String returnImage = isVisible?hat:"";
 		return returnImage;
 	}
 	
+	/**
+	 * Returns player's name
+	 * @return player's name
+	 */
 	public String getName() {
 		return name;
 	}
+	
 	@Override
 	public boolean setPosition(int x, int y) {
 		animator.stop();
 		state = 0;
 		this.x = x;
 		this.y = y;
-		return true;
-		
+		return true;	
 	}
 
 	@Override

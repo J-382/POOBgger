@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * POOgger's truck implementation
- * @version 2.2
+ * @version 3.0
  * @author Angie Medina - Jose Perez
  * */
 public class Truck extends Carrier{
@@ -18,6 +18,8 @@ public class Truck extends Carrier{
 	 * @param x Truck's x position
 	 * @param y Truck's y position
 	 * @param speed Truck's speed
+	 * @param size Truck's dimensions
+	 * @param sprite Truck's sprite name
 	 * @param flipped if the Truck are flipped horizontally
 	 * */
 	public Truck(int x, int y, int speed,int[] size, String sprite, boolean flipped){

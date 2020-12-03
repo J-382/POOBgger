@@ -23,6 +23,10 @@ public abstract class Fixed extends Element {
 		return height;
 	}
 	
+	/**
+	 * Indicates if the Fixed element can be occupied
+	 * @return if the Fixed element can be occupied
+	 */
 	public boolean canBeOccupied() {
 		return false;
 	}

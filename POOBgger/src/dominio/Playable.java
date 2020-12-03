@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 /** POOgger Playable element behavior
- * @version 2.1
+ * @version 3.0
  * @author Angie Medina - Jose Perez
  * */
 public abstract class Playable extends Mobile{

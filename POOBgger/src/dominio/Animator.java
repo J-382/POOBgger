@@ -62,6 +62,7 @@ public class Animator implements Serializable{
 	
 	/**
 	 * Returns if the animator is paused
+	 * @return a boolean that indicates if the animator is paused
 	 */
 	public boolean isPaused() {
 		return isPaused;

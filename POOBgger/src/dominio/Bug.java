@@ -1,5 +1,10 @@
 package dominio;
 
+/**
+ * Pogger's bonus bug implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public class Bug extends Fixed{
 	
 	private int points;
@@ -7,11 +12,11 @@ public class Bug extends Fixed{
 	private int state;
 	/**
 	 *  
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param time
+	 * @param x Bug's x position
+	 * @param y Bug's y position
+	 * @param width Bug's width
+	 * @param height Bug's height
+	 * @param time Bug's duration
 	 */
 	public Bug(int x, int y, int width, int height, int time) {
 		this.x = x;
@@ -26,6 +31,9 @@ public class Bug extends Fixed{
 		animator.animate(time, 2, new Runnable() {public void run() {setVisible();}});
 	}
 	
+	/**
+	 * Changes the bug visibility
+	 */
 	private void setVisible() {
 		if(state==1) isVisible = false;
 		else state+=1;

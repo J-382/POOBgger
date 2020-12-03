@@ -2,7 +2,13 @@ package dominio;
 
 import java.awt.Rectangle;
 
+
 public class PlayerCarryingState extends PlayerState{
+	
+	/**
+	 * PlayerCarryingState class constructor
+	 * @param player context
+	 */
 	public PlayerCarryingState(Player player) {
 		super(player);
 	}

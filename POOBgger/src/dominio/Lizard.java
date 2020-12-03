@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Pretends be a Frogger's lizard
- * @version 2.1
+ * @version 3.0
  * @author Angie Medina - Jose Perez
  * */
 public class Lizard extends Carrier{
@@ -18,6 +18,8 @@ public class Lizard extends Carrier{
 	 * Lizard class constructor
 	 * @param x Lizard's x position
 	 * @param y Lizard's y position
+	 * @param size Lizard's dimensions
+	 * @param sprite Lizard's sprite
 	 * @param speed Lizzard's speed
 	 * */
 	public Lizard(int x, int y, int[] size, String sprite, int speed) {

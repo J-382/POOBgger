@@ -1,5 +1,10 @@
 package dominio;
 
+/**
+ * Pogger's solid object implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public class Barrier extends Fixed{
 	private boolean killer;
 	private int gridSize;

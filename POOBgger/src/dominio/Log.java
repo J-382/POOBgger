@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Pretends be a Frogger's log
- * @version 2.1
+ * @version 3.0
  * @author Angie Medina - Jose Perez
  * */
 public class Log extends Carrier {
@@ -13,6 +13,7 @@ public class Log extends Carrier {
 	 * @param x Log's x position
 	 * @param y Log's y position
 	 * @param speed Log's speed
+	 * @param size Log's dimension
 	 * @param sprite Log's sprite name
 	 * */
 	public Log(int x, int y, int speed, int size[], String sprite) {

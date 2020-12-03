@@ -29,6 +29,9 @@ public class Thunder extends Fixed{
 		animator.animate(300, 3, new Runnable() {public void run() {fall();}});
 	}
 	
+	/**
+	 * Thunder fall animator, changes the Thunder's state to falling
+	 */
 	private void fall() {
 		if(falling) {
 			animator.stop();
@@ -36,6 +39,10 @@ public class Thunder extends Fixed{
 		}
 		else falling = true;
 	}
+	
+	/**
+	 * Plays the Thunder's sound
+	 */
 	private void playSound() {
 		try {
 			sound = AudioSystem.getClip();
@@ -46,6 +53,9 @@ public class Thunder extends Fixed{
 		}
 	}
 	
+	/**
+	 * Changes the Thunder's sprite
+	 */
 	private void updateSprite() {
 		frame =  (frame + 1)%12;
 		sprite = "Thunder"+(frame + 1);

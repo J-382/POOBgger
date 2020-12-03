@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * POOgger's level generator implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public class Generator implements Serializable{
 
 	private int screenHeight;
@@ -36,6 +41,9 @@ public class Generator implements Serializable{
 		prepareSpeeds();
 	}
 	
+	/**
+	 * Fills the speed's hashmap with the element's speeds
+	 */
 	private void prepareSpeeds() {
 		speeds = new HashMap<String, Integer>();
 		/*Street*/
@@ -59,10 +67,17 @@ public class Generator implements Serializable{
 		speeds.put("Snake", 1);
 	}
 	
+	/**
+	 * Returns the current level
+	 * @return the current level
+	 */
 	public int getLevel() {
 		return level+1;
 	}
 	
+	/**
+	 * Increase the current level by one
+	 */
 	public void levelUp() {
 		level++;
 	}
@@ -73,7 +88,7 @@ public class Generator implements Serializable{
 	}
 	
 	/** 
-	 * Add a new car to POOgger's elements in the given lane
+	 * Add a new car to Generator's elements in the given lane
 	 * @param lane the new car's lane
 	 */
 	private void addCar(int lane) {
@@ -98,7 +113,7 @@ public class Generator implements Serializable{
 	}
 	
 	/**
-	 * Add a new eagle to POOgger's mobiles
+	 * Add a new eagle to Generator's mobiles
 	 * @param player, player the eagle will chase
 	 */
 	private void addEagle(Player player) {
@@ -106,7 +121,7 @@ public class Generator implements Serializable{
 		mobiles.add(throwable);
 	}
 	
-	/** Add a new Lizzard to POOgger's mobiles
+	/** Add a new Lizzard to Generator's mobiles
 	 */
 	private void addLizard() {
 		//mobiles.add(new Lizzard(0, gridSize*5+4, lizzardSpeed));
@@ -114,7 +129,7 @@ public class Generator implements Serializable{
 	}
 	
 	/** 
-	 * Add a new log to POOgger's mobiles in the given lane
+	 * Add a new log to Generator's mobiles in the given lane
 	 * @param lane the new log's lane
 	 */
 	private void addLog(int lane) {
@@ -141,14 +156,14 @@ public class Generator implements Serializable{
 	}
 	
 	/** 
-	 * Add a new motorcycle to POOgger's mobiles
+	 * Add a new motorcycle to Generator's mobiles
 	 */
 	private void addMotorcycle() {
 		mobiles.add(new Motorcycle(-sizes.get("Motorcycle1")[0],gridSize*10,speeds.get("Motorcycle"),sizes.get("Motorcycle1"),"Motorcycle1",true));
 	}
 
 	/** 
-	 * Add a new snake to POOgger's mobiles
+	 * Add a new snake to Generator's mobiles
 	 */
 	private void addSnake() {
 		Random r = new Random();
@@ -159,7 +174,7 @@ public class Generator implements Serializable{
 	}
 	
 	/**
-	 * 
+	 * Add a new Thunder to the list of elements
 	 * @param player
 	 */
 	private void addThunder(Player player) {
@@ -169,14 +184,14 @@ public class Generator implements Serializable{
 	
 	
 	/** 
-	 * Add a new Truck to POOgger's mobiles
+	 * Add a new Truck to Generator's mobiles
 	 */
 	private void addTruck() {
 		mobiles.add(new Truck(screenWidth,gridSize*9,-speeds.get("Truck"),sizes.get("Truck1"),"Truck1",false));
 		
 	}
 	
-	/** Add a new turtle to POOgger's mobiles in the given lane
+	/** Add a new turtle to Generator's mobiles in the given lane
 	 * @param lane the new turtle's lane
 	 */
     private void addTurtle(int lane) {
@@ -193,24 +208,32 @@ public class Generator implements Serializable{
 		
     }
     
+    /**
+	 * Add a new bike to Generator's fixed elements
+	 */
     private void addThrowable(Player player) {
     	if(type.equals("Day")) {
     		addEagle(player);
     	}else addThunder(player);
     }
     
+    /**
+	 * Add a new bike to Generator's elements
+	 */
     private void addPuddle() {
     	Random r = new Random();
     	int x = gridSize*r.nextInt(15);
     	addPuddle(x);
     }
-    
+    /**
+   	 * Add a new puddle to Generator's fixed elements
+   	 */
     private void addPuddle(int x) {
     	fixeds.add(new Puddle(x,gridSize*8,gridSize,gridSize));
     }
     
     /**
-	 * Add a new bike to POOgger's elements
+	 * Add a new bike to Generator's elements
 	 */
 	private void addBike() {
 		mobiles.add(new Bike(screenWidth,gridSize*11,-speeds.get("Bike"), sizes.get("Bike1"),"Bike1" ,false));	
@@ -275,6 +298,10 @@ public class Generator implements Serializable{
 		}
 	}
 	
+	/**
+	 * Initial fixed elements
+	 * @return Initial fixed elements
+	 */
 	public ArrayList<Element> addFixedElements() {
 		Random r = new Random();
 		/*Barriers*/
@@ -304,6 +331,12 @@ public class Generator implements Serializable{
 		return fixeds;
 	}
 	
+	/**
+	 * Clear the lists of elements and adds new ones in function of the ejecution clock
+	 * @param time ejecution time
+	 * @param addThrowable if a throwable can be added
+	 * @param players list of players
+	 */
 	public void addElements(int time, boolean addThrowable, ArrayList<Player> players) {
 		mobiles.clear();
 		fixeds.clear();
@@ -317,14 +350,26 @@ public class Generator implements Serializable{
 		}
 	}
 	
+	/**
+	 * Returns a list with fixed elements
+	 * @return a list with fixed elements
+	 */
 	public ArrayList<Element> getFixedsElements(){
 		return fixeds;
 	}
 	
+	/**
+	 * Returns a list with mobile elements
+	 * @return a list with mobile elements
+	 */
 	public ArrayList<Element> getMobilesElements(){
 		return mobiles;
 	}
 	
+	/**
+	 * Returns the throwable element
+	 * @return the throwable element
+	 */
 	public Element getThrowableElement() {
 		return throwable;
 	}

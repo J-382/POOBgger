@@ -75,7 +75,6 @@ public class GamePanel extends JPanel{
 		prepareElementos(player1, player2, mapType, mode);
 		prepareAcciones();
 	}
-	
 	/*public boolean refresh() {
 		return POOgger.demePOOgger(dimensions, player1, player2, mapType, mode).isPlayerAlive();
 	}*/

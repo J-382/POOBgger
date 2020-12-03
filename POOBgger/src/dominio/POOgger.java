@@ -19,7 +19,7 @@ import java.util.TreeMap;
 
 /**
  * POOgger's player implementation
- * @version 2.3
+ * @version 3.0
  * @author Angie Medina - Jose Perez
  */
 @SuppressWarnings("serial")
@@ -286,6 +286,7 @@ public class POOgger implements Serializable{
 		return isDead || touchingWater;
 	}
 
+	
 	private void checkThrowableCollision(){
 		if(throwable!=null) {
 			for(Element e: elements) {
