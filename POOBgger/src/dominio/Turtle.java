@@ -21,6 +21,8 @@ public class Turtle extends Carrier{
 	 * @param x Turtle's x position
 	 * @param y Turtle's y position
 	 * @param speed Turtle's speed
+	 * @param size Turtle's dimension
+	 * @param sprite Turtle's sprite
 	 * @param doesSubmerge if the turtle can submerge
 	 * */
 	public Turtle(int x, int y, int speed, int[] size, String sprite,boolean doesSubmerge) {

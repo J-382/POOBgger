@@ -3,6 +3,11 @@ package dominio;
 import java.awt.Rectangle;
 
 public class LogSubmergedState extends LogState{
+	
+	/**
+	 * LogPreSubmergeState class Constructor
+	 * @param log context
+	 */
 	LogSubmergedState(Log log){
 		super(log);
 	}

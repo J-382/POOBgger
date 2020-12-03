@@ -18,7 +18,9 @@ public class Bike extends Carrier{
 	 * @param x Bike's x position
 	 * @param y Bike's y position
 	 * @param speed Bike's speed
-	 * @param flipped if the bike are flipped horizontally
+	 * @param size Bike's dimensions
+	 * @param sprite Bike's sprite name
+	 * @param flipped if the bike is flipped horizontally
 	 * */
 	public Bike(int x, int y, int speed, int[] size, String sprite, boolean flipped){
 		this.x = x;
@@ -34,12 +36,6 @@ public class Bike extends Carrier{
 		frame = 0;
 		animator = new Animator();
 		animator.animate(200,2,new Runnable() {public void run() {updateSprite();}},false);
-	}
-	
-	@Override
-	public void stopCarrying(Pushable c) {
-		sprite = "Bike"+(frame+1)+orientation;
-		super.stopCarrying(c);
 	}
 	
 	/**
@@ -74,5 +70,11 @@ public class Bike extends Carrier{
 		boolean isDead = true;
 		if(e.isPlayable()) isDead = super.inCollision(e);
 		return isDead;
+	}
+	
+	@Override
+	public void stopCarrying(Pushable c) {
+		sprite = "Bike"+(frame+1)+orientation;
+		super.stopCarrying(c);
 	}
 }

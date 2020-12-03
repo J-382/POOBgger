@@ -15,6 +15,15 @@ public class SmallLog extends Log{
 	private int minWidth;
 	private int minHeight;
 	private LogState state;
+	/**
+	 * SmallLog class constructor
+	 * @param x SmallLog's x position
+	 * @param y SmallLog's y position
+	 * @param speed SmallLog's speed
+	 * @param size SmallLog's dimensions
+	 * @param minSize SmallLog's minimum dimensions
+ 	 * @param sprite SmallLog's sprite name
+	 */
 	public SmallLog(int x, int y, int speed,int[] size, int[] minSize, String sprite) {
 		super(x, y, speed, size, sprite);
 		this.isVisible = true;
@@ -37,6 +46,9 @@ public class SmallLog extends Log{
 		
 	}
 	
+	/**
+	 * Changes the log state
+	 */
 	private void changeState() {
 		if(frame==2) state = new LogPreSubmergedState(this);
 		else if(frame==4) state = new LogSubmergedState(this);

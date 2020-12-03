@@ -2,7 +2,7 @@ package dominio;
 
 /**
  * Pretends be a Frogger's snake
- * @version 2.1
+ * @version 3.0
  * @author Angie Medina - Jose Perez
  * */
 public class Snake extends Mobile implements Pushable{
@@ -19,6 +19,8 @@ public class Snake extends Mobile implements Pushable{
 	 * @param x Snake's x position
 	 * @param y Snake's y position
 	 * @param speed Snake's speed
+	 * @param size Snake's dimensions
+	 * @param sprite Snake's sprite name
 	 * @param flipped if the Snake can submerge
 	 * */
 	public Snake(int xPos, int yPos, int speed,int[] size, String sprite, boolean flipped){

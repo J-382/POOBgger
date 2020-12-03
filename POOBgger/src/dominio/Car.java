@@ -2,7 +2,7 @@ package dominio;
 
 /**
  * Pretends be a Frogger's car
- * @version 1.1
+ * @version 2.0
  * @author Angie Medina - Jose Perez
  * */
 public class Car extends Mobile{
@@ -13,6 +13,7 @@ public class Car extends Mobile{
 	 * @param x Car's x position
 	 * @param y Car's y position
 	 * @param speed Car's speed
+	 * @param size Car's dimensions
 	 * @param sprite Car's sprite name
 	 * */
 	public Car(int x, int y, int speed,int[] size, String sprite){

@@ -10,6 +10,11 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+/**
+ * Pogger's Eagle implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public class Eagle extends Mobile{
 
 	private int speed;
@@ -25,6 +30,15 @@ public class Eagle extends Mobile{
 	private boolean onAir;
 	private transient Clip sound;
 	
+	/**
+	 * Eagle Class constructor
+	 * @param xPos Eagle's x initial position
+	 * @param yPos Eagle's y initial position
+	 * @param speed Eagle's speed
+	 * @param size Eagle's dimensions
+	 * @param sprite Eagle's sprite name
+	 * @param player Eagle's target
+	 */
 	public Eagle(int xPos, int yPos, int speed,int[] size, String sprite, Player player) {
 		this.sprite = sprite;
 		this.speed = speed;
@@ -65,13 +79,7 @@ public class Eagle extends Mobile{
 	
 	/**
 	 * Plays Eagle's move animation
-	 * */
-	private void updateChaseSprite() {
-		state =  (state + 1)%2;
-		y+=state==0?15:-15;
-		sprite = "Alligator"+(state + 1);
-	}
-	
+	 */
 	private void updateFlySprite() {
 		state =  (state + 1)%30;
 		sprite = "Eagle"+((state>4?0:state) + 1);

@@ -1,8 +1,17 @@
 package dominio;
 
+/**
+ * POOgger's Power implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public abstract class Power extends Fixed{
 	protected int duration;
 	
+	/**
+	 * Give a specific power to the given player
+	 * @param player the desired player
+	 */
 	abstract public void givePower(Playable player);
 	
 	public boolean inCollision(Element e) {

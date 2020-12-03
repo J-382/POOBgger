@@ -3,7 +3,7 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 
 /** POOgger basic element behavior
- * @version 1.5
+ * @version 2.0
  * @author Angie Medina - Jose Perez
  * */
 public abstract class Element implements Serializable{
@@ -91,9 +91,15 @@ public abstract class Element implements Serializable{
 		return height;
 	}
 	
+	/**
+	 * Stops the element's animator
+	 */
 	protected void stopAnimator() {	
 	}
 	
+	/**
+	 * Resume the element's animator
+	 */
 	protected void resumeAnimator() {
 	}
 	
@@ -109,6 +115,10 @@ public abstract class Element implements Serializable{
 		return true;
 	}
 	
+	/**
+	 * Destroy (Make visible) the element and returns the element's power
+	 * @return the element's power
+	 */
 	public Power destroy() {
 		isVisible = false;
 		return null;

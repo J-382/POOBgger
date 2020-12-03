@@ -13,21 +13,11 @@ public class Carrier extends Mobile {
 	protected boolean carrying;
 	protected int maxCarryNumber;
 	protected int speed;
-
-	@Override
-	public void move() {
-		x += speed;
-		if (carrying) {
-			for(Pushable i: carried) {
-				((Mobile) i).move(speed,0);	
-			}
-		}
-	}
 	
 	/**
 	 * Entangles Pushable's movements with this Carrier
 	 * @param c the Pushable element to entagle
-	 * */
+	 */
 	protected void startCarrying(Pushable c) {
 		carried.add(c);
 		c.beingCarried(this);
@@ -37,7 +27,7 @@ public class Carrier extends Mobile {
 	/**
 	 * Destangles Pushable's movements with this Carrier
 	 * @param c the Pushable element to destangle
-	 * */
+	 */
 	public void stopCarrying(Pushable c) {
 		if(carried.contains(c)) {
 			carried.remove(c);
@@ -51,5 +41,15 @@ public class Carrier extends Mobile {
 			startCarrying((Pushable) e);
 		}
 		return false;
+	}
+	
+	@Override
+	public void move() {
+		x += speed;
+		if (carrying) {
+			for(Pushable i: carried) {
+				((Mobile) i).move(speed,0);	
+			}
+		}
 	}
 }

@@ -8,8 +8,6 @@ public class Thoughtless extends Player{
 		super(initialLives, initX, initY, size, name, hat);
 	}
 
-	
-	
 	@Override
 	public void setOrientation(char orientation) {
 		Random r = new Random();

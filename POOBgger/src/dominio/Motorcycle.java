@@ -1,10 +1,5 @@
 package dominio;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.Timer;
-
 /**
  * POOgger's motorcycle implementation
  * @version 2.1
@@ -18,6 +13,8 @@ public class Motorcycle extends Mobile{
 	 * Motorcycle class constructor
 	 * @param x Motorcycle's x position
 	 * @param y Motorcycle's y position
+	 * @param size Motorcycle's dimensions
+	 * @param sprite Motorcycle's sprite
 	 * @param speed Motorcycle's speed
 	 * @param flipped if the Motorcycle are flipped horizontally
 	 * */

@@ -3,6 +3,11 @@ package dominio;
 import java.awt.Rectangle;
 
 public class PlayerDeathState extends PlayerState{
+	
+	/**
+	 * PlayerDeathState class constructor
+	 * @param player context
+	 */
 	public PlayerDeathState(Player player) {
 		super(player);
 		Animator changeState = new Animator();

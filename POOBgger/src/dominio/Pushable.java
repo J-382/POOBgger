@@ -1,7 +1,7 @@
 package dominio;
 
 /** POOgger Pushable element behavior
- * @version 1.3
+ * @version 3.0
  * @author Angie Medina - Jose Perez
  * */
 public interface Pushable {
@@ -25,9 +25,21 @@ public interface Pushable {
 	 * */
 	public void addPush(int push, String dir);
 	
+	/**
+	 * Modifies the Pushable visibility
+	 * @param visible Pushable's new visibility
+	 */
 	public void setVisible(boolean visible);
 	
+	/**
+	 * Returns the Pushable's orientation
+	 * @return the Pushable's orientation
+	 */
 	public char getDir();
 	
+	/**
+	 * Returns the Pushable is being carried
+	 * @return if Pushable is being carried
+	 */
 	public boolean isBeingCarried();
 }

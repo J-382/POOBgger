@@ -1,5 +1,10 @@
 package dominio;
 
+/**
+ * Pogger's bonus frog implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public class FemaleFrog extends Mobile implements Pushable{
 	private int speed;
 	private int state;
@@ -11,10 +16,12 @@ public class FemaleFrog extends Mobile implements Pushable{
 	private boolean haveToFlip;
 	/**
 	 * Snake class constructor
-	 * @param x Snake's x position
-	 * @param y Snake's y position
-	 * @param speed Snake's speed
-	 * @param flipped if the Snake can submerge
+	 * @param x Female frog's x position
+	 * @param y Female frog's y position
+	 * @param speed Female frog's speed
+	 * @param size Female frog's dimensions
+	 * @param sprite Female frog's sprite name
+	 * @param flipped if the Female frog is flipped horizontally
 	 * */
 	public FemaleFrog(int xPos, int yPos, int speed,int[] size, String sprite, boolean flipped){
 		sprite = "FFrog1D";
@@ -34,7 +41,7 @@ public class FemaleFrog extends Mobile implements Pushable{
 	}
 	
 	/**
-	 * Plays snake's move animation;
+	 * Plays Female froge's move animation;
 	 * */
 	private void updateSprite(){
 		state = (state+1)%3;
@@ -66,7 +73,7 @@ public class FemaleFrog extends Mobile implements Pushable{
 	}
 	
 	/**
-	 * Flip horizontally the snake's sprite
+	 * Flip horizontally the Female frog's sprite
 	 * */
 	private void flip() {
 		speed *= -1;

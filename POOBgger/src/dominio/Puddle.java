@@ -1,5 +1,10 @@
 package dominio;
 
+/**
+ * POOgger's puddle implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public class Puddle extends Fixed{
 	
 	public Puddle(int x, int y, int width, int height) {

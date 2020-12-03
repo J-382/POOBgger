@@ -3,6 +3,10 @@ package dominio;
 import java.awt.Rectangle;
 
 public class PlayerNormalState extends PlayerState{
+	/**
+	 * PlayerNormalState class constructor
+	 * @param player context
+	 */
 	public PlayerNormalState(Player player) {
 		super(player);
 	}
