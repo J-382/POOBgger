@@ -26,6 +26,16 @@ public class Generator implements Serializable{
 	private Element throwable;
 	
 	private int gridSize;
+	
+	/**
+	 * Lizard class constructor
+	 * @param sizes, elements sizes
+	 * @param screenWidth, the screen's width
+	 * @param screenHeight, the screen's height
+	 * @param gridSize, size of the grid
+	 * @param level, initial level
+	 * @param type, the map's type
+	 */
 	public Generator(HashMap<String, int[]> sizes, int screenWidth, int screenHeight, int gridSize, int level, String type) {
 		mobiles = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
@@ -42,7 +52,7 @@ public class Generator implements Serializable{
 	}
 	
 	/**
-	 * Fills the speed's hashmap with the element's speeds
+	 * Fills the speed's container with the element's speeds
 	 */
 	private void prepareSpeeds() {
 		speeds = new HashMap<String, Integer>();
@@ -82,6 +92,9 @@ public class Generator implements Serializable{
 		level++;
 	}
 	
+	/**
+	 * Prepare the appearance time of the elements
+	 */
 	private void prepareTimes() {
 		times = new ArrayList<int[]>();
 		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});

@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 /**
- * Pretends be a Frogger's turtle
+ * POOgger's turtle implementation
  * @version 2.1
  * @author Angie Medina - Jose Perez
  * */
@@ -44,7 +44,7 @@ public class Turtle extends Carrier{
 	
 	/**
 	 * Plays turtle's submerge animation
-	 * */
+	 */
 	private void submerge() {
 		frame = (frame+1)%7;
 		isSubmerge = frame>=3 && frame<5;
@@ -54,7 +54,7 @@ public class Turtle extends Carrier{
 	
 	/**
 	 * Plays turtle's move animation
-	 * */
+	 */
 	private void updateSprite() {
 		frame = (frame+1)%2;
 		sprite = "Turtle"+(frame+1);
@@ -64,6 +64,7 @@ public class Turtle extends Carrier{
 		}
 	}
 	
+	@Override
 	public void move() {
 		super.move();
 		if (!animator.isRunning()) {

@@ -15,6 +15,7 @@ public abstract class Power extends Fixed{
 	 */
 	abstract public void givePower(Playable player);
 	
+	@Override
 	public boolean inCollision(Element e) {
 		isVisible = false;
 		if(e.isPlayable()) {

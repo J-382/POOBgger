@@ -32,7 +32,9 @@ public class Player extends Playable implements Pushable{
 	 * @param initialLives Player's initialLives
 	 * @param maxX Player's POOgger width
 	 * @param maxY Player's POOgger height
-	 * @param dimensions Player's size
+	 * @param size Player's size
+	 * @param name, Player's name
+	 * @param hat, Player's personalization hat
 	 */
 	public Player(int initialLives,int initX, int initY, int[] size, String name, String hat) {
 		this.width = size[0];
@@ -54,6 +56,9 @@ public class Player extends Playable implements Pushable{
 		resetPlayer();
 	}
 	
+	/**
+	 * Moves the player 1/3 of its real move
+	 */
 	public void move() {
 		int delay = isFast?25:50;
 		int dx = 0, dy = 0;
@@ -87,18 +92,31 @@ public class Player extends Playable implements Pushable{
 		isInAir();
 	}
 	
+	/**
+	 * Updates the player's clock
+	 * @return
+	 */
 	public boolean updateClock() {
 		return clock.updateClock();
 	}
 	
+	/**
+	 * Returns the player's clock representation
+	 */
 	public Rectangle getClock() {
 		return clock.getClock();
 	}
 	
+	/**
+	 * Calculates how much seconds the player have left
+	 */
 	public int secondsLeft() {
 		return clock.secondsLeft(); 
 	}
 	
+	/**
+	 * Updates the player's sprite
+	 */
 	private void updateSprite() {
 		state = (state+1)%3;
 		sprite =  "Frog"+(state+1)+orientation;	
@@ -157,6 +175,9 @@ public class Player extends Playable implements Pushable{
 		return isAlive;
 	}
 	
+	/**
+	 * Reset the player to its initial position
+	 */
 	public void resetPlayer() {
 		orientation = 'W';
 		sprite =  "Frog"+(state+1)+orientation;

@@ -4,7 +4,7 @@ package dominio;
  * POOgger's motorcycle implementation
  * @version 2.1
  * @author Angie Medina - Jose Perez
- * */
+ */
 public class Motorcycle extends Mobile{
 	private Animator animator;
 	private int frame;

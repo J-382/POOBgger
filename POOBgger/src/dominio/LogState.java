@@ -3,6 +3,11 @@ package dominio;
 import java.awt.Rectangle;
 import java.io.Serializable;
 
+/**
+ * State Pattern implementation for Log's states
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public abstract class LogState implements Serializable{
 	Log log;
 	

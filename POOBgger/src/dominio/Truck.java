@@ -38,7 +38,7 @@ public class Truck extends Carrier{
 	
 	/**
 	 * Plays truck's move animation
-	 * */
+	 */
 	private void updateSprite() {
 		String state = carrying?"C":"";
 		frame = (frame+1)%2;
@@ -60,6 +60,7 @@ public class Truck extends Carrier{
 		}
 	}
 	
+	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = true;
 		if(e.isPlayable()) {

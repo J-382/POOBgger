@@ -26,10 +26,12 @@ public class Car extends Mobile{
 		this.isVisible = true;
 	}
 	
+	@Override
 	public void move() {
 		x += speed;
 	}
 
+	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = true;
 		if(e.isPlayable()) {

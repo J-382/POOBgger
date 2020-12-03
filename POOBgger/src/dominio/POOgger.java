@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 /**
- * POOgger's player implementation
+ * Facade Class for the Frogger's implementation
  * @version 3.0
  * @author Angie Medina - Jose Perez
  */
@@ -87,7 +87,10 @@ public class POOgger implements Serializable{
 		}
 	}
 	
-	
+	/**
+	 * Add players to the game
+	 * @param newPlayers, list of players, each player must have {name and personalization}
+	 */
 	public void addPlayers(ArrayList<String[]> newPlayers){
 		int lives = players.size() >= 1 || (newPlayers.size() >= 2 && newPlayers.get(1)[0] != null) ? 3 : 5;
 		int initPosx = 48*8, initPosy = 48*14;
@@ -118,8 +121,9 @@ public class POOgger implements Serializable{
 	}
 	
 	/**
-	 * Updates clock size
-	 **/
+	 * Updates one player's clock
+	 * @param player, the player who's clock must be update
+	 */
 	public void updateClock(Player player) {
 		if (player.isAlive()) {
 			if (player.updateClock()) {
@@ -130,7 +134,8 @@ public class POOgger implements Serializable{
 	
 	/**
 	 * Move the player, if possible, in the given direction
-	 * @param dir direction
+	 * @param dir, direction to move
+	 * @param numPlayer, number of the player to move
 	 */
 	public void movePlayer(char dir, int numPlayer) {
 		boolean isValid = false;
@@ -145,9 +150,12 @@ public class POOgger implements Serializable{
 		}
 	}
 	
+	/**
+	 * Move all the machine players currently alive in the game
+	 */
 	public void moveMachinePlayers() {
 		for(Player player: players) {
-			if(player.isMachine()) player.setOrientation('W');
+			if(player.isMachine() && player.isAlive) player.setOrientation('W');
 		}
 	}
 	
@@ -158,13 +166,16 @@ public class POOgger implements Serializable{
 		return players;
 	}
 	
+	/**
+	 * Returns the game's current level
+	 */
 	public String getLevel() {
 		return "" + levelGenerator.getLevel();
 	}
 	
 	/**
 	 * Returns the player's points
-	 * @param player, the player's number
+	 * @param player, the player who wants to return its points
 	 */
 	public String getPoints(Player player) {
 		int ultiScore = player.getPoints();
@@ -181,7 +192,7 @@ public class POOgger implements Serializable{
 	}
 	
 	/**
-	 * Returns the clock sprite
+	 * Returns the player's clock representation
 	 */
 	public Rectangle getClock(Player player) {
 		return player.getClock();
@@ -215,8 +226,9 @@ public class POOgger implements Serializable{
 	}
 	
 	/**
-	 * Checks if player is collisioning with some level's elements
+	 * Checks if player is colliding with some level's elements
 	 * @param player, the player disired player to check
+	 * @return if the player got killed by some element
 	 */
 	private boolean checkPlayerCollisions(Player player) {
 		boolean[] mobileCollisions = checkMobileElements(player);
@@ -225,9 +237,9 @@ public class POOgger implements Serializable{
 	}
 	
 	/**
-	 * Check if the player is colisioning with some level's mobile elements
+	 * Check if the player is colliding with some level's mobile elements
 	 * @param player, the player disired player to check
-	 * @return if the player is dead and is is touching the water
+	 * @return if the player is dead and if is touching the water
 	 */
 	private boolean[] checkMobileElements(Player player) {
 		boolean isDead = false;
@@ -244,10 +256,10 @@ public class POOgger implements Serializable{
 	}
 	
 	/**
-	 * Check if the player is colisioning with some level's fixed element
+	 * Check if the player is colliding with some level's fixed element
 	 * @param player, the player disired player to check
-	 * @param touchingWater
-	 * @return
+	 * @param touchingWater, if the player was touching the water
+	 * @return if the player is dead or if is touching the water
 	 */
 	private boolean checkFixedElements(Player player, boolean touchingWater) {
 		boolean isDead = false;
@@ -287,6 +299,9 @@ public class POOgger implements Serializable{
 	}
 
 	
+	/**
+	 * Checks if one throwable element collide with another element
+	 */
 	private void checkThrowableCollision(){
 		if(throwable!=null) {
 			for(Element e: elements) {
@@ -303,7 +318,7 @@ public class POOgger implements Serializable{
 		
 	
 	/**
-	 * Check the cave's state to see if some player have won
+	 * Checka the cave's state to see if some player have won
 	 */
 	private void checkCavesState() {
 		int cont = 0;
@@ -394,7 +409,7 @@ public class POOgger implements Serializable{
 	
 	/**
 	 * Kill one player
-	 * @param player, the player killed
+	 * @param player, the player to kill
 	 */
 	public void killPlayer(Player player) {
 		player.decreasePlayerLives(deadPenalization);
@@ -409,14 +424,19 @@ public class POOgger implements Serializable{
 	}
 	
 	/**
-	 * Gives to one player a bonification
-	 * @param player
-	 * @param bonusPoints
+	 * Gives to one player a bonus
+	 * @param player, the player who's going to get the bonus
+	 * @param bonusPoints, the amount of bonus
 	 */
 	public void givePlayerBonus(Player player, int bonusPoints) {
 		player.changePoints(bonusPoints);
 	}
 	
+	/**
+	 * 
+	 * @param time
+	 * @return
+	 */
 	public ArrayList<Element> gameLoop(int time) {
 		levelGenerator.addElements(time, throwable==null, players);
 		elements.addAll(levelGenerator.getMobilesElements());
@@ -434,6 +454,9 @@ public class POOgger implements Serializable{
 		return allElements;
 	}
 	
+	/**
+	 * Pauses all the current elements in the game
+	 */
 	public void pauseElements() {
 		for(Element element : elements) {
 			element.stopAnimator();
@@ -443,6 +466,9 @@ public class POOgger implements Serializable{
 		}
 	}
 	
+	/**
+	 * Resumes all the current elements in the game
+	 */
 	public void resumeElements() {
 		for(Element element : elements) {
 			element.resumeAnimator();

@@ -2,6 +2,11 @@ package dominio;
 
 import java.awt.Rectangle;
 
+/**
+ * Turtle in floating state implementation
+ * @version 1.0
+ * @author Angie Medina - Jose Perez
+ */
 public class TurtleFloatingState extends TurtleState {
 	
 	/**

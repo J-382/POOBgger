@@ -5,8 +5,7 @@ import java.util.ArrayList;
 /** Emulates a Carrier's behavior
  * @version 2.1
  * @author Angie Medina - Jose Perez
- * */
-
+ */
 public class Carrier extends Mobile {
 	
 	protected ArrayList<Pushable> carried;

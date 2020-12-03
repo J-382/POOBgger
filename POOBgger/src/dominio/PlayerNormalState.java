@@ -2,6 +2,11 @@ package dominio;
 
 import java.awt.Rectangle;
 
+/**
+ * Player in normal state implementation 
+ * @version 1.0
+ * @author Angie Medina - Jose Perez
+ */
 public class PlayerNormalState extends PlayerState{
 	/**
 	 * PlayerNormalState class constructor

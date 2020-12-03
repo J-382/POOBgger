@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * POOgger's bike implementation
  * @version 2.2
  * @author Angie Medina - Jose Perez
- * */
+ */
 public class Bike extends Carrier{
 	
 	private Animator animator;
@@ -39,7 +39,7 @@ public class Bike extends Carrier{
 	}
 	
 	/**
-	 * Plays Bike's move animation
+	 * Plays the bike's move animation
 	 * */
 	private void updateSprite() {
 		String state = carrying?"C":"";

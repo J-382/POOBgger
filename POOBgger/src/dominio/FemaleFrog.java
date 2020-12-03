@@ -15,7 +15,7 @@ public class FemaleFrog extends Mobile implements Pushable{
 	private boolean coolDown;
 	private boolean haveToFlip;
 	/**
-	 * Snake class constructor
+	 * Female Frog class constructor
 	 * @param x Female frog's x position
 	 * @param y Female frog's y position
 	 * @param speed Female frog's speed
@@ -48,6 +48,7 @@ public class FemaleFrog extends Mobile implements Pushable{
 		sprite = "FFrog"+(state+1)+orientation;
 	}
 	
+	@Override
 	public void move() {
 		if(carrier!=null && !carrier.getBounds().intersects(getBounds())) {
 			carrier.stopCarrying(this);
@@ -81,6 +82,7 @@ public class FemaleFrog extends Mobile implements Pushable{
 		sprite = "FFrog"+(state+1)+orientation;
 	}
 	
+	@Override
 	public boolean inCollision(Element e) {
 		return false;
 	}

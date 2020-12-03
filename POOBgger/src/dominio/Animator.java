@@ -1,15 +1,15 @@
 package dominio;
 
-/** Delayed Looper
- * @version 1.2
- * @author Angie Medina - Jose Perez
- * */
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 
 import javax.swing.Timer;
 
+/** Delayed Looper
+ * @version 1.2
+ * @author Angie Medina - Jose Perez
+ */
 public class Animator implements Serializable{
 	private Timer timer;
 	private int frame;

@@ -30,7 +30,7 @@ public class Cave extends Fixed{
 	}
 	
 	/**
-	 * calculates the collision percentage with the given 
+	 * Calculates the collision percentage with a given element 
 	 * @param e the desired element
 	 * @return the collision percentage
 	 */
@@ -63,16 +63,14 @@ public class Cave extends Fixed{
 	
 	@Override
 	public boolean inCollision(Element e) {
-		boolean isDead = occupied;
 		if(e.isPlayable() && e.isPushable() && !occupied) {
-			if(!((Playable) e).isInAir())
-			{
+			if(!((Playable) e).isInAir()){
 				occupied(e);
-				isDead = !occupied;
 			}
 		}
 		return false;
 	}
+	
 	@Override
 	public boolean canBeOccupied() {
 		return true;

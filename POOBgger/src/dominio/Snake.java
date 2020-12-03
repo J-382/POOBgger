@@ -1,7 +1,7 @@
 package dominio;
 
 /**
- * Pretends be a Frogger's snake
+ * Pogger's snake implementation
  * @version 3.0
  * @author Angie Medina - Jose Perez
  * */
@@ -47,6 +47,7 @@ public class Snake extends Mobile implements Pushable{
 		sprite = "Snake"+(state+1)+orientation; 
 	}
 	
+	@Override
 	public void move() {
 		x += speed;
 		if (carrier!=null && (x+width>carrier.getX()+carrier.getWidth() || x<=carrier.getX())) {
@@ -64,6 +65,7 @@ public class Snake extends Mobile implements Pushable{
 		sprite = "Snake"+(state+1)+orientation;
 	}
 	
+	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = true;
 		if(e.isPlayable()) {

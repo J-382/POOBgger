@@ -29,7 +29,7 @@ public class Clock implements Serializable{
 	
 	/**
 	 * Reduce the clock size and returns if the clock have done a cycle
-	 * @return if the clock 
+	 * @return if the clock have done a cycle
 	 */
 	public boolean updateClock() {
 		boolean done = false;
@@ -46,6 +46,9 @@ public class Clock implements Serializable{
 		return clock;
 	}
 	
+	/**
+	 * Calculates the clock's seconds left
+	 */
 	public int secondsLeft() {
 		return ((int)clock.getWidth() / (timeLimit/30));
 	}

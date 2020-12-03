@@ -7,7 +7,13 @@ package dominio;
  */
 public class FlyPower extends Power{
 	
-	
+	/**
+	 * Fly Power  Class constructor
+	 * @param x FlyPower's x position
+	 * @param y FlyPower's y position
+	 * @param width FlyPower's width
+	 * @param height FlyPower's height
+	 */
 	public FlyPower(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
@@ -20,11 +26,15 @@ public class FlyPower extends Power{
 		//animator.animate(100, 18, new Runnable() {public void run() {updateSprite();}},false);
 	}
 	
+	/**
+	 * Changes the FlyPower's Sprite
+	 */
 	private void updateSprite() {
 		state = (state+1)%17;
 		sprite = "Fly"+(state+1);
 	}
 	
+	@Override
 	public void givePower(Playable player) {
 		player.makeFly(true);		
 	}

@@ -3,9 +3,9 @@ package dominio;
 import java.awt.Rectangle;
 
 /**
- * State Pattern implementation for Log's states
- * @author Angie Medina - Jose Perez
+ * Log in floating state implementation 
  * @version 1.0
+ * @author Angie Medina - Jose Perez
  */
 public class LogFloatingState extends LogState{
 	

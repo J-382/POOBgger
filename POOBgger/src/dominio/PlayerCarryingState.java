@@ -2,7 +2,11 @@ package dominio;
 
 import java.awt.Rectangle;
 
-
+/**
+ * Player in carrying state implementation 
+ * @version 1.0
+ * @author Angie Medina - Jose Perez
+ */
 public class PlayerCarryingState extends PlayerState{
 	
 	/**

@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Pretends be a Frogger's log
  * @version 3.0
  * @author Angie Medina - Jose Perez
- * */
+ */
 public class Log extends Carrier {
 	/**
 	 * Log class constructor
@@ -15,7 +15,7 @@ public class Log extends Carrier {
 	 * @param speed Log's speed
 	 * @param size Log's dimension
 	 * @param sprite Log's sprite name
-	 * */
+	 */
 	public Log(int x, int y, int speed, int size[], String sprite) {
 		this.sprite = sprite;
 		this.x = x;
@@ -28,10 +28,16 @@ public class Log extends Carrier {
 		this.isVisible = true;
 	}
 	
+	/**
+	 * Returns the current log's width
+	 */
 	public int getMinWidth() {
 		return width;
 	}
 	
+	/**
+	 * Returns the current log's height
+	 */
 	public int getMinHeight() {
 		return height;
 	}

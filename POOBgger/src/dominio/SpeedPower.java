@@ -1,9 +1,14 @@
 package dominio;
 
+/**
+ * Pogger's SpeedPower implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public class SpeedPower extends Power{
 	
 	/**
-	 * ArmorPower Class constructor
+	 * SpeedPower Class constructor
 	 * @param x SpeedPower's x position
 	 * @param y SpeedPower's y position
 	 * @param width SpeedPower's width

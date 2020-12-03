@@ -115,6 +115,7 @@ public class Eagle extends Mobile{
 		}
 	}
 	
+	@Override
 	public boolean inCollision(Element e) {
 		boolean isDead = true;
 		if(e.isPlayable()) {

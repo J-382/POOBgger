@@ -11,7 +11,7 @@ public class Bug extends Fixed{
 	private Animator animator;
 	private int state;
 	/**
-	 *  
+	 * Bug class constructor
 	 * @param x Bug's x position
 	 * @param y Bug's y position
 	 * @param width Bug's width

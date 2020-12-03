@@ -1,5 +1,10 @@
 package dominio;
 
+/**
+ * Pogger's ArmorPower implementation
+ * @author Angie Medina - Jose Perez
+ * @version 1.0
+ */
 public class ArmorPower extends Power{
 
 	private int state;

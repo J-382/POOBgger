@@ -2,6 +2,11 @@ package dominio;
 
 import java.awt.Rectangle;
 
+/**
+ * Log in submerged state implementation 
+ * @version 1.0
+ * @author Angie Medina - Jose Perez
+ */
 public class LogSubmergedState extends LogState{
 	
 	/**

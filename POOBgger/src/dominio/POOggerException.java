@@ -1,5 +1,11 @@
 package dominio;
 
+/**
+ * Exception class for the Frogger's implementation
+ * @version 1.0
+ * @author Angie Medina - Jose Perez
+ *
+ */
 public class POOggerException extends Exception{
 	public static final String ERROR_ABRIR = "An error has occur. Cannot open file ";
 	public static final String ERROR_SALVAR = "An error has occur. Cannot save file ";

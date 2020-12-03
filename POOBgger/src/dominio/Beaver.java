@@ -4,7 +4,7 @@ package dominio;
  * POOgger's beaver implementation
  * @author Angie Medina - Jose Perez
  * @version 1.0
- * */
+ */
 public class Beaver extends Fixed{
 	/**
 	 * Beaver class's constructor
