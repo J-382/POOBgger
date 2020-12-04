@@ -76,6 +76,18 @@ public class Animator implements Serializable{
 	 * @param stopAtEnd indicates if the loop stops at the end
 	 */
 	public void animate(int delay, int frames, Runnable run, boolean stopAtEnd) {
+		animate(delay,frames,run,null,stopAtEnd);
+	}
+	
+	/**
+	 * Starts a loop with the given params, if stopAtEnd is false, the animator restarts itself
+	 * @param delay time between each iteration
+	 * @param frames numbers of iteration, if stopAtEnd is false, frames must be at lease 2
+	 * @param run code to run in each iteration
+	 * @param run code to run when animation end
+	 * @param stopAtEnd indicates if the loop stops at the end
+	 */
+	public void animate(int delay, int frames, Runnable run, Runnable doWhenAnimationStop, boolean stopAtEnd) {
 		frame = 0;
 		isPaused = false;
 		timer = new Timer(delay, new ActionListener(){
@@ -86,7 +98,7 @@ public class Animator implements Serializable{
 				}else if (!stopAtEnd){
 					frame = 0;
 				}else {
-					//finished = true;
+					if(doWhenAnimationStop!=null) doWhenAnimationStop.run();
 					((Timer) e.getSource()).stop();
 				}
 				

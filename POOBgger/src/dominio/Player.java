@@ -165,10 +165,13 @@ public class Player extends Playable implements Pushable{
 	 * Decrease the player lives and reset his position
 	 * */
 	public boolean decreasePlayerLives(int penalization) {
+		animator.stop();
 		frogState.decreasePlayerlives();
 		changePoints(penalization);
 		lives--;
-		resetPlayer();
+		changeState(new PlayerDeathState(this));
+		frogState.decreasePlayerlives();
+		
 		if (lives < 1) {
 			isAlive = false;
 		}
@@ -179,11 +182,11 @@ public class Player extends Playable implements Pushable{
 	 * Reset the player to its initial position
 	 */
 	public void resetPlayer() {
+		state = 0;
+		changeState(new PlayerNormalState(this));
 		orientation = 'W';
 		sprite =  "Frog"+(state+1)+orientation;
-		animator.stop();
 		clock.restoreClock();
-		state = 0;
 		x = initX;
 		y = initY;
 		minReachY = y;
@@ -196,6 +199,7 @@ public class Player extends Playable implements Pushable{
 		if(carrier!=null) stopBeignCarried(); 
 		carrier = null;
 	}
+	
 	
 	/**
 	 * Change the player point by some amount
@@ -293,7 +297,7 @@ public class Player extends Playable implements Pushable{
 	 * @return player's hat name
 	 */
 	public String getHat() {
-		String returnImage = isVisible?hat:"";
+		String returnImage = isVisible && !sprite.startsWith("FrogDeath") ? hat:"";
 		return returnImage;
 	}
 	
@@ -312,6 +316,20 @@ public class Player extends Playable implements Pushable{
 		this.x = x;
 		this.y = y;
 		return true;	
+	}
+	
+	public void dying() {
+		if(!animator.isRunning()) {
+			state = 0;
+			animator.animate(250, 4, new Runnable() { public void run() {dying();}}, 
+					new Runnable() { public void run() {if(lives>=1) resetPlayer();}}, true);
+		}
+		sprite = "FrogDeath"+(state+1);
+		state++;
+	}
+	
+	protected void changeState(PlayerState newState) {
+		frogState = newState;
 	}
 
 	@Override

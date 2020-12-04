@@ -80,6 +80,8 @@ public class POOgger implements Serializable{
 		if (player2[0] != null) newPlayers.add(player2);
 		addPlayers(newPlayers);
 		scoresFile = new File(scoreFile);
+		//powerTest();
+		//bonusTest();
 		try {
 			highScores = readHighScoreFile(scoresFile);
 		} catch (POOggerException e) {
@@ -208,7 +210,6 @@ public class POOgger implements Serializable{
 		for(int i=0; i<elements.size(); i++) {
 			Mobile element = (Mobile) elements.get(i);
 			if(element.getX()>screenWidth+200 || element.getX()<-500 || !element.isVisible()) {
-				if(element.isVisible==false) System.out.println(element.getClass());
 				elements.set(i, null);
 				needsClear = true;
 				}
@@ -469,6 +470,27 @@ public class POOgger implements Serializable{
 		return allElements;
 	}
 	
+	
+	private void powerTest() {
+		fixeds.add(new SpeedPower(48*2, 48*14, 48, 48));
+		fixeds.add(new FlyPower(48*3, 48*13, 48, 48));
+		fixeds.add(new ArmorPower(48*4, 48*12, 48, 48));
+		elements.add(new Car(screenWidth,48*12,-1,sprites.get("RedCar"),"Red"));
+		elements.add(new Truck(screenWidth,48*9,-1,sprites.get("Truck1"),"Truck1",false));
+		elements.add(new Lizard(-sprites.get("Lizard1")[0],48*8, sprites.get("Lizard1"), "Lizard1", 1));
+		
+	}
+	
+	private void bonusTest(){
+		fixeds.add(new Bug(48*5, 48*13, 48, 48, 3000));
+		String[] types = new String[] {"Small","Medium","Large"};
+		SmallLog small = new SmallLog(-sprites.get(types[0]+"Log1")[0],48*12,1,sprites .get(types[0]+"Log1"),new int[] {48,48},types[0]+"Log1");
+		FemaleFrog fFrog = new FemaleFrog(-sprites.get(types[0]+"Log1")[0], 48*12, 48,new int[] {48,48}, "FFrog", false); 
+		elements.add(small);
+		small.inCollision(fFrog);
+		elements.add(fFrog);
+	}
+	
 	/**
 	 * Pauses all the current elements in the game
 	 */
@@ -480,6 +502,7 @@ public class POOgger implements Serializable{
 			element.stopAnimator();
 		}
 	}
+	
 	
 	/**
 	 * Resumes all the current elements in the game
@@ -563,7 +586,6 @@ public class POOgger implements Serializable{
 			out.writeObject(poogger);
 			out.close();
 		} catch(IOException e) {
-			System.out.println(e.getMessage());
 			throw new POOggerException(POOggerException.ERROR_SALVAR);
 		}
 	}

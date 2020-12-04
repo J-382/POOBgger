@@ -28,6 +28,7 @@ public class Eagle extends Mobile{
 	private int dx;
 	private boolean onAir;
 	private transient Clip sound;
+	private boolean canKill;
 	
 	/**
 	 * Eagle Class constructor
@@ -51,6 +52,7 @@ public class Eagle extends Mobile{
 		dx = 0;
 		state = 0;
 		onAir = true;
+		canKill = true;
 		try {
 			sound = AudioSystem.getClip();
 			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/eagleSound.wav")));
@@ -117,10 +119,11 @@ public class Eagle extends Mobile{
 	
 	@Override
 	public boolean inCollision(Element e) {
-		boolean isDead = true;
-		if(e.isPlayable()) {
+		boolean isDead = false;
+		if(e.isPlayable() && canKill) {
 			isDead = !((Playable) e).isToxic();
 			if(!isDead) isVisible = false;
+			canKill = false;
 		}
 		return isDead;
 	}

@@ -24,7 +24,6 @@ public class Generator implements Serializable{
 	private Animator cooldownTimer;
 	private boolean inCooldown;
 	private Element throwable;
-	private int generalLevel;
 	
 	private int gridSize;
 	
@@ -98,11 +97,11 @@ public class Generator implements Serializable{
 	 */
 	private void prepareTimes() {
 		times = new ArrayList<int[]>();
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
 	}
 	
 	/** 
@@ -150,19 +149,27 @@ public class Generator implements Serializable{
 	 * @param lane the new log's lane
 	 */
 	private void addLog(int lane) {
+		Random r = new Random();
 		String[] types = new String[] {"Small","Medium","Large"};
 		switch (lane) {
 			case 0:
-				mobiles.add(new SmallLog(-sizes.get(types[0]+"Log1")[0],gridSize*6,speeds.get(types[0]+"Log"),sizes.get(types[0]+"Log1"),new int[] {gridSize,gridSize},types[0]+"Log1"));
+				SmallLog small = new SmallLog(-sizes.get(types[0]+"Log1")[0],gridSize*6,speeds.get(types[0]+"Log"),sizes.get(types[0]+"Log1"),new int[] {gridSize,gridSize},types[0]+"Log1");
+				FemaleFrog fFrog = new FemaleFrog(-sizes.get(types[0]+"Log1")[0], gridSize*6, 48,new int[] {48,48}, "FFrog", false); 
+				mobiles.add(small);
+				if(r.nextInt(10)==3) {
+					small.inCollision(fFrog);
+					mobiles.add(fFrog);
+				}
+				
 				break;
 			case 2:
 				mobiles.add(new Log(-sizes.get(types[1]+"Log")[0],gridSize*3,speeds.get(types[1]+"Log"),sizes.get(types[1]+"Log"),types[1]+"Log"));
 				break;
 			case 1:
-				Random r = new Random();
+				
 				Log log = new Log(-sizes.get(types[2]+"Log")[0],gridSize*5,speeds.get(types[2]+"Log"),sizes.get(types[2]+"Log"),types[2]+"Log");
 				mobiles.add(log);
-				if(r.nextBoolean()) {
+				if(r.nextBoolean() && r.nextBoolean() && level>3) {
 					Snake snake = new Snake(-sizes.get(types[2]+"Log")[0], gridSize*5, speeds.get("Snake") ,sizes.get("Snake1"), "Snake1", false);
 					mobiles.add(snake);
 					log.inCollision(snake);
@@ -254,7 +261,16 @@ public class Generator implements Serializable{
 	private void addBike() {
 		mobiles.add(new Bike(screenWidth,gridSize*11,-speeds.get("Bike"), sizes.get("Bike1"),"Bike1" ,false));	
 	}
-    
+	
+	/**
+	 * Add a new bug to Generator's elements
+	 */
+	private void addBug() {
+		int[] xPosition = {1, 4, 7, 10, 13};
+		Random r = new Random();
+		fixeds.add(new Bug(gridSize*xPosition[r.nextInt(4)], gridSize*2, gridSize, gridSize, 1000));	
+	}
+	
     /**
 	 * Adds a new element to the given lane
 	 * @param lane the new element's lane
@@ -312,6 +328,9 @@ public class Generator implements Serializable{
 				addLog(2);
 			} else addLizard();
 		}
+		if(time%times.get(lvl)[10]==0) {
+			addBug();
+		}
 	}
 	
 	/**
@@ -349,9 +368,12 @@ public class Generator implements Serializable{
 	
 	public ArrayList<Element> addMobileElements(){
 		Random r = new Random();
-		addSnake(false);
-		if(r.nextBoolean()) addSnake(true);
+		if(level>2) {
+			addSnake(false);
+			if(r.nextBoolean()) addSnake(true);
+		}
 		return mobiles;
+		
 	}
 	
 	/**
@@ -365,7 +387,9 @@ public class Generator implements Serializable{
 		fixeds.clear();
 		addBeaverLane(time);
 		addLane(time);
+		
 		if(addThrowable && !inCooldown) {
+			addSnake(true);
 			inCooldown = true;
 			Random r = new Random();
 			addThrowable(players.get(r.nextInt(players.size())));
