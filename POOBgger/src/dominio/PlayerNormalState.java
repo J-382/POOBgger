@@ -24,4 +24,9 @@ public class PlayerNormalState extends PlayerState{
 	@Override
 	public void decreasePlayerlives() {
 	}
+	
+	@Override
+	public String getState() {
+		return "";
+	}
 }

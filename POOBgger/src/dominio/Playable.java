@@ -15,9 +15,12 @@ public abstract class Playable extends Mobile{
 	protected int roundsWon;
 	protected boolean isAlive;
 	protected boolean isToxic;
+	protected boolean canBeArmored;
 	protected boolean isArmored;
+	protected boolean canBeFast;
 	protected boolean isFast;
 	protected boolean isInAir;
+	protected boolean canBeFlying;
 	protected boolean isFlying;
 	protected boolean canFly;
 	protected int initX;
@@ -48,8 +51,9 @@ public abstract class Playable extends Mobile{
 	 * Make the playable element toxic
 	 * */
 	public void makeToxic() {
+		System.out.println("salio "+isToxic);
 		if(isToxic) {
-			toxic = new Timer(4000,new ActionListener() {
+			toxic = new Timer(10000,new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					isToxic = false;
 				}
@@ -58,13 +62,34 @@ public abstract class Playable extends Mobile{
 		}
 	}
 	
+	public void activatePower(char power) {
+		switch(power) {
+			case '1':
+				if(canBeArmored) {
+					isArmored = true;
+					canBeArmored = false;
+				}
+				break;
+			case '2':
+				if (canBeFast) {
+					isFast = true;
+					makeFast();
+					canBeFast = false;
+				}break;
+			case '3':
+				if(canBeFlying) {
+					canFly = true;
+					canBeFlying = false;
+				}
+		}
+	}
+	
 	public void makeArmored(boolean isArmored) {
-		this.isArmored = isArmored;
+		this.canBeArmored = isArmored;
 	}
 	
 	public void makeFast(boolean isFast) {
-		this.isFast = isFast;
-		makeFast();
+		this.canBeFast = isFast;
 	}
 	
 	public void makeFast() {
@@ -79,7 +104,7 @@ public abstract class Playable extends Mobile{
 	}
 	
 	public void makeFly(boolean canFly) {
-		this.canFly = canFly;
+		this.canBeFlying = canFly;
 	}
 	
 	public void makeFly() {
@@ -94,6 +119,10 @@ public abstract class Playable extends Mobile{
 			fly.start();
 		}
 	}
+	
+	public abstract void changeState(PlayerState newState);
+	
+	public abstract void carryFemaleFrogger();
 	
 	@Override
 	public boolean isPlayable() {
@@ -133,6 +162,18 @@ public abstract class Playable extends Mobile{
 	
 	public boolean inCollision(Element e) {
 		return false;
+	}
+	
+	public boolean hasArmor() {
+		return canBeArmored;
+	}
+	
+	public boolean hasWings() {
+		return canBeFlying;
+	}
+	
+	public boolean hasSpeed() {
+		return canBeFast;
 	}
 	
 	@Override

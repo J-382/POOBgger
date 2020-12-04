@@ -28,4 +28,10 @@ public abstract class PlayerState implements Serializable{
 	 * Player behavior at his dead moment
 	 */
 	public abstract void decreasePlayerlives();
+	
+	/**
+	 * Returns player's current state 
+	 * @return player's current state 
+	 */
+	public abstract String getState();
 }

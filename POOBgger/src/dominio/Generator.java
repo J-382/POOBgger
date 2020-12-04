@@ -15,6 +15,7 @@ public class Generator implements Serializable{
 	private int screenHeight;
 	private int screenWidth;
 	private HashMap<String, Integer> speeds;
+	private ArrayList<int[]> speedsAtLevel;
 	private HashMap<String, int[]> sizes;
 	private ArrayList<Element> mobiles;
 	private ArrayList<Element> fixeds;
@@ -45,10 +46,12 @@ public class Generator implements Serializable{
 		this.screenHeight = screenHeight;
 		this.level = level;
 		this.type = type;
-		inCooldown = false;
+		inCooldown = true;
 		cooldownTimer = new Animator();
 		prepareTimes();
+		prepareSpeedsAtLevel();
 		prepareSpeeds();
+		cooldownTimer.animate(40000, 1, new Runnable() {public void run() {inCooldown = false;}});
 	}
 	
 	/**
@@ -56,25 +59,26 @@ public class Generator implements Serializable{
 	 */
 	private void prepareSpeeds() {
 		speeds = new HashMap<String, Integer>();
+		int lvl = level%5;
 		/*Street*/
-		speeds.put("RedCar", 2);
-		speeds.put("GreenCar", 1);
-		speeds.put("BlueCar", 1);
-		speeds.put("PinkCar", 3);
-		speeds.put("PurpleCar", 2);
-		speeds.put("Motorcycle", 3);
-		speeds.put("Truck", 2);
-		speeds.put("Bike", 1);
+		speeds.put("RedCar", speedsAtLevel.get(lvl)[0]);
+		speeds.put("GreenCar", speedsAtLevel.get(lvl)[1]);
+		speeds.put("BlueCar", speedsAtLevel.get(lvl)[2]);
+		speeds.put("PinkCar", speedsAtLevel.get(lvl)[3]);
+		speeds.put("PurpleCar", speedsAtLevel.get(lvl)[4]);
+		speeds.put("Motorcycle", speedsAtLevel.get(lvl)[5]);
+		speeds.put("Truck", speedsAtLevel.get(lvl)[6]);
+		speeds.put("Bike", speedsAtLevel.get(lvl)[7]);
 		/*Beaver*/
-		speeds.put("Lizard", 2);
-		speeds.put("SmallLog", 1);
-		speeds.put("MediumLog", 2);
-		speeds.put("LargeLog", 3);
-		speeds.put("FastTurtle", 2);
-		speeds.put("Turtle", 1);
+		speeds.put("Lizard", speedsAtLevel.get(lvl)[8]);
+		speeds.put("SmallLog", speedsAtLevel.get(lvl)[9]);
+		speeds.put("MediumLog", speedsAtLevel.get(lvl)[10]);
+		speeds.put("LargeLog", speedsAtLevel.get(lvl)[11]);
+		speeds.put("FastTurtle", speedsAtLevel.get(lvl)[12]);
+		speeds.put("Turtle", speedsAtLevel.get(lvl)[13]);
 		/*Both*/
-		speeds.put("Eagle", 1);
-		speeds.put("Snake", 1);
+		speeds.put("Eagle", speedsAtLevel.get(lvl)[14]);
+		speeds.put("Snake", speedsAtLevel.get(lvl)[15]);
 	}
 	
 	/**
@@ -90,6 +94,7 @@ public class Generator implements Serializable{
 	 */
 	public void levelUp() {
 		level++;
+		prepareSpeeds();
 	}
 	
 	/**
@@ -98,10 +103,23 @@ public class Generator implements Serializable{
 	private void prepareTimes() {
 		times = new ArrayList<int[]>();
 		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
+		times.add(new int[] {500,150,500,150,350,200,400,300,400,300});
 		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
+		times.add(new int[] {500,150,500,150,350,200,400,300,400,300});
+		times.add(new int[] {250,100,300,150,200,100,200,150,200,150});
+	}
+	
+	
+	/**
+	 *  Prepare the speed of the elements
+	 */
+	private void prepareSpeedsAtLevel() {
+		speedsAtLevel = new ArrayList<int[]>();
+		speedsAtLevel.add(new int[] {2,1,1,3,2,3,2,1,2,1,2,3,2,1,1,1});
+		speedsAtLevel.add(new int[] {2,1,1,3,2,3,2,1,2,1,2,3,2,1,1,1});
+		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
+		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
+		speedsAtLevel.add(new int[] {4,2,2,6,4,6,4,2,4,2,4,6,4,2,2,2});
 	}
 	
 	/** 
@@ -361,6 +379,11 @@ public class Generator implements Serializable{
 			addSnake(false);
 			if(r.nextBoolean()) addSnake(true);
 		}
+		SmallLog small = new SmallLog(-sizes.get("SmallLog1")[0],gridSize*12,speeds.get("SmallLog"),sizes.get("SmallLog1"),new int[] {gridSize,gridSize},"SmallLog1");
+		FemaleFrog fFrog = new FemaleFrog(-sizes.get("SmallLog1")[0], gridSize*12, 48,new int[] {48,48}, "FFrog", false); 
+		mobiles.add(small);
+		small.inCollision(fFrog);
+		mobiles.add(fFrog);
 		return mobiles;
 		
 	}
@@ -376,9 +399,7 @@ public class Generator implements Serializable{
 		fixeds.clear();
 		addBeaverLane(time);
 		addLane(time);
-		
 		if(addThrowable && !inCooldown) {
-			addSnake(true);
 			inCooldown = true;
 			Random r = new Random();
 			addThrowable(players.get(r.nextInt(players.size())));

@@ -61,10 +61,10 @@ public class GamePanel extends JPanel{
 	private boolean paused;
 	private Timer clockTime;
 	private HashMap<Integer, Character> player1Keys = new HashMap<Integer, Character>(){{
-		put(68, 'D'); put(65, 'A'); put(87, 'W'); put(83, 'S');
+		put(68, 'D'); put(65, 'A'); put(87, 'W'); put(83, 'S'); put(85,'1'); put(73,'2'); put(79,'3'); 
 		}};
 	private HashMap<Integer, Character> player2Keys = new HashMap<Integer, Character>(){{
-		put(39, 'D'); put(37, 'A'); put(38, 'W'); put(40, 'S');
+		put(39, 'D'); put(37, 'A'); put(38, 'W'); put(40, 'S'); put(83, 'S'); put(49,'1'); put(50,'2'); put(51,'3'); 
 		}};	
 	private final File font = new File("resources/8-BIT.TTF");
 	private GamePanel(String[] player1, String[] player2, String mapType, String mode) {
@@ -121,7 +121,7 @@ public class GamePanel extends JPanel{
 				else {
 					if (!paused) {
 						if(player1Keys.containsKey(e.getKeyCode())) {
-							POOgger.demePOOgger(dimensions).movePlayer((""+e.getKeyChar()).toUpperCase().charAt(0), 0);
+							POOgger.demePOOgger(dimensions).movePlayer(player1Keys.get(e.getKeyCode()), 0);
 						}
 						else if(player2Keys.containsKey(e.getKeyCode())) {
 							POOgger.demePOOgger(dimensions).movePlayer(player2Keys.get(e.getKeyCode()), 1);
@@ -218,13 +218,13 @@ public class GamePanel extends JPanel{
 				g.drawImage(sprites.get("Icon"), players[0] - 25*i, players[1],null);
 			}
 			players[1] += 15;
-			for (int i = 0; i < listPlayers.get(0).getLives(); i++) { 
-				g.drawImage(sprites.get("Icon"),players[0] - 25*i, players[1],null);
-			}
+			if(listPlayers.get(0).hasArmor()) g.drawImage(sprites.get("ArmorIcon"),players[0] - 8, players[1],null);
+			if(listPlayers.get(0).hasWings()) g.drawImage(sprites.get("FlyIcon"),players[0] - 8 - 25*1, players[1],null);
+			if(listPlayers.get(0).hasSpeed()) g.drawImage(sprites.get("SpeedIcon"),players[0] - 8 - 25*2, players[1],null);
 			players[0] -= 50;
 			players[1] += 35;
 			g.setColor(Color.RED.darker());
-			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(listPlayers.get(0)), players[0], players[1]);
+			g.drawString(""+POOgger.demePOOgger(dimensions).getPoints(listPlayers.get(0)), players[0], players[1]+6);
 			players[0] += 12;
 			players[1] -= 55;
 			g.setColor(Color.YELLOW);
@@ -252,9 +252,10 @@ public class GamePanel extends JPanel{
 					g.drawImage(sprites.get("Icon"), 75 + 25*i, 30,null);
 				}
 				players[1] += 15;
-				for (int i = 0; i < listPlayers.get(1).getLives(); i++) { 
-					g.drawImage(sprites.get("Icon"), 75 + 25*i, 45,null);
-				}
+				
+				if(listPlayers.get(1).hasArmor()) g.drawImage(sprites.get("ArmorIcon"), 70, 40,null);
+				if(listPlayers.get(1).hasWings()) g.drawImage(sprites.get("FlyIcon"), 70 + 25*1, 40,null);
+				if(listPlayers.get(1).hasSpeed()) g.drawImage(sprites.get("SpeedIcon"), 70 + 25*2, 40,null);
 				players[0] -= 50;
 				players[1] += 35;
 				g.setColor(Color.RED.darker());

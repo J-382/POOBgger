@@ -60,20 +60,20 @@ public class Player extends Playable implements Pushable{
 	 * Moves the player 1/3 of its real move
 	 */
 	public void move() {
-		int delay = isFast?25:50;
+		int addJump = isFast?delta/3:0;
 		int dx = 0, dy = 0;
 		switch (""+orientation) {
 			case "W" :
-				dy-=delta/3;
+				dy-=delta/3+addJump;
 				break;
 			case "S" :
-				dy+=delta/3;
+				dy+=delta/3+addJump;
 				break;
 			case "D" :
-				dx+=delta/3;
+				dx+=delta/3+addJump;
 				break;
 			case "A" :
-				dx-=delta/3;
+				dx-=delta/3+addJump;
 				break;
 		}
 		
@@ -87,7 +87,7 @@ public class Player extends Playable implements Pushable{
 		super.move(dx, dy);
 		updateSprite();
 		if(!animator.isRunning()) {
-			animator.animate(delay,2,new Runnable() {public void run() {move();}});
+			animator.animate(30,2,new Runnable() {public void run() {move();}});
 		}
 		isInAir();
 	}
@@ -119,7 +119,7 @@ public class Player extends Playable implements Pushable{
 	 */
 	private void updateSprite() {
 		state = (state+1)%3;
-		sprite =  "Frog"+(state+1)+orientation;	
+		sprite =  "Frog"+frogState.getState()+(state+1)+orientation;	
 	}
 	
 	/**
@@ -328,8 +328,12 @@ public class Player extends Playable implements Pushable{
 		state++;
 	}
 	
-	protected void changeState(PlayerState newState) {
+	public void changeState(PlayerState newState) {
 		frogState = newState;
+	}
+	
+	public void carryFemaleFrogger() {
+		changeState(new PlayerCarryingState(this));
 	}
 
 	@Override

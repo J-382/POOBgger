@@ -75,6 +75,7 @@ public class POOgger implements Serializable{
 		elements = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
 		fixeds.addAll(levelGenerator.addFixedElements());
+		//powerTest();
 		elements.addAll(levelGenerator.addMobileElements());
 		ArrayList<String[]> newPlayers = new ArrayList<>();
 		newPlayers.add(player1);
@@ -147,9 +148,11 @@ public class POOgger implements Serializable{
 				break;
 			}
 		}
-		if (isValid && numPlayer < players.size()) {
-			if (players.get(numPlayer).isAlive()) players.get(numPlayer).setOrientation(dir);
-		}
+		if (isValid) {
+			if (numPlayer < players.size() && players.get(numPlayer).isAlive()) {
+				players.get(numPlayer).setOrientation(dir);
+			}
+		} else if (numPlayer < players.size()) players.get(numPlayer).activatePower(dir);
 	}
 	
 	/**
@@ -209,7 +212,6 @@ public class POOgger implements Serializable{
 		for(int i=0; i<elements.size(); i++) {
 			Mobile element = (Mobile) elements.get(i);
 			if(element.getX()>screenWidth+200 || element.getX()<-500 || !element.isVisible()) {
-				if(element.isVisible==false) System.out.println(element.getClass());
 				elements.set(i, null);
 				needsClear = true;
 				}
@@ -441,9 +443,9 @@ public class POOgger implements Serializable{
 	 * @return
 	 */
 	public ArrayList<Element> gameLoop(int time) {
-		levelGenerator.addElements(time, throwable==null, players);
-		elements.addAll(levelGenerator.getMobilesElements());
-		fixeds.addAll(levelGenerator.getFixedsElements());
+		//levelGenerator.addElements(time, throwable==null, players);
+		//elements.addAll(levelGenerator.getMobilesElements());
+		//fixeds.addAll(levelGenerator.getFixedsElements());
 		checkThrowableCollision();
 		if(time%2==0) update();
 		for(Player player: players) {
@@ -608,4 +610,16 @@ public class POOgger implements Serializable{
 		if (ultiScore < 10000)format = "0"+format;
 		return sign + format;
 	}
+	
+	/*Tests*/
+	private void powerTest() {
+		fixeds.add(new SpeedPower(48*2, 48*14, 48, 48));
+		fixeds.add(new FlyPower(48*3, 48*13, 48, 48));
+		fixeds.add(new ArmorPower(48*4, 48*12, 48, 48));
+		elements.add(new Car(screenWidth,48*12,-1,sprites.get("RedCar"),"Red"));
+		elements.add(new Truck(screenWidth,48*9,-1,sprites.get("Truck1"),"Truck1",false));
+		elements.add(new Lizard(-sprites.get("Lizard1")[0],48*8, sprites.get("Lizard1"), "Lizard1", 1));
+		
+	}
+	
 }

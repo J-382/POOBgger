@@ -25,6 +25,8 @@ public class Truck extends Carrier{
 	public Truck(int x, int y, int speed,int[] size, String sprite, boolean flipped){
 		this.x = x;
 		this.y = y;
+		this.width = size[0];
+		this.height = size[1];
 		this.speed = speed;
 		this.maxCarryNumber = 1;
 		this.carried = new ArrayList<Pushable>();

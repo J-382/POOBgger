@@ -26,4 +26,9 @@ public class PlayerCarryingState extends PlayerState{
 	public void decreasePlayerlives() {
 		player.changePoints(-200);
 	}
+	
+	@Override
+	public String getState() {
+		return "C";
+	}
 }

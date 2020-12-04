@@ -26,4 +26,9 @@ public class PlayerDeathState extends PlayerState{
 	public void decreasePlayerlives() {
 		player.dying();
 	}
+	
+	@Override
+	public String getState() {
+		return "Dth";
+	}
 }

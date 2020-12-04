@@ -84,6 +84,10 @@ public class FemaleFrog extends Mobile implements Pushable{
 	
 	@Override
 	public boolean inCollision(Element e) {
+		if(e.isPlayable()) {
+			((Playable) e).carryFemaleFrogger();
+			isVisible = false;
+		}
 		return false;
 	}
 

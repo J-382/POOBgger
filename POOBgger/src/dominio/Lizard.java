@@ -50,10 +50,12 @@ public class Lizard extends Carrier{
 	@Override
 	public boolean inCollision(Element e) {
 		super.inCollision(e);
+		System.out.println(((Playable) e).isToxic());
 		boolean isDead = false;
-		if (isOpen) {
+		if (isOpen && e.isPlayable()) {
 			if (x+2*width/3 <= e.getX()) {
-				isDead = true;
+				isDead = !((Playable) e).isToxic();
+				if(!isDead) isVisible = false;
 			} 
 		}
 		return isDead;

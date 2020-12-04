@@ -41,4 +41,11 @@ public class SpeedPower extends Power{
 	public void givePower(Playable player) {
 		player.makeFast(true);		
 	}
+	
+	public boolean inCollision(Element e) {
+		System.out.println("speed");
+		super.inCollision(e);
+		isVisible = false;
+		return false;
+	}
 }
