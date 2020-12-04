@@ -24,7 +24,6 @@ public class Generator implements Serializable{
 	private Animator cooldownTimer;
 	private boolean inCooldown;
 	private Element throwable;
-	private int generalLevel;
 	
 	private int gridSize;
 	
@@ -151,19 +150,27 @@ public class Generator implements Serializable{
 	 * @param lane the new log's lane
 	 */
 	private void addLog(int lane) {
+		Random r = new Random();
 		String[] types = new String[] {"Small","Medium","Large"};
 		switch (lane) {
 			case 0:
-				mobiles.add(new SmallLog(-sizes.get(types[0]+"Log1")[0],gridSize*6,speeds.get(types[0]+"Log"),sizes.get(types[0]+"Log1"),new int[] {gridSize,gridSize},types[0]+"Log1"));
+				SmallLog small = new SmallLog(-sizes.get(types[0]+"Log1")[0],gridSize*6,speeds.get(types[0]+"Log"),sizes.get(types[0]+"Log1"),new int[] {gridSize,gridSize},types[0]+"Log1");
+				FemaleFrog fFrog = new FemaleFrog(-sizes.get(types[0]+"Log1")[0], gridSize*6, 48,new int[] {48,48}, "FFrog", false); 
+				mobiles.add(small);
+				if(r.nextInt(10)==3) {
+					small.inCollision(fFrog);
+					mobiles.add(fFrog);
+				}
+				
 				break;
 			case 2:
 				mobiles.add(new Log(-sizes.get(types[1]+"Log")[0],gridSize*3,speeds.get(types[1]+"Log"),sizes.get(types[1]+"Log"),types[1]+"Log"));
 				break;
 			case 1:
-				Random r = new Random();
+				
 				Log log = new Log(-sizes.get(types[2]+"Log")[0],gridSize*5,speeds.get(types[2]+"Log"),sizes.get(types[2]+"Log"),types[2]+"Log");
 				mobiles.add(log);
-				if(r.nextBoolean()) {
+				if(r.nextBoolean() && r.nextBoolean() && level>3) {
 					Snake snake = new Snake(-sizes.get(types[2]+"Log")[0], gridSize*5, speeds.get("Snake") ,sizes.get("Snake1"), "Snake1", false);
 					mobiles.add(snake);
 					log.inCollision(snake);
@@ -350,9 +357,12 @@ public class Generator implements Serializable{
 	
 	public ArrayList<Element> addMobileElements(){
 		Random r = new Random();
-		addSnake(false);
-		if(r.nextBoolean()) addSnake(true);
+		if(level>2) {
+			addSnake(false);
+			if(r.nextBoolean()) addSnake(true);
+		}
 		return mobiles;
+		
 	}
 	
 	/**
@@ -362,12 +372,13 @@ public class Generator implements Serializable{
 	 * @param players list of players
 	 */
 	public void addElements(int time, boolean addThrowable, ArrayList<Player> players) {
-		System.out.println(level);
 		mobiles.clear();
 		fixeds.clear();
 		addBeaverLane(time);
 		addLane(time);
+		
 		if(addThrowable && !inCooldown) {
+			addSnake(true);
 			inCooldown = true;
 			Random r = new Random();
 			addThrowable(players.get(r.nextInt(players.size())));

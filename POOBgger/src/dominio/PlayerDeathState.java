@@ -15,8 +15,6 @@ public class PlayerDeathState extends PlayerState{
 	 */
 	public PlayerDeathState(Player player) {
 		super(player);
-		Animator changeState = new Animator();
-		changeState.animate(2000, 1, new Runnable() {public void run() {player.changeState(new PlayerNormalState(player));}});
 	}
 
 	@Override
@@ -26,5 +24,6 @@ public class PlayerDeathState extends PlayerState{
 
 	@Override
 	public void decreasePlayerlives() {
+		player.dying();
 	}
 }

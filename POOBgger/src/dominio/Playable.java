@@ -135,10 +135,6 @@ public abstract class Playable extends Mobile{
 		return false;
 	}
 	
-	protected void changeState(PlayerState playerState) {
-		frogState = playerState;
-	}
-	
 	@Override
 	public Rectangle getBounds() {
 		return frogState.getBounds();
