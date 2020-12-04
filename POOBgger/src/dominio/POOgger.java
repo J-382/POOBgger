@@ -75,6 +75,7 @@ public class POOgger implements Serializable{
 		elements = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
 		fixeds.addAll(levelGenerator.addFixedElements());
+		elements.addAll(levelGenerator.addMobileElements());
 		ArrayList<String[]> newPlayers = new ArrayList<>();
 		newPlayers.add(player1);
 		if (player2[0] != null) newPlayers.add(player2);
@@ -85,6 +86,7 @@ public class POOgger implements Serializable{
 		} catch (POOggerException e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	/**
@@ -412,6 +414,7 @@ public class POOgger implements Serializable{
 	 * @param player, the player to kill
 	 */
 	public void killPlayer(Player player) {
+		
 		player.decreasePlayerLives(deadPenalization);
 	}
 	

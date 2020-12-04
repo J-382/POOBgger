@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -317,5 +318,18 @@ public class GamePanel extends JPanel{
     private void raiseError(String message) {
     	Toolkit.getDefaultToolkit().beep();
     	JOptionPane.showMessageDialog(null, message,"Error",JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void main(String[] Args) throws InterruptedException {
+    	JFrame frame = new JFrame();
+    	frame.add(GamePanel.demeGamePanel());
+    	frame.setVisible(true);
+    	frame.setSize(48*16, 48*16);
+    	frame.setLocationRelativeTo(null);
+    	while(true) {
+    		GamePanel.demeGamePanel().repaint();
+    		Thread.sleep(10);
+    	}
+    	
     }
 }

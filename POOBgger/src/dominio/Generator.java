@@ -24,6 +24,7 @@ public class Generator implements Serializable{
 	private Animator cooldownTimer;
 	private boolean inCooldown;
 	private Element throwable;
+	private int generalLevel;
 	
 	private int gridSize;
 	
@@ -97,6 +98,10 @@ public class Generator implements Serializable{
 	 */
 	private void prepareTimes() {
 		times = new ArrayList<int[]>();
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
 		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
 	}
 	
@@ -178,9 +183,8 @@ public class Generator implements Serializable{
 	/** 
 	 * Add a new snake to Generator's mobiles
 	 */
-	private void addSnake() {
+	private void addSnake(boolean flipped) {
 		Random r = new Random();
-		boolean flipped = r.nextBoolean();
 		if(flipped) {
 			mobiles.add(new Snake(-sizes.get("Snake1")[0],gridSize*8,speeds.get("Snake"),sizes.get("Snake1"),"Snake1",false));
 		}else mobiles.add(new Snake(screenWidth,gridSize*8,speeds.get("Snake"),sizes.get("Snake1"),"Snake1",true));
@@ -344,6 +348,13 @@ public class Generator implements Serializable{
 		return fixeds;
 	}
 	
+	public ArrayList<Element> addMobileElements(){
+		Random r = new Random();
+		addSnake(false);
+		if(r.nextBoolean()) addSnake(true);
+		return mobiles;
+	}
+	
 	/**
 	 * Clear the lists of elements and adds new ones in function of the ejecution clock
 	 * @param time ejecution time
@@ -351,6 +362,7 @@ public class Generator implements Serializable{
 	 * @param players list of players
 	 */
 	public void addElements(int time, boolean addThrowable, ArrayList<Player> players) {
+		System.out.println(level);
 		mobiles.clear();
 		fixeds.clear();
 		addBeaverLane(time);
