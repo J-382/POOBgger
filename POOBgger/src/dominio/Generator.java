@@ -139,10 +139,9 @@ public class Generator implements Serializable{
 		mobiles.add(throwable);
 	}
 	
-	/** Add a new Lizzard to Generator's mobiles
+	/** Add a new Lizard to Generator's mobiles
 	 */
 	private void addLizard() {
-		//mobiles.add(new Lizzard(0, gridSize*5+4, lizzardSpeed));
 		mobiles.add(new Lizard(-sizes.get("Lizard1")[0],gridSize*3, sizes.get("Lizard1"), "Lizard1", speeds.get("Lizard")));
 	}
 	
@@ -229,8 +228,8 @@ public class Generator implements Serializable{
 	 * Add a new bike to Generator's fixed elements
 	 */
     private void addThrowable(Player player) {
-    	if(type.equals("Day")) {
-    		addEagle(player);
+    	if(type.equals("Sunny")) {
+    		//addEagle(player);
     	}else addThunder(player);
     }
     
@@ -356,13 +355,12 @@ public class Generator implements Serializable{
 	}
 	
 	/**
-	 * Clear the lists of elements and adds new ones in function of the ejecution clock
-	 * @param time ejecution time
+	 * Clear the lists of elements and adds new ones in function of the execution clock
+	 * @param time, execution time
 	 * @param addThrowable if a throwable can be added
 	 * @param players list of players
 	 */
 	public void addElements(int time, boolean addThrowable, ArrayList<Player> players) {
-		System.out.println(level);
 		mobiles.clear();
 		fixeds.clear();
 		addBeaverLane(time);
