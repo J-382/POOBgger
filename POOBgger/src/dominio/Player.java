@@ -297,7 +297,7 @@ public class Player extends Playable implements Pushable{
 	 * @return player's hat name
 	 */
 	public String getHat() {
-		String returnImage = isVisible?hat:"";
+		String returnImage = isVisible && !sprite.startsWith("FrogDeath") ? hat:"";
 		return returnImage;
 	}
 	

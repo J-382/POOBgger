@@ -102,6 +102,7 @@ public class Generator implements Serializable{
 	 */
 	private void prepareTimes() {
 		times = new ArrayList<int[]>();
+<<<<<<< HEAD
 		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
 		times.add(new int[] {500,150,500,150,350,200,400,300,400,300});
 		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
@@ -120,6 +121,13 @@ public class Generator implements Serializable{
 		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
 		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
 		speedsAtLevel.add(new int[] {4,2,2,6,4,6,4,2,4,2,4,6,4,2,2,2});
+=======
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
+>>>>>>> 414ee19ba771651eae050a91b0e4f7d2b12eea59
 	}
 	
 	/** 
@@ -156,10 +164,9 @@ public class Generator implements Serializable{
 		mobiles.add(throwable);
 	}
 	
-	/** Add a new Lizzard to Generator's mobiles
+	/** Add a new Lizard to Generator's mobiles
 	 */
 	private void addLizard() {
-		//mobiles.add(new Lizzard(0, gridSize*5+4, lizzardSpeed));
 		mobiles.add(new Lizard(-sizes.get("Lizard1")[0],gridSize*3, sizes.get("Lizard1"), "Lizard1", speeds.get("Lizard")));
 	}
 	
@@ -254,8 +261,8 @@ public class Generator implements Serializable{
 	 * Add a new bike to Generator's fixed elements
 	 */
     private void addThrowable(Player player) {
-    	if(type.equals("Day")) {
-    		addEagle(player);
+    	if(type.equals("Sunny")) {
+    		//addEagle(player);
     	}else addThunder(player);
     }
     
@@ -280,7 +287,16 @@ public class Generator implements Serializable{
 	private void addBike() {
 		mobiles.add(new Bike(screenWidth,gridSize*11,-speeds.get("Bike"), sizes.get("Bike1"),"Bike1" ,false));	
 	}
-    
+	
+	/**
+	 * Add a new bug to Generator's elements
+	 */
+	private void addBug() {
+		int[] xPosition = {1, 4, 7, 10, 13};
+		Random r = new Random();
+		fixeds.add(new Bug(gridSize*xPosition[r.nextInt(4)], gridSize*2, gridSize, gridSize, 1000));	
+	}
+	
     /**
 	 * Adds a new element to the given lane
 	 * @param lane the new element's lane
@@ -338,6 +354,9 @@ public class Generator implements Serializable{
 				addLog(2);
 			} else addLizard();
 		}
+		if(time%times.get(lvl)[10]==0) {
+			addBug();
+		}
 	}
 	
 	/**
@@ -389,8 +408,8 @@ public class Generator implements Serializable{
 	}
 	
 	/**
-	 * Clear the lists of elements and adds new ones in function of the ejecution clock
-	 * @param time ejecution time
+	 * Clear the lists of elements and adds new ones in function of the execution clock
+	 * @param time, execution time
 	 * @param addThrowable if a throwable can be added
 	 * @param players list of players
 	 */

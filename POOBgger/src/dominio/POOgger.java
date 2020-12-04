@@ -53,7 +53,6 @@ public class POOgger implements Serializable{
 	private HashMap<String,int[]> sprites;
 	private final int deadPenalization = -100;
 	private boolean[] isOver;
-	private int timeLimit = 150;
 	private TreeMap<Integer, ArrayList<String>> highScores;
 	private File scoresFile;
 	private Element throwable;
@@ -69,7 +68,7 @@ public class POOgger implements Serializable{
 	private POOgger(int width, int height, HashMap<String,int[]> sprites, String[] player1, String[] player2, String mapType, String scoreFile) {
 		screenWidth = width;
 		this.sprites = sprites;
-		levelGenerator = new Generator(sprites,screenWidth,screenHeight,48,0,"Day");
+		levelGenerator = new Generator(sprites,screenWidth,screenHeight,48,0,mapType);
 		isOver = new boolean[]{false, false, false};
 		players = new ArrayList<Player>();
 		elements = new ArrayList<Element>();
@@ -82,6 +81,8 @@ public class POOgger implements Serializable{
 		if (player2[0] != null) newPlayers.add(player2);
 		addPlayers(newPlayers);
 		scoresFile = new File(scoreFile);
+		//powerTest();
+		//bonusTest();
 		try {
 			highScores = readHighScoreFile(scoresFile);
 		} catch (POOggerException e) {
@@ -231,7 +232,7 @@ public class POOgger implements Serializable{
 	
 	/**
 	 * Checks if player is colliding with some level's elements
-	 * @param player, the player disired player to check
+	 * @param player, the player desired player to check
 	 * @return if the player got killed by some element
 	 */
 	private boolean checkPlayerCollisions(Player player) {
@@ -242,7 +243,7 @@ public class POOgger implements Serializable{
 	
 	/**
 	 * Check if the player is colliding with some level's mobile elements
-	 * @param player, the player disired player to check
+	 * @param player, the player desired player to check
 	 * @return if the player is dead and if is touching the water
 	 */
 	private boolean[] checkMobileElements(Player player) {
@@ -261,7 +262,7 @@ public class POOgger implements Serializable{
 	
 	/**
 	 * Check if the player is colliding with some level's fixed element
-	 * @param player, the player disired player to check
+	 * @param player, the player desired player to check
 	 * @param touchingWater, if the player was touching the water
 	 * @return if the player is dead or if is touching the water
 	 */
@@ -322,7 +323,7 @@ public class POOgger implements Serializable{
 		
 	
 	/**
-	 * Checka the cave's state to see if some player have won
+	 * Checks the cave's state to see if some player have won
 	 */
 	private void checkCavesState() {
 		int cont = 0;
@@ -353,16 +354,29 @@ public class POOgger implements Serializable{
 		for (Player player : players) {
 			player.resetPlayer();
 		}
-		
 		if (levelGenerator.getLevel() == 5) {
 			for (int i = 1; i <= players.size(); i++) {
 				if (players.get(i-1).getRoundsWon() >= 3) {
 					winner = players.get(i-1).getName();
 				}
 			}
-			levelGenerator.levelUp();
 			isOver[0] = true;
 			isOver[1] = true;
+		}
+		else {
+			levelGenerator.levelUp();
+			clearCaves();
+		}
+	}
+	
+	/**
+	 * Clear all the caves in the game (Makes them no occupied again)
+	 */
+	private void clearCaves() {
+		for (Element e : fixeds) {
+			if (((Fixed)e).canBeOccupied()) {
+				((Cave)e).clear();
+			}
 		}
 	}
 	
@@ -459,6 +473,27 @@ public class POOgger implements Serializable{
 		return allElements;
 	}
 	
+	
+	private void powerTest() {
+		fixeds.add(new SpeedPower(48*2, 48*14, 48, 48));
+		fixeds.add(new FlyPower(48*3, 48*13, 48, 48));
+		fixeds.add(new ArmorPower(48*4, 48*12, 48, 48));
+		elements.add(new Car(screenWidth,48*12,-1,sprites.get("RedCar"),"Red"));
+		elements.add(new Truck(screenWidth,48*9,-1,sprites.get("Truck1"),"Truck1",false));
+		elements.add(new Lizard(-sprites.get("Lizard1")[0],48*8, sprites.get("Lizard1"), "Lizard1", 1));
+		
+	}
+	
+	private void bonusTest(){
+		fixeds.add(new Bug(48*5, 48*13, 48, 48, 3000));
+		String[] types = new String[] {"Small","Medium","Large"};
+		SmallLog small = new SmallLog(-sprites.get(types[0]+"Log1")[0],48*12,1,sprites .get(types[0]+"Log1"),new int[] {48,48},types[0]+"Log1");
+		FemaleFrog fFrog = new FemaleFrog(-sprites.get(types[0]+"Log1")[0], 48*12, 48,new int[] {48,48}, "FFrog", false); 
+		elements.add(small);
+		small.inCollision(fFrog);
+		elements.add(fFrog);
+	}
+	
 	/**
 	 * Pauses all the current elements in the game
 	 */
@@ -470,6 +505,7 @@ public class POOgger implements Serializable{
 			element.stopAnimator();
 		}
 	}
+	
 	
 	/**
 	 * Resumes all the current elements in the game
@@ -553,7 +589,6 @@ public class POOgger implements Serializable{
 			out.writeObject(poogger);
 			out.close();
 		} catch(IOException e) {
-			System.out.println(e.getMessage());
 			throw new POOggerException(POOggerException.ERROR_SALVAR);
 		}
 	}

@@ -14,6 +14,7 @@ public class Turtle extends Carrier{
 	private boolean doesSubmerge;
 	private int frame;
 	private Animator animator;
+	
 	private TurtleState state;
 	
 	/**

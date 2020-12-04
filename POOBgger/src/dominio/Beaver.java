@@ -25,7 +25,6 @@ public class Beaver extends Fixed{
 		boolean isDead = false;
 		if(e.isPlayable()) {
 			if(((Playable) e).canFly()) {
-				System.out.println("Pito");
 				((Playable) e).makeFly();
 			}
 			isDead = !((Playable) e).isInAir();

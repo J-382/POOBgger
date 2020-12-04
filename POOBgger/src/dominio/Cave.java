@@ -61,6 +61,16 @@ public class Cave extends Fixed{
 		return occupied;
 	}
 	
+	/**
+	 * Clear the cave if its occupied
+	 */
+	public void clear() {
+		if (occupied) {
+			occupied = false;
+			sprite = "Cave";
+		}
+	}
+	
 	@Override
 	public boolean inCollision(Element e) {
 		if(e.isPlayable() && e.isPushable() && !occupied) {
