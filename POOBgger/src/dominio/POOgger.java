@@ -457,9 +457,9 @@ public class POOgger implements Serializable{
 	 * @return
 	 */
 	public ArrayList<Element> gameLoop(int time) {
-		//levelGenerator.addElements(time, throwable==null, players);
-		//elements.addAll(levelGenerator.getMobilesElements());
-		//fixeds.addAll(levelGenerator.getFixedsElements());
+		levelGenerator.addElements(time, throwable==null, players);
+		elements.addAll(levelGenerator.getMobilesElements());
+		fixeds.addAll(levelGenerator.getFixedsElements());
 		checkThrowableCollision();
 		if(time%2==0) update();
 		for(Player player: players) {
@@ -644,17 +644,6 @@ public class POOgger implements Serializable{
 		if (ultiScore < 1000)format = "0"+format;
 		if (ultiScore < 10000)format = "0"+format;
 		return sign + format;
-	}
-	
-	/*Tests*/
-	private void powerTest() {
-		fixeds.add(new SpeedPower(48*2, 48*14, 48, 48));
-		fixeds.add(new FlyPower(48*3, 48*13, 48, 48));
-		fixeds.add(new ArmorPower(48*4, 48*12, 48, 48));
-		elements.add(new Car(screenWidth,48*12,-1,sprites.get("RedCar"),"Red"));
-		elements.add(new Truck(screenWidth,48*9,-1,sprites.get("Truck1"),"Truck1",false));
-		elements.add(new Lizard(-sprites.get("Lizard1")[0],48*8, sprites.get("Lizard1"), "Lizard1", 1));
-		
 	}
 	
 }

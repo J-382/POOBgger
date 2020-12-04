@@ -102,12 +102,11 @@ public class Generator implements Serializable{
 	 */
 	private void prepareTimes() {
 		times = new ArrayList<int[]>();
-<<<<<<< HEAD
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {500,150,500,150,350,200,400,300,400,300});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300});
-		times.add(new int[] {500,150,500,150,350,200,400,300,400,300});
-		times.add(new int[] {250,100,300,150,200,100,200,150,200,150});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,2000});
+		times.add(new int[] {500,150,500,150,350,200,400,300,400,300,2000});
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,2000});
+		times.add(new int[] {500,150,500,150,350,200,400,300,400,300,2000});
+		times.add(new int[] {250,100,300,150,200,100,200,150,200,150,2000});
 	}
 	
 	
@@ -121,13 +120,6 @@ public class Generator implements Serializable{
 		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
 		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
 		speedsAtLevel.add(new int[] {4,2,2,6,4,6,4,2,4,2,4,6,4,2,2,2});
-=======
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,4000});
->>>>>>> 414ee19ba771651eae050a91b0e4f7d2b12eea59
 	}
 	
 	/** 
@@ -262,7 +254,7 @@ public class Generator implements Serializable{
 	 */
     private void addThrowable(Player player) {
     	if(type.equals("Sunny")) {
-    		//addEagle(player);
+    		addEagle(player);
     	}else addThunder(player);
     }
     
@@ -398,11 +390,6 @@ public class Generator implements Serializable{
 			addSnake(false);
 			if(r.nextBoolean()) addSnake(true);
 		}
-		SmallLog small = new SmallLog(-sizes.get("SmallLog1")[0],gridSize*12,speeds.get("SmallLog"),sizes.get("SmallLog1"),new int[] {gridSize,gridSize},"SmallLog1");
-		FemaleFrog fFrog = new FemaleFrog(-sizes.get("SmallLog1")[0], gridSize*12, 48,new int[] {48,48}, "FFrog", false); 
-		mobiles.add(small);
-		small.inCollision(fFrog);
-		mobiles.add(fFrog);
 		return mobiles;
 		
 	}
