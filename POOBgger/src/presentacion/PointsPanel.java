@@ -41,7 +41,7 @@ public class PointsPanel extends JBackground{
 		poogger.add(this);
 	}
 	
-	public void prepareElementos(){
+	protected void prepareElementos(){
 		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
     			+ "<br><br><br><br><br></font></html>");
 		
@@ -123,7 +123,7 @@ public class PointsPanel extends JBackground{
     	add(backPointsButton, constraints);
 	}
 	
-	public void prepareAcciones() {
+	protected void prepareAcciones() {
 		highScoresButton.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent e) {
                 prepareHighScoresPanel();
@@ -138,7 +138,7 @@ public class PointsPanel extends JBackground{
 		
 	}
 	
-	public void prepareHighScoresPanel() {
+	private void prepareHighScoresPanel() {
 		this.setVisible(false);
 		poogger.remove(this);
 		poogger.prepareHighScoresPanel();

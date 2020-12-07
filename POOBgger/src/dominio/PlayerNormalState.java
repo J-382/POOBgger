@@ -20,10 +20,6 @@ public class PlayerNormalState extends PlayerState{
 	public Rectangle getBounds() {
 		return new Rectangle(player.getX(),player.getY(),player.getWidth(),player.getHeight());
 	}
-
-	@Override
-	public void decreasePlayerlives() {
-	}
 	
 	@Override
 	public String getState() {

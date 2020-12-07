@@ -24,10 +24,13 @@ public abstract class PlayerState implements Serializable{
 	 */
 	public abstract Rectangle getBounds();
 	
-	/**
-	 * Player behavior at his dead moment
-	 */
-	public abstract void decreasePlayerlives();
+	public int getPointsOnDeath(){
+		return -100;
+	}
+	
+	public int getPointsOnArriving() {
+		return 100;
+	}
 	
 	/**
 	 * Returns player's current state 

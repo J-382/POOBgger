@@ -25,6 +25,7 @@ import dominio.Player;
  *
  */
 public class POOggerTest {
+	/*
 	public HashMap<String, int[]> sprites;
 	public final String[] player1 =  {"Test1", ""};
 	public final String[] player2 = {null, null};
@@ -168,5 +169,5 @@ public class POOggerTest {
 	@After
 	public void tearDown(){
 		POOgger.cambiePOOgger(null);
-	}
+	}*/
 }

@@ -23,7 +23,7 @@ import java.util.TreeMap;
  * @author Angie Medina - Jose Perez
  */
 @SuppressWarnings("serial")
-public class POOgger implements Serializable{
+public class POOgger implements Serializable, Comunicacion{
 	private static POOgger poogger = null;
 	
 	public static POOgger demePOOgger(HashMap<String, int[]> archivo, String[] player1, String[] player2, String mapType, String fileMode){
@@ -127,7 +127,8 @@ public class POOgger implements Serializable{
 	 * Updates one player's clock
 	 * @param player, the player who's clock must be update
 	 */
-	public void updateClock(Player player) {
+	public void updateClock(int playerIndex) {
+		Player player = players.get(playerIndex);
 		if (player.isAlive()) {
 			if (player.updateClock()) {
 				killPlayer(player);
@@ -167,8 +168,8 @@ public class POOgger implements Serializable{
 	/**
 	 * Returns the POOgger's actual players
 	 */
-	public ArrayList<Player> getPlayers() {
-		return players;
+	public ArrayList<String[]> getPlayers() {
+		return playersToString(players);
 	}
 	
 	/**
@@ -276,6 +277,7 @@ public class POOgger implements Serializable{
 					givePlayerBonus(player, f.getPoints());
 					player.increaseCavesReach();
 					checkCavesState();
+					givePlayerBonus(player, player.getPointsOnArriving());
 					resetPlayer(player);
 					touchingWater = false;
 					break;
@@ -422,8 +424,7 @@ public class POOgger implements Serializable{
 	 * @param player, the player to kill
 	 */
 	public void killPlayer(Player player) {
-		
-		player.decreasePlayerLives(deadPenalization);
+		player.decreasePlayerLives(player.getPointsOnDeath());
 	}
 	
 	/**
@@ -448,7 +449,7 @@ public class POOgger implements Serializable{
 	 * @param time
 	 * @return
 	 */
-	public ArrayList<Element> gameLoop(int time) {
+	public ArrayList<String[]> gameLoop(int time) {
 		levelGenerator.addElements(time, throwable==null, players);
 		elements.addAll(levelGenerator.getMobilesElements());
 		fixeds.addAll(levelGenerator.getFixedsElements());
@@ -462,7 +463,7 @@ public class POOgger implements Serializable{
 		ArrayList<Element> allElements = new ArrayList<Element>();
 		allElements.addAll(fixeds);
 		allElements.addAll(elements);
-		return allElements;
+		return elementsToString(allElements);
 	}
 	
 	
@@ -636,6 +637,24 @@ public class POOgger implements Serializable{
 		if (ultiScore < 1000)format = "0"+format;
 		if (ultiScore < 10000)format = "0"+format;
 		return sign + format;
+	}
+	
+	private ArrayList<String[]> elementsToString(ArrayList<Element> elements){
+		ArrayList<String[]> toString = new ArrayList<String[]>();
+		for(Element e: elements) toString.add(new String[] {""+e.getSprite(),""+e.getX(),""+e.getY(),""+e.getBounds().width,""+e.getBounds().height});
+		return toString;
+	}
+	
+	private ArrayList<String[]> playersToString(ArrayList<Player> players){
+		ArrayList<String[]> toString = new ArrayList<String[]>();
+		System.out.println();
+		for(Player p: players) {
+			System.out.println(p.getClock().getWidth()+" "+p.getClock().getHeight());
+			toString.add(new String[] {""+p.getSprite(),""+p.getX(),""+p.getY(),""+p.getLives(),""+(int) p.getClock().getWidth(),
+					""+(int) p.getClock().getHeight(),""+p.hasArmor(),""+p.hasWings(),""+p.hasSpeed(),p.getHat(),""+p.getPoints(),
+					""+p.getBounds().width,""+p.getBounds().height});
+		}
+		return toString;
 	}
 	
 }

@@ -73,7 +73,7 @@ public class POOggerGUI extends JFrame {
 		prepareAcciones();
 	}
 	
-	public void prepareElementos() {
+	private void prepareElementos() {
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT,fontPath);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -85,7 +85,7 @@ public class POOggerGUI extends JFrame {
 		setIconImage(icon.getImage());
 		setSize(new Dimension(720, 780));
 		setLocationRelativeTo(null);
-		//playSound();
+		playSound();
 		prepareElementosMenu();
 		preparePaneles();		
 	}
@@ -100,7 +100,7 @@ public class POOggerGUI extends JFrame {
 		}
 	}
 	
-	public void prepareElementosMenu() {
+	private void prepareElementosMenu() {
 		barraMenu = new JMenuBar();
 		opciones = new JMenu("Options");
 		openItem = new JMenuItem("Open");
@@ -116,13 +116,13 @@ public class POOggerGUI extends JFrame {
 		setJMenuBar(barraMenu);
 	}
 	
-	public void preparePaneles() {
+	private void preparePaneles() {
 		startPanel = new StartPanel(fondo,this, fontPath, null);
 		currentPanel = startPanel;
 		startPanel.requestFocus(true);
 	}
 	
-	public void prepareAcciones() {
+	private void prepareAcciones() {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		/*Window Actions*/
@@ -187,7 +187,7 @@ public class POOggerGUI extends JFrame {
 		startGamePanel(); 
 	}
 	
-	public void startGamePanel() {
+	private void startGamePanel() {
 		execution = new Timer(10, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GamePanel.demeGamePanel().repaint();
@@ -200,7 +200,7 @@ public class POOggerGUI extends JFrame {
 		GamePanel.demeGamePanel().requestFocus();
 	}
 	
-	public void stopGamePanel() {
+	private void stopGamePanel() {
 		execution.stop();
 		String message = "You lose :(";
 		if (GamePanel.demeGamePanel().getGameState()[1])  message = "You have won :3";
@@ -218,11 +218,11 @@ public class POOggerGUI extends JFrame {
 		}
 	}
 	
-	public void opcionAbra() {
+	private void opcionAbra() {
 		GamePanel.demeGamePanel().abra();
 	}
 	
-	public void opcionGuardeComo() {
+	private void opcionGuardeComo() {
 		GamePanel.demeGamePanel().guarde();
 	}
 

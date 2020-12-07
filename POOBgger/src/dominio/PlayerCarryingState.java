@@ -18,17 +18,23 @@ public class PlayerCarryingState extends PlayerState{
 	}
 
 	@Override
+	public int getPointsOnDeath() {
+		return super.getPointsOnDeath()-200;
+	}
+	
+	@Override
+	public int getPointsOnArriving() {
+		return super.getPointsOnDeath()+450;
+	}
+	
+	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(player.getX(),player.getY(),player.getWidth(),player.getHeight());
 	}
 
 	@Override
-	public void decreasePlayerlives() {
-		player.changePoints(-200);
-	}
-	
-	@Override
 	public String getState() {
 		return "C";
 	}
+	
 }

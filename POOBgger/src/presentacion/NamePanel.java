@@ -59,7 +59,7 @@ public class NamePanel extends JBackground{
 	}
 
 	@Override
-	public void prepareElementos() {
+	protected void prepareElementos() {
     	
 		font = font.deriveFont(25f);
     	
@@ -215,7 +215,7 @@ public class NamePanel extends JBackground{
     	add(backNameButton, constraints);
 	}
 	
-	public void selectTwoMachines() {
+	private void selectTwoMachines() {
 		JLabel machineLabel1 = new JLabel("CPU TYPE");
 		machineLabel1.setFont(font);
 		machineLabel1.setForeground(Color.WHITE);
@@ -260,7 +260,7 @@ public class NamePanel extends JBackground{
 	}
 	
 	@Override
-	public void prepareAcciones() {
+	protected void prepareAcciones() {
 		playButton.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent e) {
                 prepareGamePanel();
@@ -274,7 +274,7 @@ public class NamePanel extends JBackground{
     	});
 	}
 
-	public void prepareGamePanel() {
+	private void prepareGamePanel() {
 		if (mode.equals("Human") || mode.equals("Humans") || mode.equals("Machine")) player1[0] = namePlayer1.getText();
 		else player1[0] = (String)typeMachine1.getSelectedItem();
 		

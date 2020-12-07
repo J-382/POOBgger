@@ -47,7 +47,7 @@ public class NewGamePanel extends JBackground{
 		poogger.add(this);
 	}
 	
-	public void prepareElementos() {
+	protected void prepareElementos() {
 		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
     			+ "<br><br><br><br><br><br><br><br><br>"
     			+ "<br><br><br><br><br><br>"
@@ -87,7 +87,7 @@ public class NewGamePanel extends JBackground{
     	add(backNewGameButton, constraints);
 	}
 	
-	public void prepareAcciones() {
+	protected void prepareAcciones() {
 		arcadeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//prepareGamePanel();
@@ -120,7 +120,7 @@ public class NewGamePanel extends JBackground{
 		});
 	}
 
-	public void prepareSelectSkin(int players, String mode) {
+	private void prepareSelectSkin(int players, String mode) {
 		this.setVisible(false);
 		poogger.remove(this);
 		poogger.prepareSelectPanel(players, mode);

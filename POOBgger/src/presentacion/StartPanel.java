@@ -39,7 +39,7 @@ public class StartPanel extends JBackground{
 		prepareAcciones();
 		poogger.add(this);
 	}
-	public void prepareElementos() {
+	protected void prepareElementos() {
 		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
     			+ "<br><br><br><br><br><br><br><br><br>"
     			+ "<br><br><br><br><br><br>"
@@ -62,7 +62,7 @@ public class StartPanel extends JBackground{
     	add(pointsButton, constraints);
 	}
 	
-	public void prepareAcciones() {
+	protected void prepareAcciones() {
 		newGameButton.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent e) {
                 prepareNewGamePanel();
@@ -83,19 +83,19 @@ public class StartPanel extends JBackground{
 	}
 
 	
-	public void prepareNewGamePanel() {
+	private void prepareNewGamePanel() {
 		this.setVisible(false);
 		poogger.remove(this);
 		poogger.prepareNewGamePanel();
 	}
 	
-	public void prepareOpenGamePanel() {
+	private void prepareOpenGamePanel() {
 		this.setVisible(false);
 		poogger.remove(this);
 		poogger.prepareOpenGamePanel();
 	}
 	
-	public void preparePointsPanel() {
+	private void preparePointsPanel() {
 		this.setVisible(false);
 		poogger.remove(this);
 		poogger.preparePointsPanel();

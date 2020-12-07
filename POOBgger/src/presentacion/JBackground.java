@@ -27,8 +27,8 @@ public abstract class JBackground extends JPanel{
 		background = image;
 	}
 
-	public abstract void prepareElementos();
-	public abstract void prepareAcciones();
+	protected abstract void prepareElementos();
+	protected abstract void prepareAcciones();
 	
 	public void paintComponent(Graphics g) {
 		g.drawImage(background.getImage(), 0, 0, 720,768, null);
@@ -40,7 +40,7 @@ public abstract class JBackground extends JPanel{
 		poogger.carguePanel(this, backPanel);
 	}
 	
-	public JButton prepareBoton(JButton boton, Color color, float sizeFont) {
+	protected JButton prepareBoton(JButton boton, Color color, float sizeFont) {
 		font = font.deriveFont(sizeFont);
 		boton.setFont(font);
 		boton.setContentAreaFilled(false);

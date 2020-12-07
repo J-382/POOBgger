@@ -57,7 +57,7 @@ public class SelectPanel extends JBackground{
 		poogger.add(this);
 	}
 	
-	public void prepareElementos() {
+	protected void prepareElementos() {
 		JLabel separator = new JLabel("<html><font color='rgb(12,5,65)'><br><br>"
     			+ "<br><br><br><br><br>"
     			+ "<br><br><br><br><br>"
@@ -117,7 +117,7 @@ public class SelectPanel extends JBackground{
 		add(backSelectButton, constraints);
 	}
 	
-	public void prepareAcciones() {
+	protected void prepareAcciones() {
 		defaultButton.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent e) {
                 if (defaultButton.isEnabled() && (player1 == null || player2 == null)) {
@@ -163,7 +163,7 @@ public class SelectPanel extends JBackground{
     	});
 	}
 	
-	public void prepareNamePanel() {
+	private void prepareNamePanel() {
 		this.setVisible(false);
 		poogger.remove(this);
 		poogger.prepareNamePanel(player1, player2, mode);

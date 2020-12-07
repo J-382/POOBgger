@@ -81,7 +81,7 @@ public class Player extends Playable implements Pushable{
 			lastMove = (lastMove + 1) % 3;
 			if (lastMove == 0 && getY() < minReachY) {
 				minReachY = getY();
-				changePoints(10);
+				//changePoints(10);
 			}
 		}
 		super.move(dx, dy);
@@ -166,12 +166,9 @@ public class Player extends Playable implements Pushable{
 	 * */
 	public boolean decreasePlayerLives(int penalization) {
 		animator.stop();
-		frogState.decreasePlayerlives();
 		changePoints(penalization);
 		lives--;
 		changeState(new PlayerDeathState(this));
-		frogState.decreasePlayerlives();
-		
 		if (lives < 1) {
 			isAlive = false;
 		}
@@ -201,6 +198,13 @@ public class Player extends Playable implements Pushable{
 		carrier = null;
 	}
 	
+	public int getPointsOnDeath(){
+		return frogState.getPointsOnDeath();
+	}
+	
+	public int getPointsOnArriving() {
+		return frogState.getPointsOnArriving();
+	}
 	
 	/**
 	 * Change the player point by some amount

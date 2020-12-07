@@ -15,16 +15,12 @@ public class PlayerDeathState extends PlayerState{
 	 */
 	public PlayerDeathState(Player player) {
 		super(player);
+		player.dying();
 	}
 
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(0,0,0,0);
-	}
-
-	@Override
-	public void decreasePlayerlives() {
-		player.dying();
 	}
 	
 	@Override
