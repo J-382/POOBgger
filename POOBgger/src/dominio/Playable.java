@@ -51,7 +51,6 @@ public abstract class Playable extends Mobile{
 	 * Make the playable element toxic
 	 * */
 	public void makeToxic() {
-		System.out.println("salio "+isToxic);
 		if(isToxic) {
 			toxic = new Timer(10000,new ActionListener() {
 				public void actionPerformed(ActionEvent e) {

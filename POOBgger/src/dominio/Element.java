@@ -41,6 +41,19 @@ public abstract class Element implements Serializable{
 	}
 	
 	/**
+	 * Returns if the given element is touching this element
+	 * @param e, desired element to check
+	 * @return if the elements are touching, and if the other element is dead
+	 */
+	public boolean[] touching(Element e) {
+		boolean touch = false, isDead = false;
+		if(e.getBounds().intersects(getBounds())) {
+			touch = true;
+			isDead = inCollision(e);
+		}
+		return new boolean[] {touch, isDead};
+	}
+	/**
 	 * Returns if the given element can be destroyed upon collision
 	 * @param e desired element to check
 	 * @Returns true if the elements are colliding false otherwise

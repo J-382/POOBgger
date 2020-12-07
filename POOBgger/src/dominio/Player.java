@@ -182,6 +182,7 @@ public class Player extends Playable implements Pushable{
 	 * Reset the player to its initial position
 	 */
 	public void resetPlayer() {
+		animator.stop();
 		state = 0;
 		changeState(new PlayerNormalState(this));
 		orientation = 'W';

@@ -43,7 +43,6 @@ public class SpeedPower extends Power{
 	}
 	
 	public boolean inCollision(Element e) {
-		System.out.println("speed");
 		super.inCollision(e);
 		isVisible = false;
 		return false;

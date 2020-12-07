@@ -11,6 +11,7 @@ public class Cave extends Fixed{
 	
 	boolean occupied;
 	final int points = 50;
+	private CaveState state;
 	
 	/**
 	 * Cave Class constructor
@@ -24,9 +25,10 @@ public class Cave extends Fixed{
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.sprite = "Cave";
 		this.isVisible = true;
 		occupied = false;
+		state = new CaveNotOccupiedState(this);
+		this.sprite = state.getSprite();
 	}
 	
 	/**
@@ -48,9 +50,8 @@ public class Cave extends Fixed{
 	 * @param e the desired element
 	 */
 	private void occupied(Element e) {
-		((Playable) e).changeSprite();
-		occupied = !(collisionPercentage(e)<40);
-		if(occupied) sprite = "CaveOccupied";
+		state = !(collisionPercentage(e)<40) ? new CaveOccupiedState(this) : new CaveOccupiedState(this);
+		sprite = state.getSprite();
 	}
 	
 	/**
@@ -58,27 +59,28 @@ public class Cave extends Fixed{
 	 * @return if the cave is occupied
 	 */
 	public boolean isOccupied() {
-		return occupied;
+		return state.isOccupied();
 	}
 	
 	/**
 	 * Clear the cave if its occupied
 	 */
 	public void clear() {
-		if (occupied) {
-			occupied = false;
-			sprite = "Cave";
-		}
+		state = new CaveNotOccupiedState(this);
+		sprite = state.getSprite();
 	}
 	
 	@Override
 	public boolean inCollision(Element e) {
-		if(e.isPlayable() && e.isPushable() && !occupied) {
-			if(!((Playable) e).isInAir()){
-				occupied(e);
-			}
+		if(e.isPlayable() && e.isPushable() && !isOccupied()) {
+			occupied(e);
 		}
 		return false;
+	}
+	
+	@Override
+	public Rectangle getBounds() {
+		return state.getBounds();
 	}
 	
 	@Override

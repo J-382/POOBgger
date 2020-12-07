@@ -85,7 +85,7 @@ public class POOggerGUI extends JFrame {
 		setIconImage(icon.getImage());
 		setSize(new Dimension(720, 780));
 		setLocationRelativeTo(null);
-		playSound();
+		//playSound();
 		prepareElementosMenu();
 		preparePaneles();		
 	}

@@ -74,7 +74,6 @@ public class POOgger implements Serializable{
 		elements = new ArrayList<Element>();
 		fixeds = new ArrayList<Element>();
 		fixeds.addAll(levelGenerator.addFixedElements());
-		//powerTest();
 		elements.addAll(levelGenerator.addMobileElements());
 		ArrayList<String[]> newPlayers = new ArrayList<>();
 		newPlayers.add(player1);
@@ -250,11 +249,9 @@ public class POOgger implements Serializable{
 		boolean isDead = false;
 		boolean touchingWater = true;
 		for(Element e: elements) {
-			if(player.getBounds().intersects(e.getBounds())) {
-				isDead = e.inCollision(player);
-				if (e.givesBonus()) givePlayerBonus(player, e.getPoints());
-				touchingWater = false;
-			}
+			touchingWater = touchingWater && !e.touching(player)[0];
+			isDead = e.touching(player)[1];
+			if (e.givesBonus()) givePlayerBonus(player, e.getPoints());
 			if(isDead) break;
 		}
 		return new boolean[] {isDead,touchingWater};
@@ -268,34 +265,29 @@ public class POOgger implements Serializable{
 	 */
 	private boolean checkFixedElements(Player player, boolean touchingWater) {
 		boolean isDead = false;
-		if(player.getBounds().intersects(fixeds.get(0).getBounds())) {
-			touchingWater = touchingWater && fixeds.get(0).inCollision(player);
-		}else touchingWater = false;
+		if (fixeds.get(0).touching(player)[0]) {
+			touchingWater = touchingWater && fixeds.get(0).touching(player)[1]; 
+		}else touchingWater = fixeds.get(0).touching(player)[0];
 		for (int i = 1; i < fixeds.size(); i++) {
-			Fixed f = (Fixed)fixeds.get(i);
-			if (f.canBeOccupied()) {
-				Cave e = (Cave) f;
-				if(player.getBounds().intersects(e.getBounds())) {
-					if(!e.isOccupied()) {
-						e.inCollision(player);
-						if(e.isOccupied()) {
-							givePlayerBonus(player, e.getPoints());
-							player.increaseCavesReach();
-							checkCavesState();
-							resetPlayer(player);
-							touchingWater = false;
-							break;
-						}
-					}
+			Fixed e = (Fixed)fixeds.get(i);
+			if (e.touching(player)[0] && e.canBeOccupied()) {
+				Cave f = (Cave)e;
+				if (f.isOccupied()) {
+					givePlayerBonus(player, f.getPoints());
+					player.increaseCavesReach();
+					checkCavesState();
+					resetPlayer(player);
+					touchingWater = false;
+					break;
 				}
 			}
 			else {
-				if(player.getBounds().intersects(f.getBounds())) {
-					if (f.givesBonus()) givePlayerBonus(player, f.getPoints());
-					isDead = f.inCollision(player);		
+				if(e.touching(player)[0]) {
+					if (e.givesBonus()) givePlayerBonus(player, e.getPoints());
+					isDead = e.touching(player)[1];
 				}
 			}
-			if(!f.isVisible()) {
+			if(!e.isVisible()) {
 				fixeds.set(i, null);
 			}if(isDead) break;
 		}
@@ -310,8 +302,8 @@ public class POOgger implements Serializable{
 	private void checkThrowableCollision(){
 		if(throwable!=null) {
 			for(Element e: elements) {
-				if(throwable!=e && e.getBounds().intersects(throwable.getBounds())) {
-					if(throwable.isDestructible() && e.inCollision(throwable)) {
+				if(throwable!=e && e.touching(throwable)[0]) {
+					if(throwable.isDestructible() && e.touching(throwable)[1]) {
 						fixeds.add(throwable.destroy());
 						throwable = null;
 						break;
