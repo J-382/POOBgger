@@ -51,7 +51,6 @@ public class POOgger implements Serializable, Comunicacion{
 	private ArrayList<Player> players;
 	private char[] playerKeys = {'A','W','S','D'};
 	private HashMap<String,int[]> sprites;
-	private final int deadPenalization = -100;
 	private boolean[] isOver;
 	private TreeMap<Integer, ArrayList<String>> highScores;
 	private File scoresFile;
@@ -266,9 +265,7 @@ public class POOgger implements Serializable, Comunicacion{
 	 */
 	private boolean checkFixedElements(Player player, boolean touchingWater) {
 		boolean isDead = false;
-		if (fixeds.get(0).touching(player)[0]) {
-			touchingWater = touchingWater && fixeds.get(0).touching(player)[1]; 
-		}else touchingWater = fixeds.get(0).touching(player)[0];
+		touchingWater = touchingWater && fixeds.get(0).touching(player)[1];
 		for (int i = 1; i < fixeds.size(); i++) {
 			Fixed e = (Fixed)fixeds.get(i);
 			if (e.touching(player)[0] && e.canBeOccupied()) {

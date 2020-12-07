@@ -25,8 +25,6 @@ public class NewGamePanel extends JBackground{
 	private JButton playerMachineButton;
 	private JButton machinesButton;
 	
-	private static Font font;
-	
 	/* Separador */
 	private static final JLabel vertical = new JLabel("<html></html>");
 	

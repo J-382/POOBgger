@@ -21,9 +21,6 @@ public class PointsPanel extends JBackground{
 	private JButton backPointsButton;
 	private JButton highScoresButton;
 	
-	private static Font font;
-	
-	
 	public PointsPanel(ImageIcon image, POOggerGUI poogger,File fontPath, JBackground backPanel) {
 		super(image);
 		this.setLayout(new GridBagLayout());

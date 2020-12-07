@@ -23,8 +23,6 @@ public class HighScoresPanel extends JBackground{
 	/* Botones highScorePanel */
 	private JButton backHighScoresButton;
 	
-	private static Font font;
-	
 	/* Archivos */
 	private final File highScoresPlayersFile = new File("./resources/HighScoresPlayer.txt");
 	private final File highScoresMachinesFile = new File("./resources/HighScoresMachine.txt");

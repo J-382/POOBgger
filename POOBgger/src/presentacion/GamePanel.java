@@ -64,6 +64,7 @@ public class GamePanel extends JPanel{
 		put(39, 'D'); put(37, 'A'); put(38, 'W'); put(40, 'S'); put(83, 'S'); put(49,'1'); put(50,'2'); put(51,'3'); 
 		}};	
 	private final File font = new File("resources/8-BIT.TTF");
+	
 	private GamePanel(String[] player1, String[] player2, String mapType, String mode) {
 		GamePanel.player1 = player1;
 		GamePanel.player2 = player2;
@@ -73,9 +74,6 @@ public class GamePanel extends JPanel{
 		prepareElementos(player1, player2, mapType, mode);
 		prepareAcciones();
 	}
-	/*public boolean refresh() {
-		return POOgger.demePOOgger(dimensions, player1, player2, mapType, mode).isPlayerAlive();
-	}*/
 	
 	private void prepareElementos(String[] player1, String[] player2, String mapType, String mode) {
 		addFont();

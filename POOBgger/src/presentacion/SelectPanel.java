@@ -27,9 +27,6 @@ public class SelectPanel extends JBackground{
 	private String player1;
 	private String player2;
 	private String mode;
-
-	
-	private static Font font;
 	
 	/* Imagenes */
 	private ImageIcon defaultButtonIco = new ImageIcon("./resources/default.png");
