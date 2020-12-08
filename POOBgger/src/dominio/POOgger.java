@@ -93,7 +93,7 @@ public class POOgger implements Serializable, Comunicacion{
 	 * Add players to the game
 	 * @param newPlayers, list of players, each player must have {name and personalization}
 	 */
-	public void addPlayers(ArrayList<String[]> newPlayers){
+	private void addPlayers(ArrayList<String[]> newPlayers){
 		int lives = players.size() >= 1 || (newPlayers.size() >= 2 && newPlayers.get(1)[0] != null) ? 3 : 5;
 		int initPosx = 48*8, initPosy = 48*14;
 		for (String[] player : newPlayers) {
@@ -149,7 +149,7 @@ public class POOgger implements Serializable, Comunicacion{
 			}
 		}
 		if (isValid) {
-			if (numPlayer < players.size() && players.get(numPlayer).isAlive()) {
+			if (numPlayer < players.size() && players.get(numPlayer).isAlive() && !players.get(numPlayer).isMachine()) {
 				players.get(numPlayer).setOrientation(dir);
 			}
 		} else if (numPlayer < players.size()) players.get(numPlayer).activatePower(dir);
@@ -266,7 +266,7 @@ public class POOgger implements Serializable, Comunicacion{
 	private boolean checkFixedElements(Player player, boolean touchingWater) {
 		boolean isDead = false;
 		touchingWater = touchingWater && fixeds.get(0).touching(player)[1];
-		for (int i = 1; i < fixeds.size(); i++) {
+		for (int i = fixeds.size() - 1; i > 0; i--) {
 			Fixed e = (Fixed)fixeds.get(i);
 			if (e.touching(player)[0] && e.canBeOccupied()) {
 				Cave f = (Cave)e;
@@ -355,6 +355,8 @@ public class POOgger implements Serializable, Comunicacion{
 			isOver[1] = true;
 		}
 		else {
+			elements.clear();
+			//fixeds.clear();
 			levelGenerator.levelUp();
 			clearCaves();
 		}
@@ -442,9 +444,9 @@ public class POOgger implements Serializable, Comunicacion{
 	}
 	
 	/**
-	 * 
-	 * @param time
-	 * @return
+	 * Principal cycle. Actualize all the elements in the game and checks the players collisions
+	 * @param time, game execution time
+	 * @return the elements in the window in String form
 	 */
 	public ArrayList<String[]> gameLoop(int time) {
 		levelGenerator.addElements(time, throwable==null, players);
@@ -644,9 +646,7 @@ public class POOgger implements Serializable, Comunicacion{
 	
 	private ArrayList<String[]> playersToString(ArrayList<Player> players){
 		ArrayList<String[]> toString = new ArrayList<String[]>();
-		System.out.println();
 		for(Player p: players) {
-			System.out.println(p.getClock().getWidth()+" "+p.getClock().getHeight());
 			toString.add(new String[] {""+p.getSprite(),""+p.getX(),""+p.getY(),""+p.getLives(),""+(int) p.getClock().getWidth(),
 					""+(int) p.getClock().getHeight(),""+p.hasArmor(),""+p.hasWings(),""+p.hasSpeed(),p.getHat(),""+p.getPoints(),
 					""+p.getBounds().width,""+p.getBounds().height});

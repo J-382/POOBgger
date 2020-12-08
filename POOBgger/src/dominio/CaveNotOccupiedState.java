@@ -1,8 +1,17 @@
 package dominio;
 import java.awt.Rectangle;
 
+/**
+ * Cave in not occupied state implementation 
+ * @version 1.0
+ * @author Angie Medina - Jose Perez
+ */
 public class CaveNotOccupiedState extends CaveState{
 
+	/**
+	 * CaveNotOccupiedState class Constructor
+	 * @param cave context
+	 */
 	public CaveNotOccupiedState(Cave cave) {
 		super(cave,"Cave");
 	}

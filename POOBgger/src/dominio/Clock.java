@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 /**
  * Pogger's player's clock implementation
- * @author Angie Medina - Jose Perez
+ * @author Angie Medina  - Jose Perez
  * @version 1.0
  */
 public class Clock implements Serializable{

@@ -102,11 +102,17 @@ public class Generator implements Serializable{
 	 */
 	private void prepareTimes() {
 		times = new ArrayList<int[]>();
-		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,2000});
+		/*times.add(new int[] {700,300,600,300,700,300,400,300,400,300,2000});
 		times.add(new int[] {500,150,500,150,350,200,400,300,400,300,2000});
 		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,2000});
 		times.add(new int[] {500,150,500,150,350,200,400,300,400,300,2000});
-		times.add(new int[] {250,100,300,150,200,100,200,150,200,150,2000});
+		times.add(new int[] {250,100,300,150,200,100,200,150,200,150,2000});*/
+		times.add(new int[] {700,300,600,300,700,300,400,300,400,300,2000});
+		times.add(new int[] {500,150,500,150,350,200,400,300,400,300,2000});
+		times.add(new int[] {300,150,300,100,250,200,300,200,300,200,2000});
+		times.add(new int[] {250,100,200,150,350,200,400,300,400,300,2000});
+		times.add(new int[] {250,100,250,100,200,100,200,150,200,150,2000});
+		
 	}
 	
 	
@@ -115,7 +121,14 @@ public class Generator implements Serializable{
 	 */
 	private void prepareSpeedsAtLevel() {
 		speedsAtLevel = new ArrayList<int[]>();
+		/*speedsAtLevel.add(new int[] {2,1,1,3,2,3,2,1,2,1,2,3,2,1,1,1});
+		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
 		speedsAtLevel.add(new int[] {2,1,1,3,2,3,2,1,2,1,2,3,2,1,1,1});
+		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
+		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
+		speedsAtLevel.add(new int[] {4,2,2,6,4,6,4,2,4,2,4,6,4,2,2,2});*/
+		speedsAtLevel.add(new int[] {2,1,1,3,2,3,2,1,2,1,2,3,2,1,1,1});
+		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
 		speedsAtLevel.add(new int[] {2,1,1,3,2,3,2,1,2,1,2,3,2,1,1,1});
 		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});
 		speedsAtLevel.add(new int[] {3,2,2,4,3,4,3,2,3,2,3,4,3,2,2,2});

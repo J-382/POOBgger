@@ -33,7 +33,7 @@ public class NamePanel extends JBackground{
 	private String[] player1;
 	private String[] player2;
 	private String mode;
-	private String[] machineOptions = {"Thoughtless", "Reckless", "Cautions"};
+	private String[] machineOptions = {"Thoughtless", "Reckless", "Cautious"};
 	private String[] mapOptions = {"Sunny", "Stormy"};
 	
 	public NamePanel(ImageIcon image, POOggerGUI poogger,File fontPath, JBackground backPanel, String player1, String player2, String mode) {

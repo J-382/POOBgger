@@ -1,5 +1,5 @@
 TestMachine 01320
-Nickname9 00000
-Nickname8 00000
-Nickname7 00000
 Nickname6 00000
+Nickname7 00000
+Nickname8 00000
+Nickname9 00000
