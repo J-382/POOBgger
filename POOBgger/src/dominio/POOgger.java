@@ -51,7 +51,6 @@ public class POOgger implements Serializable, Comunicacion{
 	private ArrayList<Player> players;
 	private char[] playerKeys = {'A','W','S','D'};
 	private HashMap<String,int[]> sprites;
-	private final int deadPenalization = -100;
 	private boolean[] isOver;
 	private TreeMap<Integer, ArrayList<String>> highScores;
 	private File scoresFile;
@@ -647,14 +646,27 @@ public class POOgger implements Serializable, Comunicacion{
 	
 	private ArrayList<String[]> playersToString(ArrayList<Player> players){
 		ArrayList<String[]> toString = new ArrayList<String[]>();
-		System.out.println();
 		for(Player p: players) {
-			System.out.println(p.getClock().getWidth()+" "+p.getClock().getHeight());
 			toString.add(new String[] {""+p.getSprite(),""+p.getX(),""+p.getY(),""+p.getLives(),""+(int) p.getClock().getWidth(),
 					""+(int) p.getClock().getHeight(),""+p.hasArmor(),""+p.hasWings(),""+p.hasSpeed(),p.getHat(),""+p.getPoints(),
 					""+p.getBounds().width,""+p.getBounds().height});
 		}
 		return toString;
+	}
+	
+	public Player getPlayer(int index) {
+		return players.get(index);
+	}
+	
+	public void testPlayer_ElementCollision(Element element, Player player, boolean isMobile, boolean destroyAtEnd) {
+		if(isMobile) elements.add(element);
+		else fixeds.add(element);
+		if(checkPlayerCollisions(player)  && player.isAlive()) killPlayer(player);
+		update();
+		if(destroyAtEnd) {
+			element.destroy();
+			clearElements();
+		}
 	}
 	
 }

@@ -92,4 +92,8 @@ public class SmallLog extends Log{
 	protected void resumeAnimator() {
 		animator.resume();
 	}
+	
+	public LogState getState() {
+		return state;
+	}
 }

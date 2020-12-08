@@ -81,7 +81,7 @@ public class Player extends Playable implements Pushable{
 			lastMove = (lastMove + 1) % 3;
 			if (lastMove == 0 && getY() < minReachY) {
 				minReachY = getY();
-				//changePoints(10);
+				changePoints(10);
 			}
 		}
 		super.move(dx, dy);
