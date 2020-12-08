@@ -408,6 +408,7 @@ public class Generator implements Serializable{
 		addBeaverLane(time);
 		addLane(time);
 		if(addThrowable && !inCooldown) {
+			cooldownTimer.stop();
 			inCooldown = true;
 			Random r = new Random();
 			addThrowable(players.get(r.nextInt(players.size())));
