@@ -394,6 +394,7 @@ public class Generator implements Serializable{
 				addPuddle((6*gridSize>=posX?1:-1)*6*gridSize+posX);
 				break;
 		}
+		fixeds.add(new FlyPower(48,48*12,48,48));
 		return fixeds;
 	}
 	

@@ -9,6 +9,15 @@ public abstract class Power extends Fixed{
 	protected int duration;
 	protected int state;
 	
+	public Power(int x, int y, int width, int height) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.state = 0;
+		this.isVisible = true;
+	}
+	
 	/**
 	 * Give a specific power to the given player
 	 * @param player the desired player

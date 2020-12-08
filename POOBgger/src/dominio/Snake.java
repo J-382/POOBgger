@@ -96,7 +96,7 @@ public class Snake extends Mobile implements Pushable{
 
 	@Override
 	public char getDir() {
-		return orientation.charAt(0);
+		return orientation.equals("")?'N':orientation.charAt(0);
 	}
 
 	@Override

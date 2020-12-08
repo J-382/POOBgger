@@ -15,22 +15,17 @@ public class FlyPower extends Power{
 	 * @param height FlyPower's height
 	 */
 	public FlyPower(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.sprite = "Fly1";
-		this.state = 0;
-		this.isVisible = true;
+		super(x,y,width,height);
+		sprite = "Fly1";
 		Animator animator = new Animator();
-		//animator.animate(100, 18, new Runnable() {public void run() {updateSprite();}},false);
+		animator.animate(100, 18, new Runnable() {public void run() {updateSprite();}},false);
 	}
 	
 	/**
 	 * Changes the FlyPower's Sprite
 	 */
 	private void updateSprite() {
-		state = (state+1)%17;
+		state = (state+1)%1;
 		sprite = "Fly"+(state+1);
 	}
 	

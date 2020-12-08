@@ -16,14 +16,9 @@ public class ArmorPower extends Power{
 	 * @param height ArmorPower's height
 	 */
 	public ArmorPower(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.sprite = "Armor1";
-		this.state = 0;
-		this.isVisible = true;
+		super(x,y,width,height);
 		Animator animator = new Animator();
+		sprite = "Armor1";
 		animator.animate(400, 18, new Runnable() {public void run() {updateSprite();}},false);
 	}
 	

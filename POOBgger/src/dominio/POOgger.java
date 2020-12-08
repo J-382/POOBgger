@@ -93,7 +93,7 @@ public class POOgger implements Serializable, Comunicacion{
 	 * Add players to the game
 	 * @param newPlayers, list of players, each player must have {name and personalization}
 	 */
-	private void addPlayers(ArrayList<String[]> newPlayers){
+	public void addPlayers(ArrayList<String[]> newPlayers){
 		int lives = players.size() >= 1 || (newPlayers.size() >= 2 && newPlayers.get(1)[0] != null) ? 3 : 5;
 		int initPosx = 48*8, initPosy = 48*14;
 		for (String[] player : newPlayers) {
@@ -652,6 +652,21 @@ public class POOgger implements Serializable, Comunicacion{
 					""+p.getBounds().width,""+p.getBounds().height});
 		}
 		return toString;
+	}
+	
+	public Player getPlayer(int index) {
+		return players.get(index);
+	}
+	
+	public void testPlayer_ElementCollision(Element element, Player player, boolean isMobile, boolean destroyAtEnd) {
+		if(isMobile) elements.add(element);
+		else fixeds.add(element);
+		if(checkPlayerCollisions(player)  && player.isAlive()) killPlayer(player);
+		update();
+		if(destroyAtEnd) {
+			element.destroy();
+			clearElements();
+		}
 	}
 	
 }

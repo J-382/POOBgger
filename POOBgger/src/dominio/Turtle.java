@@ -60,8 +60,9 @@ public class Turtle extends Carrier{
 		frame = (frame+1)%2;
 		sprite = "Turtle"+(frame+1);
 		if(frame==0 && doesSubmerge) {
+			
 			animator.stop();
-			animator.animate(100*(4-speed), 8, new Runnable() {public void run() {submerge();}});
+			animator.animate(200, 8, new Runnable() {public void run() {submerge();}});
 		}
 	}
 	
@@ -69,7 +70,7 @@ public class Turtle extends Carrier{
 	public void move() {
 		super.move();
 		if (!animator.isRunning()) {
-			animator.animate(100*(4-speed), 3, new Runnable() {public void run() {updateSprite();}});
+			animator.animate(200, 3, new Runnable() {public void run() {updateSprite();}});
 		}
 	}
 	

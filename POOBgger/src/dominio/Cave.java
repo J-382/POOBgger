@@ -50,7 +50,7 @@ public class Cave extends Fixed{
 	 * @param e the desired element
 	 */
 	private void occupied(Element e) {
-		state = !(collisionPercentage(e)<40) ? new CaveOccupiedState(this) : new CaveOccupiedState(this);
+		state = !(collisionPercentage(e)<40) ? new CaveOccupiedState(this) : new CaveNotOccupiedState(this);
 		sprite = state.getSprite();
 	}
 	
