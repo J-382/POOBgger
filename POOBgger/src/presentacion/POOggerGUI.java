@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -24,19 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class POOggerGUI extends JFrame {
-	/*private static  POOggerGUI gui = null;
-	
-	public static POOggerGUI demePOOggerGUI() {
-		if (gui == null) {
-			gui = new POOggerGUI();
-		}
-		return gui;
-	}
-	
-	public static void cambiePOOggerGUI(POOggerGUI p) {
-		gui = p;
-	}*/
-	
 	/* Paneles */
 	private StartPanel startPanel;
 	private NewGamePanel newGamePanel;
@@ -63,7 +49,6 @@ public class POOggerGUI extends JFrame {
 	private final File fontPath = new File("resources/8-BIT.TTF");
 	private final String highScoresPlayersFile = "./resources/HighScoresPlayer.txt";
 	private final String highScoresMachinesFile = "./resources/HighScoresMachine.txt";
-	private static Font font;
 	 
 	/* Game Execution  */
 	private Timer execution;
@@ -74,13 +59,6 @@ public class POOggerGUI extends JFrame {
 	}
 	
 	private void prepareElementos() {
-		try {
-			font = Font.createFont(Font.TRUETYPE_FONT,fontPath);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, fontPath));
-		} catch(IOException | FontFormatException e) {
-			
-		}
 		setTitle("POOgger");
 		setIconImage(icon.getImage());
 		setSize(new Dimension(720, 780));
@@ -90,7 +68,7 @@ public class POOggerGUI extends JFrame {
 		preparePaneles();		
 	}
 	
-	public void playSound() {
+	private void playSound() {
 		try {
 			sound = AudioSystem.getClip();
 			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/Intro.wav")));
@@ -238,8 +216,6 @@ public class POOggerGUI extends JFrame {
 
 	public static void main(String[] args) {
 		POOggerGUI gui = new POOggerGUI();
-		//POOggerGUI.demePOOggerGUI().setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//POOggerGUI.demePOOggerGUI().setVisible(true);
 		gui.setVisible(true);
 	}
 }

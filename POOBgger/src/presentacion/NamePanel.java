@@ -77,7 +77,7 @@ public class NamePanel extends JBackground{
 		backNameButton = prepareBoton(new JButton("BACK"), Color.WHITE, 40f);
 	}
 
-	public void prepareModo() {
+	private void prepareModo() {
 		if (mode.equals("Human")) {
 			selectOnePlayer();
 		}
@@ -91,7 +91,7 @@ public class NamePanel extends JBackground{
 			
 	}
 	
-	public void selectOnePlayer() {
+	private void selectOnePlayer() {
 		JLabel nameLabel1 = new JLabel("   PLAYER1'S NAME ");
 		nameLabel1.setFont(font);
     	nameLabel1.setForeground(Color.WHITE);
@@ -127,7 +127,7 @@ public class NamePanel extends JBackground{
     	add(backNameButton, constraints);
 	}
 	
-	public void selectTwoPlayers() {
+	private void selectTwoPlayers() {
 		JLabel nameLabel1 = new JLabel("   PLAYER1'S NAME ");
 		nameLabel1.setFont(font);
     	nameLabel1.setForeground(Color.WHITE);
@@ -171,7 +171,7 @@ public class NamePanel extends JBackground{
     	add(backNameButton, constraints);
 	}
 	
-	public void selectOneMachine() {
+	private void selectOneMachine() {
 		JLabel nameLabel1 = new JLabel("   PLAYER1'S NAME ");
 		nameLabel1.setFont(font);
     	nameLabel1.setForeground(Color.WHITE);
