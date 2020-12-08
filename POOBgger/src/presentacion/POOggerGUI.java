@@ -74,7 +74,7 @@ public class POOggerGUI extends JFrame {
 			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/Intro.wav")));
 			sound.loop(1);
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			raiseError(e.getMessage());
 		}
 	}
 	
@@ -214,6 +214,11 @@ public class POOggerGUI extends JFrame {
     	currentPanel = fin;
     }
 
+	private void raiseError(String message) {
+    	Toolkit.getDefaultToolkit().beep();
+    	JOptionPane.showMessageDialog(null, message,"Error",JOptionPane.ERROR_MESSAGE);
+    }
+	
 	public static void main(String[] args) {
 		POOggerGUI gui = new POOggerGUI();
 		gui.setVisible(true);

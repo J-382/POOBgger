@@ -3,6 +3,7 @@ package pruebas;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Rectangle;
 import java.io.File;
@@ -75,13 +76,13 @@ public class POOggerTest {
 	
 	@Test
 	public void deberiaMoverseHaciaArriba() {
-		int xPos = POOgger.demePOOgger(sprites).getPlayer(0).getX(), yPos = POOgger.demePOOgger(sprites).getPlayer(0).getY();
-		int step = POOgger.demePOOgger(sprites).getPlayer(0).getWidth()/3;
-		int[] beforePosition = new int[] {xPos, yPos};
-		POOgger.demePOOgger(sprites).movePlayer('W', 0);
-		xPos = POOgger.demePOOgger(sprites).getPlayer(0).getX(); yPos = POOgger.demePOOgger(sprites).getPlayer(0).getY();
-		int[] afterPosition = new int[] {xPos, yPos};
-		assertTrue(afterPosition[1] == beforePosition[1] - step);
+			int xPos = POOgger.demePOOgger(sprites).getPlayer(0).getX(), yPos = POOgger.demePOOgger(sprites).getPlayer(0).getY();
+			int step = POOgger.demePOOgger(sprites).getPlayer(0).getWidth()/3;
+			int[] beforePosition = new int[] {xPos, yPos};
+			POOgger.demePOOgger(sprites).movePlayer('W', 0);
+			xPos = POOgger.demePOOgger(sprites).getPlayer(0).getX(); yPos = POOgger.demePOOgger(sprites).getPlayer(0).getY();
+			int[] afterPosition = new int[] {xPos, yPos};
+			assertTrue(afterPosition[1] == beforePosition[1] - step);
 	}
 
 	@Test
@@ -93,12 +94,12 @@ public class POOggerTest {
 		xPos = POOgger.demePOOgger(sprites).getPlayer(0).getX(); yPos = POOgger.demePOOgger(sprites).getPlayer(0).getY();
 		int[] afterPosition = new int[] {xPos, yPos};
 		assertTrue(afterPosition[1] == beforePosition[1] + step);
+
 	}
 
 	@Test
 	public void deberiaMoverseHaciaLaDerecha() {
 		int xPos = POOgger.demePOOgger(sprites).getPlayer(0).getX(), yPos = POOgger.demePOOgger(sprites).getPlayer(0).getY();
-		//int step = POOgger.demePOOgger(sprites).getPlayer(0).getWidth()/3;
 		int[] beforePosition = new int[] {xPos, yPos};
 		POOgger.demePOOgger(sprites).movePlayer('D', 0);
 		xPos = POOgger.demePOOgger(sprites).getPlayer(0).getX(); yPos = POOgger.demePOOgger(sprites).getPlayer(0).getY();
@@ -114,6 +115,7 @@ public class POOggerTest {
 		xPos = POOgger.demePOOgger(sprites).getPlayer(0).getX(); yPos = POOgger.demePOOgger(sprites).getPlayer(0).getY();
 		int[] afterPosition = new int[] {xPos, yPos};
 		assertTrue(beforePosition[0] > afterPosition[0]);
+		
 	}
 	
 	@Test
@@ -124,55 +126,55 @@ public class POOggerTest {
 	@Test
 	public void deberiaTenerUnJugador() {
 		assertEquals(1, POOgger.demePOOgger(sprites).getPlayers().size());
+		
 	}
 	
 	@Test
 	public void deberiaTenerDosJugadores() {
 		ArrayList<String[]> player2 = new ArrayList<>();
 		player2.add(new String[] {"Test2", "Egg"});
-		POOgger.demePOOgger(sprites).addPlayers(player2);
-		assertEquals(2, POOgger.demePOOgger(sprites).getPlayers().size());
+		try {
+			POOgger.demePOOgger(sprites).addPlayers(player2);
+			assertEquals(2, POOgger.demePOOgger(sprites).getPlayers().size());
+		}catch(POOggerException e) {
+			fail("Throws exception");
+		}
+		
 	}
 	
 	@Test
 	public void deberiaIniciarConTresVidas() {
 		ArrayList<String[]> player2 = new ArrayList<>();
 		player2.add(new String[] {"Test2", "Egg"});
-		POOgger.demePOOgger(sprites).addPlayers(player2);
-		assertEquals(3, POOgger.demePOOgger(sprites).getPlayer(1).getLives());
+		try {
+			POOgger.demePOOgger(sprites).addPlayers(player2);
+			assertEquals(3, POOgger.demePOOgger(sprites).getPlayer(1).getLives());
+		}catch(POOggerException e) {
+			fail("Throws exception");
+		}
+		
 	}
 	
 	
 	@Test
 	public void noDeberiaEstarVivo() {
 		for (int i = 0; i < 5; i++) POOgger.demePOOgger(sprites).killPlayer(POOgger.demePOOgger(sprites).getPlayer(0));
-		assertFalse(POOgger.demePOOgger(sprites).getPlayer(0).isAlive());
+		assertFalse(POOgger.demePOOgger(sprites).getPlayer(0).isAlive());	
 	}
 	
 	@Test
 	public void deberiaObtenerPuntosNuevoSalto() {
-		
-		
 		int beforePoints = Integer.parseInt(POOgger.demePOOgger(sprites).getPoints(player));
 		POOgger.demePOOgger(sprites).movePlayer('W', 0);
-		try {
-			Thread.sleep(200);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		wait(200);
 		int afterPoints = Integer.parseInt(POOgger.demePOOgger(sprites).getPoints(player));
 		assertTrue(afterPoints == beforePoints + 10);
 	}
 	
 	@Test
 	public void noDeberiaObtenerPuntosViejoSalto() {
-		
 		POOgger.demePOOgger(sprites).movePlayer('W', 0);
-		try {
-			Thread.sleep(150);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		wait(200);
 		int beforePoints = Integer.parseInt(POOgger.demePOOgger(sprites).getPoints(player));
 		POOgger.demePOOgger(sprites).movePlayer('S', 0);
 		POOgger.demePOOgger(sprites).movePlayer('W', 0);
@@ -529,7 +531,6 @@ public class POOggerTest {
 		Thunder thunder = new Thunder(144,48,740,player);
 		wait(2000);
 		testElementCollision(thunder, player, false);
-		System.out.println(initialLives+" "+player.getLives());
 		assertTrue(player.getLives()<initialLives);
 	}
 	

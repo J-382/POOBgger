@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * Facade Class for the Frogger's implementation
@@ -28,14 +32,23 @@ public class POOgger implements Serializable, Comunicacion{
 	
 	public static POOgger demePOOgger(HashMap<String, int[]> archivo, String[] player1, String[] player2, String mapType, String fileMode){
 		if (poogger == null) {
-			poogger = new POOgger(720,740, archivo, player1, player2, mapType, fileMode);
+			try {
+				poogger = new POOgger(720,740, archivo, player1, player2, mapType, fileMode);
+			} catch(Exception e) {
+				registre(e);
+			}
+			
 		}
 		return poogger;
 	}
 	
 	public static POOgger demePOOgger(HashMap<String, int[]> archivo){
 		if (poogger == null) {
-			poogger = new POOgger(720,740, archivo, new String[] {null, null}, new String[] {null, null}, null, null);
+			try {
+				poogger = new POOgger(720,740, archivo, new String[] {null, null}, new String[] {null, null}, null, null);
+			}catch(Exception e) {
+				registre(e);
+			}
 		}
 		return poogger;
 	}
@@ -62,9 +75,10 @@ public class POOgger implements Serializable, Comunicacion{
 	 * @param width POOgger's windows width
 	 * @param height POOgger's windows height
 	 * @param sprites HashMap with all sprites's sizes
-	 * @throws POOggerException 
+	 * @throws POOggerException CLASE_NO_ENCONTRADA, When a class was not found in the project
+	 * 							ERROR_INFORMACION, When an error of information has occurred
 	 */
-	private POOgger(int width, int height, HashMap<String,int[]> sprites, String[] player1, String[] player2, String mapType, String scoreFile) {
+	private POOgger(int width, int height, HashMap<String,int[]> sprites, String[] player1, String[] player2, String mapType, String scoreFile) throws POOggerException {
 		screenWidth = width;
 		this.sprites = sprites;
 		levelGenerator = new Generator(sprites,screenWidth,screenHeight,48,0,mapType);
@@ -81,19 +95,20 @@ public class POOgger implements Serializable, Comunicacion{
 		scoresFile = new File(scoreFile);
 		//powerTest();
 		//bonusTest();
-		try {
-			highScores = readHighScoreFile(scoresFile);
-		} catch (POOggerException e) {
-			e.printStackTrace();
-		}
+		highScores = readHighScoreFile(scoresFile);
 		
 	}
 	
 	/**
 	 * Add players to the game
 	 * @param newPlayers, list of players, each player must have {name and personalization}
+	 * @throws POOggerException     - CLASE_NO_ENCONTRADA, When a class was not found in the project
+	 * 							    - ERROR_INFORMACION, When an error of information has occurred
+	 *								- TIPO_ERRONEO When the file is not a .txt
+	 * 								- ERROR_IMPORTAR  When some error occurs when tries to read the file
+	 *
 	 */
-	public void addPlayers(ArrayList<String[]> newPlayers){
+	public void addPlayers(ArrayList<String[]> newPlayers) throws POOggerException{
 		int lives = players.size() >= 1 || (newPlayers.size() >= 2 && newPlayers.get(1)[0] != null) ? 3 : 5;
 		int initPosx = 48*8, initPosy = 48*14;
 		for (String[] player : newPlayers) {
@@ -106,7 +121,7 @@ public class POOgger implements Serializable, Comunicacion{
 					try {
 						c = Class.forName("dominio.Player");
 					} catch (ClassNotFoundException e) {
-						//throw new POOggerException(POOggerException.CLASE_NO_ENCONTRADA);
+						throw new POOggerException(POOggerException.CLASE_NO_ENCONTRADA);
 					}
 				}
 				try {
@@ -116,7 +131,7 @@ public class POOgger implements Serializable, Comunicacion{
 					players.add((Player)o);
 				} catch ( InstantiationException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-					//throw new POOggerException(POOggerException.ERROR_INFORMACION);
+					throw new POOggerException(POOggerException.ERROR_INFORMACION);
 				}
 			}
 		}
@@ -654,6 +669,21 @@ public class POOgger implements Serializable, Comunicacion{
 		return toString;
 	}
 	
+	 public static void registre(Exception e){
+        try{
+            Logger logger=Logger.getLogger("POOgger");
+            logger.setUseParentHandlers(false);
+            FileHandler file=new FileHandler("POOgger.log",true);
+            file.setFormatter(new SimpleFormatter());
+            logger.addHandler(file);
+            logger.log(Level.SEVERE,e.toString(),e);
+            file.close();
+        }catch(Exception oe){
+            oe.printStackTrace();
+            System.exit(0);
+        }
+	}
+	 
 	public Player getPlayer(int index) {
 		return players.get(index);
 	}

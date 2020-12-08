@@ -49,7 +49,7 @@ public class Thunder extends Fixed{
 			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/thunderSound.wav")));
 			sound.loop(0);
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			POOgger.registre(e);
 		}
 	}
 	

@@ -155,13 +155,6 @@ public class Player extends Playable implements Pushable{
 	}
 	
 	/**
-	 * Returns if the player is alive
-	 */
-	public boolean isAlive() {
-		return isAlive;
-	}
-	
-	/**
 	 * Decrease the player lives and reset his position
 	 * */
 	public boolean decreasePlayerLives(int penalization) {

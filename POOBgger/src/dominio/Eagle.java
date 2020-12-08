@@ -16,7 +16,6 @@ import javax.sound.sampled.Clip;
  */
 public class Eagle extends Mobile{
 
-	private int speed;
 	private int state;
 	private int[] chasePoint;
 	private boolean chaseMood;
@@ -41,7 +40,6 @@ public class Eagle extends Mobile{
 	 */
 	public Eagle(int xPos, int yPos, int speed,int[] size, String sprite, Player player) {
 		this.sprite = sprite;
-		this.speed = speed;
 		this.isVisible = true;
 		this.width = size[0];
 		this.height = size[1];
@@ -58,7 +56,7 @@ public class Eagle extends Mobile{
 			sound.open(AudioSystem.getAudioInputStream(new File("resources/Sounds/eagleSound.wav")));
 			sound.loop(0);
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+			POOgger.registre(e);
 		}
 		chaseMood = false;
 		timerToChase = new Timer(5000, new ActionListener(){
